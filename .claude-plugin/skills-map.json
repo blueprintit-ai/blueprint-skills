@@ -58,6 +58,10 @@
         "website-launch-kit": {
           "displayName": "Website Launch Kit",
           "summary": "Create custom, distinctive landing pages through deep conversation and iterative design"
+        },
+        "course-creator": {
+          "displayName": "Course Creator",
+          "summary": "Interactive 7-phase course creation — from idea or YouTube video to launch-ready package with curriculum, scripts, sales page, emails, and launch plan"
         }
       }
     },
