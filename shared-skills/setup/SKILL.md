@@ -27,14 +27,13 @@ Check if `claude.md` or `CLAUDE.md` exists **only** in the current working direc
 
 ## Phase 0: Mode Selection
 
-Ask the user to pick a mode by presenting these two options as a simple text question:
+Ask the user to pick a mode using AskUserQuestion with these exact `label` and `description` values:
 
-> **What type of vault do you want?**
->
-> 1. **Solopreneurs/Professionals** — Blends work and personal. Best for solo founders, freelancers, consultants.
-> 2. **Business/Teams** — Org structure with departments, processes, stakeholders. Best for teams and companies.
+- Question: `What type of vault do you want?`
+- Option 1 label: `Solopreneurs/Professionals` — description: `Blends work and personal. Best for solo founders, freelancers, consultants.`
+- Option 2 label: `Business/Teams` — description: `Org structure with departments, processes, stakeholders. Best for teams and companies.`
 
-Wait for the user to respond before proceeding. Do NOT use `AskUserQuestion` or any tool — just ask via text output and wait for a reply.
+**CRITICAL**: You MUST pass both `label` AND `description` for each option in AskUserQuestion. The `description` field is what explains each mode to the user. Never leave `description` empty.
 
 Mode mapping:
 - Solopreneurs/Professionals → `os-mode: professional`
