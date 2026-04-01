@@ -31,13 +31,12 @@ fi
 rm -rf "$ROOT/plugins"
 mkdir -p "$ROOT/plugins"
 
-COMMANDS="$ROOT/commands"
 AGENTS="$ROOT/agents"
 CONNECTORS="$ROOT/connectors"
 SCRIPTS="$ROOT/scripts"
 HOOKS="$ROOT/hooks"
 
-export ROOT SHARED SKILLS_MAP MARKETPLACE COMMANDS AGENTS CONNECTORS SCRIPTS HOOKS
+export ROOT SHARED SKILLS_MAP MARKETPLACE AGENTS CONNECTORS SCRIPTS HOOKS
 
 python3 << 'PYEOF'
 import json, os, shutil
@@ -46,7 +45,6 @@ root = os.environ.get("ROOT", "")
 shared = os.environ.get("SHARED", "")
 skills_map_path = os.environ.get("SKILLS_MAP", "")
 marketplace_path = os.environ.get("MARKETPLACE", "")
-commands_src = os.environ.get("COMMANDS", "")
 agents_src = os.environ.get("AGENTS", "")
 connectors_src = os.environ.get("CONNECTORS", "")
 scripts_src = os.environ.get("SCRIPTS", "")
@@ -100,18 +98,6 @@ for dept_name, dept_config in departments.items():
             with open(os.path.join(dept_dir, ".mcp.json"), "w") as f:
                 json.dump(mcp_servers, f, indent=2)
                 f.write("\n")
-
-    # --- commands/ ---
-    commands_dir = os.path.join(dept_dir, "commands")
-    os.makedirs(commands_dir, exist_ok=True)
-
-    cmd_list = dept_config.get("commands", [])
-    for cmd_name in cmd_list:
-        src = os.path.join(commands_src, f"{cmd_name}.md")
-        if os.path.isfile(src):
-            shutil.copy2(src, os.path.join(commands_dir, f"{cmd_name}.md"))
-        else:
-            print(f"  Warning: commands/{cmd_name}.md not found, skipping")
 
     # --- skills/ ---
     skills_dir = os.path.join(dept_dir, "skills")
