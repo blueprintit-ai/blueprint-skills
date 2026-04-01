@@ -126,6 +126,18 @@
         }
       }
     },
+    "autoresearch": {
+      "skills": {
+        "autoresearch": {
+          "displayName": "AutoResearch",
+          "summary": "Autonomous optimization loop with 4-way separation: main agent (optimizer), eval agent (writes judge script), test runner (generates outputs), judge script (deterministic eval.py). Iterates on prompts, skills, templates, or code overnight."
+        }
+      },
+      "agents": [
+        "autoresearch-eval-agent",
+        "autoresearch-test-runner"
+      ]
+    },
     "creative": {
       "commands": [
         "creative"

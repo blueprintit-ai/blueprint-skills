@@ -206,6 +206,25 @@
         "productivity",
         "second-brain"
       ]
+    },
+    {
+      "name": "autoresearch",
+      "source": "./plugins/autoresearch",
+      "description": "Autonomous optimization loop — iterates on prompts, skills, templates, or code overnight using measurable assertions. Uses a generator sub-agent for output isolation and a deterministic eval.py for scoring. Inspired by Karpathy's autoresearch pattern.",
+      "version": "1.0.0",
+      "author": {
+        "name": "BenAI"
+      },
+      "keywords": [
+        "autoresearch",
+        "optimization",
+        "eval",
+        "iteration",
+        "prompt-engineering",
+        "self-improving",
+        "overnight",
+        "assertions"
+      ]
     }
   ]
 }
