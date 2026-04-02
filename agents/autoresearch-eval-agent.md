@@ -112,6 +112,47 @@ def check_curiosity(text, test_case=None):
 
 **Critical: test that eval.py runs.** After writing it, run a syntax check to ensure no errors.
 
+## Hybrid Mode: Generating `rubric.md`
+
+If the user has opted for **hybrid evaluation** (deterministic + LLM judge), you MUST also generate a `rubric.md` file alongside eval.py and test_cases.json.
+
+The rubric defines subjective quality criteria that the Judge Agent will score on. These are things that deterministic checks CAN'T capture — tone, emotional resonance, authenticity, narrative quality, etc.
+
+### Rubric format
+
+```markdown
+# Evaluation Rubric
+
+## Criteria
+
+### 1. [Criterion Name] (e.g., "Emotional Resonance")
+**What it measures:** [one sentence]
+
+| Score | Description | Example |
+|-------|-------------|---------|
+| 1 | [what a 1 looks like] | [concrete example] |
+| 2 | [what a 2 looks like] | [concrete example] |
+| 3 | [what a 3 looks like] | [concrete example] |
+| 4 | [what a 4 looks like] | [concrete example] |
+| 5 | [what a 5 looks like] | [concrete example] |
+
+### 2. [Next Criterion]
+...
+```
+
+### How to choose rubric criteria
+
+- Only include criteria that **cannot** be checked by eval.py (no word counts, no keyword checks — those belong in eval.py)
+- 3-5 criteria maximum — more than that dilutes each criterion's impact
+- Each criterion must be distinct — no overlapping checks
+- Examples MUST be concrete and specific to the content type being evaluated
+
+### Important
+
+- rubric.md is **READ-ONLY** during the loop (same as eval.py)
+- Only generate rubric.md when explicitly told the user wants hybrid mode
+- If the user wants deterministic-only, do NOT generate rubric.md
+
 ## Critical Rules
 
 - **NO LLM calls in eval.py.** Every check must be pure Python: string operations, regex, counting, keyword lists.
@@ -120,3 +161,4 @@ def check_curiosity(text, test_case=None):
 - **Proxy heuristics must be documented.** For subjective assertions, explain the reasoning so the user can evaluate whether the proxies make sense.
 - **The script must be self-contained.** No external dependencies beyond Python stdlib.
 - **You do NOT know what the main agent will do.** You are designing a fair test, not helping it pass.
+- **Rubric criteria must NOT overlap with eval.py assertions.** If eval.py checks word count, the rubric should NOT include a "conciseness" criterion.

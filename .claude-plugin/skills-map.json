@@ -124,7 +124,8 @@
       },
       "agents": [
         "autoresearch-eval-agent",
-        "autoresearch-test-runner"
+        "autoresearch-test-runner",
+        "autoresearch-judge"
       ]
     },
     "creative": {
