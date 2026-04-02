@@ -213,15 +213,23 @@ Each iteration follows this exact sequence:
 - Make exactly ONE change to the modifiable file
 
 ### Step 4 — Execute Prompt (via Test Runner Sub-Agent)
+- **Before spawning**, scan the target skill file for any references to other files (e.g., `references/`, linked files, imported data). List all file paths the skill depends on.
 - **Spawn the `autoresearch-test-runner` sub-agent** with:
   ```
   Execute the prompt at [path to target skill].
   Test cases are at [path to test_cases.json].
   The working project is at [project path].
+
+  Reference files the prompt depends on (read these first):
+  - [path to references/file1.md]
+  - [path to references/file2.md]
+  - [... list ALL referenced files]
+
   Use all available tools (web search, file access, APIs) to produce real outputs.
   Save each output to outputs/output_00.txt through outputs/output_[N].txt.
   Follow the prompt exactly. One output per test case. No commentary.
   ```
+- **IMPORTANT: Always pass reference file paths explicitly.** The test runner has fresh context — it cannot resolve relative paths or guess where files are. Scan the skill for patterns like `references/`, `see also`, file paths, `[[wikilinks]]`, or any mentions of other files, and pass their full absolute paths.
 - The sub-agent runs the prompt **live with real tools** — not mocked
 - It has **fresh context** — it does not know:
   - What the eval checks for

@@ -50,9 +50,11 @@ Even for pure generation prompts, the test runner follows the prompt as-is and p
 
 ## Process
 
-For each test case in the array:
-1. Substitute the test case values into the prompt's input placeholders
-2. Execute the prompt using all available tools as instructed
-3. Save the raw output to `outputs/output_XX.txt` where XX is the zero-padded index (00, 01, 02, ...)
+1. Read the prompt/skill file
+2. **Read ALL reference files** listed in your instructions — these contain context the prompt depends on (voice guidelines, templates, strategy docs, etc.). Read them BEFORE generating any outputs.
+3. For each test case in the array:
+   a. Substitute the test case values into the prompt's input placeholders
+   b. Execute the prompt using all available tools as instructed, with full context from the reference files
+   c. Save the raw output to `outputs/output_XX.txt` where XX is the zero-padded index (00, 01, 02, ...)
 
 When done, report how many outputs were generated and note any tool failures.
