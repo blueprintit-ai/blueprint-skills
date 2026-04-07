@@ -210,7 +210,7 @@
     {
       "name": "autoresearch",
       "source": "./plugins/autoresearch",
-      "description": "Autonomous optimization loop — iterates on prompts, skills, templates, or code overnight using measurable assertions. Uses a generator sub-agent for output isolation and a deterministic eval.py for scoring. Inspired by Karpathy's autoresearch pattern.",
+      "description": "Autonomous optimization loop — iterates on prompts, skills, templates, or code overnight. Two evaluation modes: deterministic (eval.py with proxy heuristics) for mechanical checks, or AI judge (LLM rubric scoring) for creative/subjective quality. Uses 4-way agent separation for unbiased evaluation.",
       "version": "1.0.0",
       "author": {
         "name": "BenAI"
