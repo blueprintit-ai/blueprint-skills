@@ -413,6 +413,62 @@
           "summary": "Sessions, daily routines, tasks, memory, output styles, and meeting intelligence"
         }
       }
+    },
+    "meta": {
+      "skills": {
+        "agent-browser": {
+          "displayName": "Agent Browser",
+          "summary": "Browser automation CLI for AI agents — navigate, fill forms, click, screenshot, scrape"
+        },
+        "audio-transcriber": {
+          "displayName": "Audio Transcriber",
+          "summary": "Audio/video to Markdown transcription with meeting minutes and speaker identification"
+        },
+        "decision-toolkit": {
+          "displayName": "Decision Toolkit",
+          "summary": "Structured decision-making guides, bias checkers, scenario explorers, and interactive dashboards"
+        },
+        "deep-research": {
+          "displayName": "Deep Research",
+          "summary": "Comprehensive internet-enabled research using OpenAI Deep Research API"
+        },
+        "fact-checker": {
+          "displayName": "Fact Checker",
+          "summary": "Systematic fact verification and misinformation identification"
+        },
+        "file-organizer": {
+          "displayName": "File Organizer",
+          "summary": "Intelligently organize files and folders — duplicates, cleanup, structure suggestions"
+        },
+        "find-skills": {
+          "displayName": "Find Skills",
+          "summary": "Discover and install agent skills from the open skills ecosystem"
+        },
+        "frontend-slides": {
+          "displayName": "Frontend Slides",
+          "summary": "Animation-rich HTML presentations from scratch or PowerPoint conversion"
+        },
+        "humanizer": {
+          "displayName": "Humanizer",
+          "summary": "Remove AI writing patterns to make text sound natural and human-written"
+        },
+        "mcp-builder": {
+          "displayName": "MCP Builder",
+          "summary": "Guide for building high-quality MCP servers in Python or Node/TypeScript"
+        },
+        "openrouter": {
+          "displayName": "OpenRouter",
+          "summary": "Unified access to 400+ AI models through one API with intelligent routing"
+        },
+        "process-interviewer": {
+          "displayName": "Process Interviewer",
+          "summary": "Relentless interviewer that extracts a complete plan from your head before building"
+        },
+        "prompt-master": {
+          "displayName": "Prompt Master",
+          "summary": "Generate optimized prompts for any AI tool — LLMs, image AI, video AI, coding agents"
+        }
+      }
     }
   }
 }

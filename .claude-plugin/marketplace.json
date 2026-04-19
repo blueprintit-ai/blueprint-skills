@@ -225,6 +225,29 @@
         "overnight",
         "assertions"
       ]
+    },
+    {
+      "name": "meta",
+      "source": "./plugins/meta",
+      "description": "General-purpose AI productivity toolkit — browser automation, audio transcription, deep research, decision frameworks, fact-checking, file organization, HTML presentations, prompt engineering, AI-text humanizing, MCP server building, and more. 13 community skills in one install.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Community"
+      },
+      "keywords": [
+        "browser-automation",
+        "transcription",
+        "deep-research",
+        "decision-making",
+        "fact-checking",
+        "file-organization",
+        "presentations",
+        "prompt-engineering",
+        "humanizer",
+        "mcp",
+        "openrouter",
+        "productivity"
+      ]
     }
   ]
 }
