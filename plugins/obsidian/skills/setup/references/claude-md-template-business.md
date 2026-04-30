@@ -28,6 +28,10 @@ Your memory and context live in Obsidian folders — the same notes the user see
 - **Team** (`Context/team.md`) — Team members, roles, working agreements, reporting lines.
 - **Strategy & OKRs** (`Context/strategy.md`) — Company OKRs, department goals, quarterly priorities.
 - **Brand & Voice** (`Context/brand.md`) — Tone, style guidelines, messaging (when mentioned).
+- **Services / Products** (`Context/services.md`) — Active revenue lines, status, tech stack.
+- **Ideal Customer** (`Context/icp.md`) — Who you serve.
+- **Pain Points** (`Context/pain-points.md`) — Customer pains and how you address them.
+- **Infrastructure** (`Context/infrastructure.md`) — Tool stack and integrations.
 - **Stakeholders** (`Context/stakeholders.md`) — Vendors, partners, investors, advisors, key external contacts.
 - **Departments** (`Departments/`) — Per-department README, SOPs, and team-specific context.
 - **Processes** (`Intelligence/processes/`) — Org-wide standard operating procedures.
@@ -48,11 +52,17 @@ There is no catch-all file. Every piece of information has a home. When meaningf
 | Org structure, company info, products | `Context/organization.md` |
 | Team member info, roles, agreements | `Context/team.md` |
 | Brand voice, tone, messaging | `Context/brand.md` |
+| Services, products, revenue lines | `Context/services.md` |
+| ICP / customer profile | `Context/icp.md` |
+| Customer pain points | `Context/pain-points.md` |
+| Tool stack, integrations | `Context/infrastructure.md` |
 | Vendor, partner, investor, advisor | `Context/stakeholders.md` |
 | Department info | `Departments/{name}/README.md` |
 | Department SOP | `Departments/{name}/sops/{name}.md` |
-| Team info, goals, rituals | `Teams/{team-name}/README.md` |
-| Person profile, role, working style | `Teams/{team-name}/{person}.md` |
+| Person profile, role, working style | `Team/{org}/Profiles/{name}/{Name}.md` |
+| Person daily notes | `Team/{org}/Profiles/{name}/Daily/YYYY-MM-DD.md` |
+| Person tasks | `Team/{org}/Profiles/{name}/task-list/Tasks.md` |
+| Contractor profile | `Team/External/contractors/{name}/` |
 | Org-wide process | `Intelligence/processes/{name}.md` |
 | Onboarding docs | `Onboarding/{name}.md` |
 | Project info | Route to the right file in `Projects/{name}/` (see Project Intelligence below) |
@@ -92,7 +102,7 @@ Your organizational library for frameworks, templates, SOPs, prompts, and refere
 
 ### Skills (`Skills/`)
 
-User-editable reference material for individual skills. Each skill gets a subfolder (e.g., `Skills/linkedin-writer/`). Files here are your references, strategy, and voice notes — skills read from here at runtime. See `Skills/_guide.md`.
+User-editable reference material for individual skills. Each skill gets a subfolder (e.g., `Skills/linkedin-writer/`). Files here are your references, strategy, and voice notes — skills read from here at runtime. See `Skills/CLAUDE.md`.
 
 ### Project Intelligence
 
@@ -124,22 +134,32 @@ Projects are not flat README-only folders. They are living, structured directori
 ### Vault Structure
 
 ```
-Context/      — Who you are: operator, organization, team, strategy, brand, stakeholders
+Context/      — Who you are: operator, organization, team, strategy, brand, services, icp, pain-points, infrastructure, stakeholders
   ├── operator.md
   ├── organization.md
   ├── team.md
   ├── strategy.md
   ├── brand.md
+  ├── services.md
+  ├── icp.md
+  ├── pain-points.md
+  ├── infrastructure.md
   └── stakeholders.md
 Projects/     — What you're working on: intelligently structured per project
 Departments/  — Department-level context and SOPs
   └── {dept-name}/
       ├── README.md
       └── sops/
-Teams/        — Team directories with person profiles
-  └── {team-name}/
-      ├── README.md
-      └── {person}.md
+Team/         — Profile-first team workspace (singular)
+  ├── {org}/
+  │   └── Profiles/
+  │       └── {person}/
+  │           ├── {Person Name}.md
+  │           ├── Daily/
+  │           └── task-list/Tasks.md
+  └── External/
+      ├── contractors/
+      └── custom-solutions/
 Intelligence/ — What you know: meetings, competitors, market, decisions, processes
   ├── meetings/
   │   ├── team-standups/

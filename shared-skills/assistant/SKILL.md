@@ -7,18 +7,35 @@ description: BenAI Obsidian Plugin assistant — manages sessions, daily routine
 
 ## Pre-flight Check
 
-1. Check if `./claude.md` or `./CLAUDE.md` exists in the current working directory
+1. Check if `./CLAUDE.md` exists in the current working directory (accept either casing — `claude.md` is also valid on case-insensitive filesystems)
 2. If missing: tell the user "This vault hasn't been set up yet. Run `/setup` to bootstrap your vault." — then stop
 3. If present: continue
 
 ## Mode Detection
 
-Read the `claude.md` file and check for `os-mode` in the frontmatter or first few lines:
+Read the root `CLAUDE.md` and check the `os-mode` field in its YAML frontmatter:
 
 - `os-mode: business` → Business mode
 - `os-mode: professional` or not specified → Solopreneurs/Professionals mode (default)
 
 The detected mode affects routing, file paths, review templates, and available features throughout this skill.
+
+## Active Profile (Business Mode Only)
+
+In business mode the vault uses a profile-first `Team/` layout. Every person has their own workspace at `Team/{org}/Profiles/{name}/` with their own `Daily/` and `task-list/`.
+
+On the FIRST response in any session, before doing anything else:
+1. Read the latest file in root `Daily/` for org-level context (silently)
+2. Ask: **"Who is this session for?"** to identify the active profile
+3. Read `Team/{org}/Profiles/{name}/{Name}.md` and the latest entry in `Team/{org}/Profiles/{name}/Daily/` (silently)
+
+The active profile determines where session output is written:
+- Daily notes → `Team/{org}/Profiles/{name}/Daily/YYYY-MM-DD.md`
+- Tasks → `Team/{org}/Profiles/{name}/task-list/Tasks.md`
+
+Never write directly to root `Daily/` during a profile session — that folder is for aggregated views populated by team schedules.
+
+In professional mode there is no active profile. The operator IS the user, and root `Daily/` is the operator's primary daily journal.
 
 ## Routing
 
@@ -72,54 +89,78 @@ For full reference, read `references/obsidian-formatting.md`.
 
 ## Vault Structure
 
-The vault structure depends on the detected mode.
+The vault structure depends on the detected mode. Every major folder has its own `CLAUDE.md` routing index — read it when uncertain where something belongs.
 
 ### Solopreneurs/Professionals Mode
 
 ```
-claude.md                       -- Root config (os-mode: professional)
+CLAUDE.md                       -- Root config (os-mode: professional)
 .claude/output-styles/          -- Output style definitions
-Context/me.md                 -- Who the user is
-Context/strategy.md           -- Vision, goals, monthly focus (optional)
-Context/business.md           -- Company context (optional)
-Context/team.md               -- Team members (optional)
-Context/brand.md              -- Voice and tone (optional)
+Context/CLAUDE.md             -- Routing index for Context/
+Context/me.md                 -- Who the user is (always)
+Context/strategy.md           -- Vision, goals, monthly focus (if Q6 had content)
+Context/business.md           -- Company context (if Q2 had content)
+Context/services.md           -- Active revenue lines (if Q2 had multiple)
+Context/icp.md                -- Ideal customer profile (if Q3 had content)
+Context/pain-points.md        -- Customer pains (if Q3 had content)
+Context/infrastructure.md     -- Tool stack (if Q8 had tools)
+Context/team.md               -- People you work with (if Q4 had content)
+Context/brand.md              -- Voice and tone (if Q5 had content)
+Projects/CLAUDE.md            -- Project routing index
 Projects/*/README.md          -- Active project contexts
+Intelligence/CLAUDE.md        -- Intelligence routing index
 Intelligence/meetings/        -- Meeting transcripts and insights
 Intelligence/competitors/     -- Competitive intelligence
 Intelligence/decisions/       -- Decision records
 Intelligence/archive/         -- Archived content
+Daily/CLAUDE.md               -- Daily routing index
 Daily/                        -- Daily journals and session logs
+Resources/CLAUDE.md           -- Resources routing index
 Resources/                    -- Prompts, frameworks, swipe files, templates
-Skills/                       -- Skill-specific references: strategy, voice, reference material (user-editable)
-TaskNotes/Tasks/              -- Task files (managed by TaskNotes plugin)
+Skills/CLAUDE.md              -- Skills routing index
+Skills/                       -- Skill-specific references (user-editable)
 ```
 
 ### Business Mode
 
 ```
-claude.md                       -- Root config (os-mode: business)
+CLAUDE.md                       -- Root config (os-mode: business)
 .claude/output-styles/          -- Output style definitions (+ sop.md, report.md)
-Context/operator.md           -- Who operates this vault (role, authority)
-Context/organization.md       -- Company info, org structure
-Context/team.md               -- Team members (always created)
-Context/strategy.md           -- OKRs, department goals (always created)
-Context/brand.md              -- Voice and tone (optional)
-Context/stakeholders.md       -- Vendors, partners, investors (optional)
+Context/CLAUDE.md             -- Routing index for Context/
+Context/operator.md           -- Who operates this vault (always)
+Context/organization.md       -- Company info, org structure (always)
+Context/team.md               -- Team members (always)
+Context/strategy.md           -- OKRs, department goals (always)
+Context/services.md           -- Products / services / business units (if Q3 had content)
+Context/icp.md                -- Ideal customer profile (if Q4 had content)
+Context/pain-points.md        -- Customer pains (if Q4 had content)
+Context/infrastructure.md     -- Tool stack (if Q10 had tools)
+Context/brand.md              -- Voice and tone (if Q9 had content)
+Context/stakeholders.md       -- Vendors, partners, investors (if Q10 had stakeholders)
+Projects/CLAUDE.md            -- Project routing index
 Projects/*/README.md          -- Active project contexts
+Departments/CLAUDE.md         -- Departments routing index
 Departments/*/README.md       -- Department charters, KPIs, SOPs
-Teams/*/README.md             -- Team overviews, members, goals, rituals
-Teams/*/{person}.md           -- Person profiles (role, working style, notes)
+Team/CLAUDE.md                -- Team routing index (singular Team/)
+Team/{org}/Profiles/{name}/{Name}.md       -- Person profile
+Team/{org}/Profiles/{name}/Daily/          -- Person's daily notes (profile-scoped)
+Team/{org}/Profiles/{name}/task-list/      -- Person's tasks
+Team/External/contractors/                  -- Contractor profiles
+Intelligence/CLAUDE.md        -- Intelligence routing index
 Intelligence/meetings/        -- Meeting transcripts (+ board-reviews, all-hands, cross-team)
 Intelligence/competitors/     -- Competitive intelligence
+Intelligence/processes/CLAUDE.md           -- Org-wide processes routing index
 Intelligence/processes/       -- Org-wide SOPs, runbooks
 Intelligence/decisions/       -- Decision records
 Intelligence/archive/         -- Archived content
-Daily/                        -- Work logs and session logs
+Daily/CLAUDE.md               -- Daily routing index (aggregated views only — write to active profile's Daily/ instead)
+Daily/                        -- Aggregated org-level views (populated by team schedules)
+Onboarding/CLAUDE.md          -- Onboarding routing index
 Onboarding/                   -- Onboarding documentation
+Resources/CLAUDE.md           -- Resources routing index
 Resources/                    -- Prompts, frameworks, swipe files, templates
-Skills/                       -- Skill-specific references: strategy, voice, reference material (user-editable)
-TaskNotes/Tasks/              -- Task files (managed by TaskNotes plugin)
+Skills/CLAUDE.md              -- Skills routing index
+Skills/                       -- Skill-specific references (user-editable)
 ```
 
 ---
@@ -131,16 +172,19 @@ Reconstruct full context so the user picks up where they left off.
 ### Steps
 
 1. **Load core memory** — Read the primary context file and project READMEs:
-   - Solopreneurs/Professionals: `Context/me.md`, glob `Projects/*/README.md`, scan `Context/strategy.md` if it exists
-   - Business: `Context/operator.md`, `Context/organization.md`, glob `Projects/*/README.md`, glob `Departments/*/README.md`, scan `Context/strategy.md`
+   - Solopreneurs/Professionals: `Context/me.md`, glob `Projects/*/README.md`, scan `Context/strategy.md`, `Context/services.md`, `Context/infrastructure.md` if they exist
+   - Business: identify active profile first (see [Active Profile](#active-profile-business-mode-only)), then read `Team/{org}/Profiles/{name}/{Name}.md`, `Context/operator.md`, `Context/organization.md`, glob `Projects/*/README.md`, glob `Departments/*/README.md`, scan `Context/strategy.md`
    Prefer `obsidian read` if CLI is available; otherwise read files directly.
-2. **Load recent daily notes** — Default: last 3 from `Daily/` (sorted by filename date). With a number arg: last N notes. With a keyword arg: last 3 + `obsidian search query="keyword"` across all daily notes. Read Quick Reference sections first (low token cost); dig deeper only if needed.
+2. **Load recent daily notes** — Default: last 3 daily notes.
+   - Solopreneurs/Professionals: from root `Daily/` sorted by filename date
+   - Business: from `Team/{org}/Profiles/{name}/Daily/` (active profile's notes)
+   With a number arg: last N. With a keyword arg: last 3 + `obsidian search query="keyword"`. Read Quick Reference sections first; dig deeper only if needed.
 3. **Check active tasks** — Try in order:
    - `obsidian tasks` (if CLI available)
+   - Business mode: read `Team/{org}/Profiles/{name}/task-list/Tasks.md` directly
    - TaskNotes API: `curl -s "http://127.0.0.1:8080/api/tasks?status=open"`
    - Skip if neither available
-4. **Check goals/strategy** — Mode-specific:
-   - Solopreneurs/Professionals / Business: If `Context/strategy.md` has content, scan for active goals and approaching milestones
+4. **Check goals/strategy** — If `Context/strategy.md` has content, scan for active goals and approaching milestones.
 5. **Present briefing** — Concise standup format:
    ```
    Welcome back, [name].
@@ -153,7 +197,10 @@ Reconstruct full context so the user picks up where they left off.
    What would you like to focus on today?
    ```
    Business mode: also include department status and OKR progress if available.
-6. **Update daily note** — Create/append to `Daily/YYYY-MM-DD.md` with a "Current Session" section. Prefer `obsidian daily:append` if CLI available.
+6. **Update daily note** — Create/append a "Current Session" section to today's daily note:
+   - Solopreneurs/Professionals: `Daily/YYYY-MM-DD.md`
+   - Business: `Team/{org}/Profiles/{name}/Daily/YYYY-MM-DD.md` (NOT root `Daily/`)
+   Prefer `obsidian daily:append` if CLI available and the active profile maps to the Obsidian daily-note configuration.
 
 ### Guidelines
 - Keep the briefing short — like a quick standup, not a data dump
@@ -170,7 +217,11 @@ Save everything valuable from the current session so future sessions can pick up
 ### Steps
 
 1. **Save everything** — Don't ask what to preserve. Automatically save all learnings, decisions, solutions, files modified, pending tasks, and errors.
-2. **Create session log** — Append to `Daily/YYYY-MM-DD.md` (prefer `obsidian daily:append` if CLI available):
+2. **Create session log** — Append to today's daily note. Path is mode-specific:
+   - Solopreneurs/Professionals: `Daily/YYYY-MM-DD.md`
+   - Business: `Team/{org}/Profiles/{name}/Daily/YYYY-MM-DD.md` (active profile)
+
+   Use `obsidian daily:append` if available and the active profile matches the Obsidian daily-note configuration.
    ```markdown
    ## Session Log: HH:MM — [Topic Summary]
 
@@ -200,10 +251,9 @@ Save everything valuable from the current session so future sessions can pick up
    ```
    Only include YAML frontmatter if creating a new file. Keep Quick Reference to 5-6 lines max (it's designed for fast AI scanning on resume). **Every project, person, and vault note reference MUST use `[[wikilinks]]`** — this is what builds the graph.
 3. **Update memory files** — Route to mode-appropriate files:
-   - Solopreneurs/Professionals: User preferences → `Context/me.md`, project updates → `Projects/{name}/`, strategy changes → `Context/strategy.md`
-   - Business: Operator preferences → `Context/operator.md`, org updates → `Context/organization.md`, department updates → `Departments/{name}/`, team/person info → `Teams/{team-name}/`, process updates → `Intelligence/processes/`
-   - All modes: Skill-specific content (references, strategy, style prefs) → `Skills/{skill-name}/`
-   - All modes: Pending tasks → create via TaskNotes API
+   - Solopreneurs/Professionals: user preferences → `Context/me.md`; project updates → `Projects/{name}/`; strategy changes → `Context/strategy.md`; service / revenue updates → `Context/services.md`; tool stack changes → `Context/infrastructure.md`
+   - Business: operator preferences → `Context/operator.md`; org updates → `Context/organization.md`; department updates → `Departments/{name}/`; person profile updates → `Team/{org}/Profiles/{name}/{Name}.md`; process updates → `Intelligence/processes/`; service / revenue updates → `Context/services.md`
+   - All modes: skill-specific content → `Skills/{skill-name}/`; pending tasks → create via TaskNotes API or write to active profile's `task-list/Tasks.md` (business)
 4. **Auto-archive** — If the primary context file exceeds 100 lines, archive older entries. Never archive core identity or active preferences.
    - Solopreneurs/Professionals: `Context/me.md` → `Intelligence/archive/me-archive-YYYY-MM.md`
    - Business: `Context/operator.md` → `Intelligence/archive/operator-archive-YYYY-MM.md`
@@ -231,13 +281,19 @@ Save durable knowledge that persists indefinitely (unlike compress, which saves 
 | User preferences, style, habits | `Context/me.md` |
 | Project info | Route to the right file in `Projects/{name}/` (see [Project Intelligence](#project-intelligence)) |
 | Business insight | `Context/business.md` |
+| Services, products, revenue lines | `Context/services.md` |
+| ICP / customer profile | `Context/icp.md` |
+| Customer pain points | `Context/pain-points.md` |
+| Tool stack, integrations | `Context/infrastructure.md` |
 | Strategy and goals | `Context/strategy.md` |
+| Brand, voice, tone | `Context/brand.md` |
+| Team / collaborators | `Context/team.md` |
 | Competitive insight | `Intelligence/competitors/{name}.md` |
 | Market insight | `Intelligence/market/{topic}.md` |
 | Decision with reasoning | `Intelligence/decisions/YYYY-MM-DD-{title}.md` |
 | Reusable content (prompts, frameworks, templates) | `Resources/` |
 | Skill-specific content (references, strategy for a skill) | `Skills/{skill-name}/` |
-| Rules for assistant behavior | Root `claude.md` (Rules section) |
+| Rules for assistant behavior | Root `CLAUDE.md` (Rules section) |
 
 **Business mode routing:**
 
@@ -248,12 +304,18 @@ Save durable knowledge that persists indefinitely (unlike compress, which saves 
 | Team member info | `Context/team.md` |
 | Strategy, OKRs, goals | `Context/strategy.md` |
 | Brand, voice, tone | `Context/brand.md` |
-| Vendor/partner/investor info | `Context/stakeholders.md` |
+| Services, products, revenue lines | `Context/services.md` |
+| ICP / customer profile | `Context/icp.md` |
+| Customer pain points | `Context/pain-points.md` |
+| Tool stack, integrations | `Context/infrastructure.md` |
+| Vendor / partner / investor info | `Context/stakeholders.md` |
 | Department info, charter, KPIs | `Departments/{name}/README.md` |
 | Department SOP | `Departments/{name}/sops/{name}.md` |
-| Team info, goals, rituals | `Teams/{team-name}/README.md` |
-| Person profile, role, working style | `Teams/{team-name}/{person}.md` |
-| Org-wide process/runbook | `Intelligence/processes/{name}.md` |
+| Person profile, role, working style | `Team/{org}/Profiles/{name}/{Name}.md` |
+| Person's daily notes | `Team/{org}/Profiles/{name}/Daily/YYYY-MM-DD.md` |
+| Person's tasks | `Team/{org}/Profiles/{name}/task-list/Tasks.md` |
+| Contractor profile | `Team/External/contractors/{name}/` |
+| Org-wide process / runbook | `Intelligence/processes/{name}.md` |
 | Project info | Route to the right file in `Projects/{name}/` (see [Project Intelligence](#project-intelligence)) |
 | Competitive insight | `Intelligence/competitors/{name}.md` |
 | Market insight | `Intelligence/market/{topic}.md` |
@@ -262,14 +324,14 @@ Save durable knowledge that persists indefinitely (unlike compress, which saves 
 | Reusable content | `Resources/` |
 | Org document templates | `Resources/templates/` |
 | Skill-specific content (references, strategy for a skill) | `Skills/{skill-name}/` |
-| Rules for assistant behavior | Root `claude.md` (Rules section) |
+| Rules for assistant behavior | Root `CLAUDE.md` (Rules section) |
 
 3. **Auto-archive check** — If the primary context file exceeds 100 lines, archive older entries. Never archive core identity or active preferences.
 4. **Report** — After saving, tell the user what was saved and where.
 
 ### Teaching Loop
 
-When the user corrects you, automatically add a rule to `claude.md` under the Rules section. Don't ask — just do it and confirm what was added.
+When the user corrects you, automatically add a rule to root `CLAUDE.md` under the Rules section. Don't ask — just do it and confirm what was added.
 
 ### Guidelines
 - Check for duplicates before adding
@@ -298,42 +360,43 @@ Morning check-in, evening reflection, and weekly review routines. Templates diff
 
 Read the appropriate template before generating the review.
 
+In business mode, all daily-review reads and writes are scoped to the active profile's `Team/{org}/Profiles/{name}/Daily/` folder. In professional mode, they use root `Daily/`. References to `{daily-folder}` below resolve accordingly.
+
 ### Morning Routine
 
-1. Read most recent daily note from `Daily/`
-2. Query TaskNotes for open/in-progress tasks (note overdue items)
+1. Read most recent daily note from `{daily-folder}`
+2. Query TaskNotes for open/in-progress tasks (note overdue items). In business mode also read the active profile's `task-list/Tasks.md`.
 3. Check `Projects/` for approaching deadlines
-4. Mode-specific additions:
-   - Business: Check `Departments/` for department status, upcoming meetings
+4. Business: also check `Departments/` for department status, upcoming meetings
 5. Ask mode-appropriate questions:
    - Solopreneurs/Professionals: mood/energy (1-10), main focus, blockers
    - Business: main focus, key meetings, blockers
-6. Save to `Daily/YYYY-MM-DD Morning.md` with appropriate frontmatter
-7. Create 1-3 tasks in TaskNotes based on energy and deadlines. Report what was created.
+6. Save to `{daily-folder}/YYYY-MM-DD Morning.md` with appropriate frontmatter
+7. Create 1-3 tasks based on energy and deadlines. Report what was created.
 
 ### Evening Routine
 
-1. Read today's morning note
+1. Read today's morning note from `{daily-folder}`
 2. Compare task progress vs morning intentions
 3. Ask mode-appropriate questions:
    - Solopreneurs/Professionals: accomplishments, one thing learned, top priority for tomorrow
    - Business: accomplishments, decisions made, top priority for tomorrow
-4. Save to `Daily/YYYY-MM-DD Evening.md` with appropriate frontmatter
-5. Mark completed tasks as done via API; route any new insights to the right file (see [Preserve Knowledge](#preserve-knowledge))
+4. Save to `{daily-folder}/YYYY-MM-DD Evening.md` with appropriate frontmatter
+5. Mark completed tasks as done; route any new insights to the right file (see [Preserve Knowledge](#preserve-knowledge))
 
 ### Weekly Review
 
-1. Read all daily notes for the current week
+1. Read all daily notes for the current week from `{daily-folder}`
 2. Scan `Projects/` for movement
-3. Query TaskNotes for done tasks — celebrate wins
+3. Query tasks for done items — celebrate wins
 4. Mode-specific checks:
    - Solopreneurs/Professionals: Check `Context/strategy.md` — flag goals with no active project
    - Business: Check OKR progress, department health, pipeline/revenue metrics
 5. Ask mode-appropriate questions:
    - Solopreneurs/Professionals: biggest win, what to do differently, focus for next week
    - Business: biggest win, OKR progress, blockers, focus for next week
-6. Save to `Daily/YYYY-MM-DD Weekly Review.md` with appropriate frontmatter
-7. Plan top 3 priorities for next week; create tasks in TaskNotes automatically
+6. Save to `{daily-folder}/YYYY-MM-DD Weekly Review.md` with appropriate frontmatter
+7. Plan top 3 priorities for next week; create tasks automatically
 8. Archive completed items if appropriate
 
 ### Guidelines
@@ -345,7 +408,12 @@ Read the appropriate template before generating the review.
 
 ## Task Management
 
-Two interfaces available for task management. Try in order:
+Mode-aware task scoping:
+
+- **Solopreneurs/Professionals**: tasks live in TaskNotes (managed task files) or in the daily note
+- **Business**: tasks for an active profile session belong in `Team/{org}/Profiles/{name}/task-list/Tasks.md` (Task Board emoji format) — never root `Tasks/Tasks.md`. Org-level aggregated task views are populated by team schedules.
+
+Two interfaces available. Try in order:
 
 ### 1. Obsidian CLI (Preferred)
 
@@ -356,7 +424,7 @@ obsidian daily:append content="- [ ] Task"   # Quick task in daily note
 
 ### 2. TaskNotes HTTP API (Full CRUD)
 
-TaskNotes runs as an Obsidian plugin with an HTTP API on `localhost:8080`. Tasks are stored as markdown files in `TaskNotes/Tasks/`.
+TaskNotes runs as an Obsidian plugin with an HTTP API on `localhost:8080`.
 
 ```bash
 curl -s --max-time 2 "http://127.0.0.1:8080/api/tasks" > /dev/null 2>&1 && echo "API running" || echo "API not available"
@@ -690,12 +758,13 @@ Query by frontmatter: `participants`, `project`, `department`, `date`, `subtype`
 - **Memory protocol**: Before responding, load the primary context file and `Projects/*/README.md`. After responding, route any new knowledge to the right vault file (see Preserve Knowledge routing table).
 - **Obsidian CLI first**: Always try `obsidian` CLI commands before falling back to direct file access or HTTP APIs.
 - **Wikilinks everywhere**: Every mention of a project, person, or vault note in ANY file MUST be a `[[wikilink]]`. This is what builds the Obsidian graph. Not just internal links — every reference: tasks, daily notes, session logs, meeting notes, decisions, context files. If it's a name that exists (or could exist) as a vault note, wrap it in `[[]]`.
-- **Teaching loop**: When corrected, automatically save the correction as a permanent rule in `claude.md`. Don't ask — just save and report.
+- **Teaching loop**: When corrected, automatically save the correction as a permanent rule in root `CLAUDE.md`. Don't ask — just save and report.
 - **File paths**: All paths are relative to the Obsidian vault root (the working directory).
-- **Daily notes**: `Daily/YYYY-MM-DD.md` is the most-read memory file — always keep it current.
+- **Daily notes**: today's daily note is the most-read memory file. Path is mode-specific — root `Daily/YYYY-MM-DD.md` in solo, `Team/{org}/Profiles/{name}/Daily/YYYY-MM-DD.md` in business. Always keep it current.
 - **Auto-archive threshold**: Primary context file > 100 lines. Archive older entries. Never archive core identity or active preferences.
-- **Task system**: Try Obsidian CLI → TaskNotes API (`http://127.0.0.1:8080`) → skip. If unavailable, note it and continue without task data.
-- **Mode awareness**: Always check the mode before routing info or selecting templates. Route to mode-appropriate files and templates.
+- **Task system**: Try Obsidian CLI → TaskNotes API → direct read/write of profile `task-list/Tasks.md` (business) → skip. If unavailable, note it and continue without task data.
+- **Mode awareness**: Always check the mode before routing info or selecting templates. In business mode, identify the active profile before any session output.
+- **Folder CLAUDE.md indexes**: every major folder has its own `CLAUDE.md` routing index. When uncertain where something belongs, read that folder's `CLAUDE.md` first.
 
 ## Auto-Save Rule
 
@@ -711,5 +780,7 @@ Do NOT:
 - Create orphan notes — always link new notes from at least one existing note
 - Read entire files when scanning many — use `grep` for frontmatter or `obsidian search`
 - Update vault files on casual chat — only when there's something worth recording
-- Create tasks as plain text in notes — use the TaskNotes API or Obsidian CLI so they're queryable
+- Create tasks as plain text in notes — use the TaskNotes API, Obsidian CLI, or active profile's `task-list/Tasks.md`
+- In business mode, write daily notes or tasks to root `Daily/` or root `Tasks/` during a profile session — those are aggregated views; route to the active profile's folders instead
+- Cram everything into one `Context/` file — route services, ICP, pains, infrastructure, stakeholders to their dedicated files
 - Offer business-mode features (departments, SOPs, stakeholders) in Solopreneurs/Professionals mode without being asked

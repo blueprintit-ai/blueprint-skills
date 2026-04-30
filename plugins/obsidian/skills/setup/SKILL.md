@@ -43,7 +43,7 @@ Accept any clear signal: "solo", "professional", "freelancer", "business", "org"
 
 If the user skips or says "I don't know", use **Solopreneurs/Professionals** (professional mode).
 
-Store the selected mode. It will be written to `claude.md` frontmatter as `os-mode: professional | business`.
+Store the selected mode. It will be written to `CLAUDE.md` frontmatter as `os-mode: professional | business`.
 
 ---
 
@@ -93,10 +93,12 @@ mkdir -p Intelligence/decisions
 mkdir -p Intelligence/processes
 mkdir -p Intelligence/archive
 mkdir -p Departments
-mkdir -p Teams
+mkdir -p Team
 mkdir -p Onboarding
 mkdir -p Resources/templates
 ```
+
+`Team/` is created empty here. Profile-first subfolders (`Team/{org}/Profiles/{person}/...`) are scaffolded in Phase B once Q6 answers are in.
 
 ### Step A.2: Write System Files from References
 
@@ -114,27 +116,29 @@ Read each reference file and write it to the corresponding local path. The refer
 
 | Mode | Reference File | Creates at Local Path |
 |---|---|---|
-| Solopreneurs/Professionals | `references/claude-md-template.md` | `./claude.md` |
-| Business | `references/claude-md-template-business.md` | `./claude.md` |
+| Solopreneurs/Professionals | `references/claude-md-template.md` | `./CLAUDE.md` |
+| Business | `references/claude-md-template-business.md` | `./CLAUDE.md` |
 
-**Mode-specific folder guides:**
+**Per-folder routing indexes** (every major folder gets its own `CLAUDE.md` — matches production vault convention):
 
 | Mode | Reference File | Creates at Local Path |
 |---|---|---|
-| Solopreneurs/Professionals | `references/guide-projects.md` | `./Projects/_guide.md` |
-| Solopreneurs/Professionals | `references/guide-daily.md` | `./Daily/_guide.md` |
-| Solopreneurs/Professionals | `references/guide-intelligence.md` | `./Intelligence/_guide.md` |
-| Solopreneurs/Professionals | `references/guide-skills.md` | `./Resources/_guide.md` |
-| Business | `references/guide-projects.md` | `./Projects/_guide.md` |
-| Business | `references/guide-daily.md` | `./Daily/_guide.md` |
-| Business | `references/guide-intelligence.md` | `./Intelligence/_guide.md` |
-| Business | `references/guide-skills.md` | `./Resources/_guide.md` |
-| Business | `references/guide-departments.md` | `./Departments/_guide.md` |
-| Business | `references/guide-teams.md` | `./Teams/_guide.md` |
-| Business | `references/guide-onboarding.md` | `./Onboarding/_guide.md` |
-| Business | `references/guide-processes.md` | `./Intelligence/processes/_guide.md` |
-| Solopreneurs/Professionals | `references/guide-skills-vault.md` | `./Skills/_guide.md` |
-| Business | `references/guide-skills-vault.md` | `./Skills/_guide.md` |
+| Solopreneurs/Professionals | `references/claude-md-context.md` | `./Context/CLAUDE.md` |
+| Solopreneurs/Professionals | `references/claude-md-projects.md` | `./Projects/CLAUDE.md` |
+| Solopreneurs/Professionals | `references/claude-md-daily.md` | `./Daily/CLAUDE.md` |
+| Solopreneurs/Professionals | `references/claude-md-intelligence.md` | `./Intelligence/CLAUDE.md` |
+| Solopreneurs/Professionals | `references/claude-md-resources.md` | `./Resources/CLAUDE.md` |
+| Solopreneurs/Professionals | `references/claude-md-skills.md` | `./Skills/CLAUDE.md` |
+| Business | `references/claude-md-context.md` | `./Context/CLAUDE.md` |
+| Business | `references/claude-md-projects.md` | `./Projects/CLAUDE.md` |
+| Business | `references/claude-md-daily.md` | `./Daily/CLAUDE.md` |
+| Business | `references/claude-md-intelligence.md` | `./Intelligence/CLAUDE.md` |
+| Business | `references/claude-md-resources.md` | `./Resources/CLAUDE.md` |
+| Business | `references/claude-md-skills.md` | `./Skills/CLAUDE.md` |
+| Business | `references/claude-md-departments.md` | `./Departments/CLAUDE.md` |
+| Business | `references/claude-md-team.md` | `./Team/CLAUDE.md` |
+| Business | `references/claude-md-onboarding.md` | `./Onboarding/CLAUDE.md` |
+| Business | `references/claude-md-processes.md` | `./Intelligence/processes/CLAUDE.md` |
 
 For each row applicable to the selected mode: read the reference file, then write its content to the local path.
 
@@ -162,22 +166,7 @@ Then write placeholder files from references:
 - Read `references/context-team.md` → write to `./Context/team.md`
 - Read `references/context-strategy-business.md` → write to `./Context/strategy.md`
 
-**Business mode — placeholder teams:**
-
-```bash
-mkdir -p Teams/engineering
-mkdir -p Teams/marketing
-mkdir -p Teams/leadership
-```
-
-Then write placeholder files from references:
-- Read `references/teams-placeholder-engineering-readme.md` → write to `./Teams/engineering/README.md`
-- Read `references/teams-placeholder-person.md` → write to `./Teams/engineering/alice-smith.md`
-- Read `references/teams-placeholder-person.md` → write to `./Teams/engineering/bob-jones.md`
-- Read `references/teams-placeholder-engineering-readme.md` → write to `./Teams/marketing/README.md`
-- Read `references/teams-placeholder-person.md` → write to `./Teams/marketing/carol-white.md`
-- Read `references/teams-placeholder-engineering-readme.md` → write to `./Teams/leadership/README.md`
-- Read `references/teams-placeholder-person.md` → write to `./Teams/leadership/dave-chen.md`
+**Business mode — `Team/` is created empty in Phase A.** Profile-first scaffolding (`Team/{org}/Profiles/{person}/...`) happens in Phase B Build Step 3 once Q6 answers identify the actual people.
 
 ### Step A.4: Make Hooks Executable
 
@@ -202,68 +191,84 @@ Then proceed to Phase B.
 
 ## Phase B: Onboarding
 
-Two questions. That's it. The questions differ by mode.
+Ten questions. Present them all in a single message. The user can answer one-by-one, paste a doc that covers several, upload files, or skip any individually. Don't ask follow-ups. Extract what's there. The questions differ by mode.
 
 ### Mode-specific Questions
 
-**Solopreneurs/Professionals mode:**
+**Solopreneurs/Professionals mode** — present all 10 in one message:
 
-Question 1:
-> **Tell me about yourself (and your business, if you have one).**
-> Paste anything — bio, LinkedIn, company about page, team info, whatever you have. You can also upload files. Or skip this.
+1. **Who are you?** Name, role/title, location, industry, when you do your best work.
+2. **What you're building or selling.** One paragraph per business or product line — name, what it does, who it's for, stage, revenue baseline if applicable. Skip if no business.
+3. **Who you serve.** Ideal customer / audience: their role, their pain, what they're hiring you to fix.
+4. **People you work with regularly.** Team, contractors, key external contacts — name, role, how you work together. Skip if fully solo.
+5. **Voice + visual identity.** A paragraph (or paste a writing sample) on how you sound. Brand colors, fonts, taglines if you have them. Skip if N/A.
+6. **This year's priorities — measurable.** 1–3 outcomes with a number attached (revenue, audience size, ship date) + the *why* for each.
+7. **What you're actively working on.** For each project: name, one-line purpose, status, deadline if any, business it belongs to.
+8. **Tools and integrations you use daily.** CRM, calendar, meeting recorder, content platforms, dev stack, automation tools.
+9. **Top 1–2 painful, repetitive workflows** you'd offload to Claude first. Be specific about input → output.
+10. **What's draining your attention right now?** Unclosed loops: things that should be done but aren't, decisions sitting unmade, commitments overdue.
 
-Question 2:
-> **What are you currently working on?**
-> List your active projects, or paste project briefs, docs, whatever. Skip if you'd rather add these later.
+**Business mode** — present all 10 in one message:
 
-**Business mode:**
-
-Question 1:
-> **Tell me about your organization** — company info, team wiki, org chart, product info. Paste, upload, or skip.
-
-Question 2:
-> **What are the active projects or initiatives?** Roadmaps, OKRs, briefs — whatever you have. Or skip.
+1. **You — operator profile.** Name, title, department, who you report to, decision authority, where you're based, working style, what's draining your attention right now (unclosed loops).
+2. **Company essentials.** Legal entity name, industry, stage, founded, headcount (FT + contractors), location, one-sentence mission.
+3. **Products / services / business units.** For each revenue line: name, what it does, who buys it, current revenue baseline, status. Multiple lines OK.
+4. **Who you serve + key pain points.** Ideal customer + the top 3 pains your product addresses.
+5. **Departments and leads.** List the departments and the lead for each.
+6. **Team members getting profiles.** For each: name, role, reports-to, FT/contractor, location. These get full profile folders with their own daily notes.
+7. **Annual objectives + key results.** 1–3 objectives. For each KR: target number, owner, current status.
+8. **Active projects and initiatives.** For each: name, owner, status, client-facing or internal, business unit.
+9. **Brand voice + visual identity.** Tagline, value prop, voice in a paragraph, signature phrases, colors / fonts. Skip if N/A.
+10. **Tool stack + top 3 workflows to automate first + external stakeholders.** Stack across communication, meetings, CRM, PM, content, finance, dev + 3 painful repetitive workflows + investors / partners / vendors / top clients.
 
 The user might give you:
-- A short sentence
-- A wall of text (wiki, about page, LinkedIn profile)
+- One-by-one numbered answers
+- A wall of text (wiki, about page, LinkedIn profile, intake doc) that covers several at once
 - Uploaded files (PDFs, docs, screenshots)
-- Nothing ("skip")
+- "skip" on individual questions or the whole set
 
 **Accept whatever they give.** Don't ask follow-ups. Extract what you can.
 
-**If the user says "skip" to both** — proceed to build with defaults only.
+**If the user skips everything** — proceed to build with defaults only.
 
 ---
 
 ## Phase B Build: Personalize the Vault
 
-After the two questions (or skips), build everything you can from what the user gave you. Work silently — don't narrate each step.
+After the ten questions (or skips), build everything you can from what the user gave you. Work silently — don't narrate each step.
 
 ### Build Step 1: Create Context Files
 
 Behavior depends on selected mode.
 
-**Solopreneurs/Professionals mode:**
+**Solopreneurs/Professionals mode** (Q1–Q10 = solo questions):
 
-- **`Context/me.md`** — Always created. Fill with identity info from Question 1.
-- **`Context/business.md`** — Only if user mentioned a company/product/business. Read `references/context-business.md` as template.
-- **`Context/team.md`** — Only if user mentioned team members. Read `references/context-team.md` as template.
-- **`Context/brand.md`** — Only if user mentioned voice/tone/brand. Read `references/context-brand.md` as template.
-- **`Context/strategy.md`** — Only if user mentioned goals/vision/priorities. Read `references/context-strategy.md` as template.
+- **`Context/me.md`** — Always created. Fill from Q1 (identity, role, location, work style) + Q8 (tools section). If Q10 had content, append an `## Unclosed Loops` section.
+- **`Context/business.md`** — Only if Q2 had content. Read `references/context-business.md` as template.
+- **`Context/services.md`** — Only if Q2 listed multiple revenue lines or named services / products. Read `references/context-services.md` as template.
+- **`Context/icp.md`** — Only if Q3 had content. Read `references/context-icp.md` as template.
+- **`Context/pain-points.md`** — Only if Q3 mentioned pains or what customers are hiring you to fix. Read `references/context-pain-points.md` as template.
+- **`Context/team.md`** — Only if Q4 had content. Read `references/context-team.md` as template.
+- **`Context/brand.md`** — Only if Q5 had content. Read `references/context-brand.md` as template.
+- **`Context/strategy.md`** — Only if Q6 had content. Read `references/context-strategy.md` as template.
+- **`Context/infrastructure.md`** — Only if Q8 listed tools. Read `references/context-infrastructure.md` as template.
 
-**Business mode:**
+**Business mode** (Q1–Q10 = business questions):
 
-- **`Context/operator.md`** — Always created. Fill with the person's role, decision authority, responsibilities from Question 1. Read `references/context-operator.md` as template.
-- **`Context/organization.md`** — Always created. Fill with company info, org structure, products from Question 1. Read `references/context-organization.md` as template.
-- **`Context/team.md`** — Always created. Fill with any team members mentioned. Read `references/context-team.md` as template.
-- **`Context/strategy.md`** — Always created. Fill with any goals, OKRs, targets mentioned. Read `references/context-strategy.md` as template. Focus template on OKRs, department goals, revenue targets.
-- **`Context/brand.md`** — Only if user mentioned voice/tone/brand. Read `references/context-brand.md` as template.
-- **`Context/stakeholders.md`** — Only if user mentioned vendors, partners, investors, board. Read `references/context-stakeholders.md` as template.
+- **`Context/operator.md`** — Always created. Fill from Q1 (role, decision authority, responsibilities, location, working style). If Q1 mentioned unclosed loops, append an `## Unclosed Loops` section. Read `references/context-operator.md` as template.
+- **`Context/organization.md`** — Always created. Fill from Q2 (company info, mission, headcount, stage). Read `references/context-organization.md` as template.
+- **`Context/services.md`** — Only if Q3 had content. Read `references/context-services.md` as template.
+- **`Context/icp.md`** — Only if Q4 had content. Read `references/context-icp.md` as template.
+- **`Context/pain-points.md`** — Only if Q4 listed pains. Read `references/context-pain-points.md` as template.
+- **`Context/team.md`** — Always created. Fill with any team members from Q6. Read `references/context-team.md` as template.
+- **`Context/strategy.md`** — Always created. Fill from Q7 (OKRs, KRs, owners). Read `references/context-strategy-business.md` as template.
+- **`Context/brand.md`** — Only if Q9 had content. Read `references/context-brand.md` as template.
+- **`Context/infrastructure.md`** — Only if Q10 listed tools. Read `references/context-infrastructure.md` as template.
+- **`Context/stakeholders.md`** — Only if Q10 mentioned investors, partners, vendors, or top clients. Read `references/context-stakeholders.md` as template.
 
 ### Build Step 2: Create Project Folders
 
-From Question 2, intelligently structure each project based on what the user gave you.
+Solo: from Q7. Business: from Q8. Intelligently structure each project based on what the user gave you.
 
 **Analyze the info and decide the right structure:**
 - Simple mention ("working on a podcast") → just a `README.md`
@@ -286,7 +291,10 @@ From Question 2, intelligently structure each project based on what the user gav
 ---
 type: project
 status: active
+owner: [name]
+business: [business unit if applicable]
 created: YYYY-MM-DD
+updated: YYYY-MM-DD
 ---
 ## Overview
 [What this project is]
@@ -303,15 +311,39 @@ created: YYYY-MM-DD
 
 Don't create empty subdirs. Don't cram everything into the README. Distribute content into the right files based on what it actually is.
 
-**Business mode only** — if user provided department info, also create `Departments/{name}/README.md` with department charter, KPIs, and team members.
+**Business mode only** — from Q5, also create `Departments/{name}/README.md` for each department with the lead's name, charter placeholder, and `sops/` subfolder.
 
-### Build Step 3: Mode-specific Additional Setup
+### Build Step 3: Profile-First Team Scaffolding (Business mode only)
+
+From Q6, scaffold each person's profile workspace. Slug names are kebab-case.
+
+`{org-slug}` is derived from Q2 (company name → kebab-case). If no company name given, default to `team`.
+
+For each FT employee:
+```bash
+mkdir -p Team/{org-slug}/Profiles/{person-slug}/Daily
+mkdir -p Team/{org-slug}/Profiles/{person-slug}/task-list
+mkdir -p Team/{org-slug}/Profiles/{person-slug}/sub-schedules
+```
+Then write:
+- Read `references/team-profile-template.md` → write to `./Team/{org-slug}/Profiles/{person-slug}/{Person Name}.md`. Fill frontmatter and sections from Q6 (name, role, reports-to, FT, location).
+- Read `references/team-tasks-template.md` → write to `./Team/{org-slug}/Profiles/{person-slug}/task-list/Tasks.md`.
+
+For each contractor / advisor:
+```bash
+mkdir -p Team/External/contractors/{person-slug}
+```
+Then write the same `team-profile-template.md` (with `employment: contractor` or `advisor`) → `./Team/External/contractors/{person-slug}/{Person Name}.md`.
+
+If Q6 was skipped, don't scaffold anything under `Team/{org-slug}/Profiles/`. Leave `Team/` with just the `CLAUDE.md` routing index.
+
+### Build Step 4: Mode-specific Additional Setup
 
 **Business mode only:**
-- If user mentioned processes or SOPs, create them in `Intelligence/processes/`
-- If user mentioned onboarding docs, create them in `Onboarding/`
+- If Q10 mentioned org-wide processes / SOPs, capture them in `Intelligence/processes/{name}.md`
+- If user provided onboarding docs, route them to `Onboarding/{name}.md`
 
-### Build Step 4: Create First Daily Note
+### Build Step 5: Create First Daily Note
 
 Create `Daily/YYYY-MM-DD.md` (today's date):
 ```markdown
@@ -327,10 +359,10 @@ date: YYYY-MM-DD
 - **Next Steps**: [based on what was discussed]
 ```
 
-### Build Step 5: Confirm Completion
+### Build Step 6: Confirm Completion
 
 Tell the user:
-- Quick summary of what was created (which context files, how many projects, any departments)
+- Quick summary of what was created (which context files, how many projects, any departments, any team profiles)
 - "Open this folder in Obsidian to see your vault"
 - Key command: `/assistant` (sessions, daily reviews, tasks, meetings)
 - "You can add more context anytime — just tell me and I'll update the right files."
@@ -340,9 +372,9 @@ Tell the user:
 
 - Phase 0 is one question — mode selection
 - Phase A is fully automated — no user input needed
-- Phase B is exactly 2 questions — no follow-ups, no drilling deeper
-- Accept any format: text, pasted docs, uploaded files, or nothing
+- Phase B is exactly 10 questions, presented together — no follow-ups, no drilling deeper
+- Accept any format: numbered answers, pasted docs, uploaded files, or skips
 - Extract as much as you can from whatever the user provides
 - Only create context files that have real content — don't create empty placeholder files
-- Use the user's actual project names, not generic placeholders
+- Use the user's actual project names and people names, not generic placeholders
 - Don't narrate every file you're creating — just build it and summarize at the end

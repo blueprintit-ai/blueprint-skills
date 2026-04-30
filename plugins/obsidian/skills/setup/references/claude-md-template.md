@@ -26,6 +26,10 @@ Your memory and context live in Obsidian folders — the same notes the user see
 - **Identity & Preferences** (`Context/me.md`) — Who the user is, how they work, their tools and style.
 - **Strategy & Goals** (`Context/strategy.md`) — Vision, yearly goals, monthly focus.
 - **Business Context** (`Context/business.md`) — Company, products, audience (if applicable).
+- **Services / Products** (`Context/services.md`) — Active revenue lines, status, tech stack (if applicable).
+- **Ideal Customer** (`Context/icp.md`) — Who you serve (if applicable).
+- **Pain Points** (`Context/pain-points.md`) — Customer pains and how you address them (if applicable).
+- **Infrastructure** (`Context/infrastructure.md`) — Tool stack and integrations (if applicable).
 - **Team** (`Context/team.md`) — Team members, roles, working agreements (if applicable).
 - **Brand & Voice** (`Context/brand.md`) — Tone, style guidelines, messaging (if applicable).
 - **Decisions** (`Intelligence/decisions/`) — Decision records with reasoning.
@@ -43,6 +47,10 @@ There is no catch-all file. Every piece of information has a home. When meaningf
 | User preferences, style, habits | `Context/me.md` |
 | Strategy and goals | `Context/strategy.md` |
 | Business insight | `Context/business.md` |
+| Services, products, revenue lines | `Context/services.md` |
+| ICP / customer profile | `Context/icp.md` |
+| Customer pain points | `Context/pain-points.md` |
+| Tool stack, integrations | `Context/infrastructure.md` |
 | Project info | Route to the right file in `Projects/{name}/` (see Project Intelligence below) |
 | Competitive insight | `Intelligence/competitors/{name}.md` |
 | Market insight | `Intelligence/market/{topic}.md` |
@@ -77,7 +85,7 @@ Your personal library for swipe files, prompts, frameworks, templates, and refer
 
 ### Skills (`Skills/`)
 
-User-editable reference material for individual skills. Each skill gets a subfolder (e.g., `Skills/linkedin-writer/`). Files here are your references, strategy, and voice notes — skills read from here at runtime. See `Skills/_guide.md`.
+User-editable reference material for individual skills. Each skill gets a subfolder (e.g., `Skills/linkedin-writer/`). Files here are your references, strategy, and voice notes — skills read from here at runtime. See `Skills/CLAUDE.md`.
 
 ### Project Intelligence
 
@@ -109,7 +117,7 @@ Projects are not flat README-only folders. They are living, structured directori
 ### Vault Structure
 
 ```
-Context/      — Who you are: identity, business, strategy, team, brand
+Context/      — Who you are: identity, business, strategy, services, icp, pain-points, infrastructure, team, brand
 Projects/     — What you're working on: intelligently structured per project
 Intelligence/ — What you know: meetings, competitors, market, decisions
   ├── meetings/
