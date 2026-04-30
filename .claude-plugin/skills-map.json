@@ -411,6 +411,14 @@
         "assistant": {
           "displayName": "Assistant",
           "summary": "Sessions, daily routines, tasks, memory, output styles, and meeting intelligence"
+        },
+        "vault-mcp": {
+          "displayName": "Vault MCP",
+          "summary": "Deploy the Relay MCP server to your own Railway account — bundled source, guided token setup, one command to deploy"
+        },
+        "relay-swap": {
+          "displayName": "Relay Swap",
+          "summary": "Swap the official Relay Obsidian plugin for the BenAI fork in any vault — bundled production build, point-and-go install"
         }
       }
     },
