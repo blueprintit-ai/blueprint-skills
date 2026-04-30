@@ -1,29 +1,50 @@
 ---
 type: context
 tags: [profile, identity]
+updated: [YYYY-MM-DD]
 ---
+
 # About Me
 
 ## Identity
-- Name: [to be filled during onboarding]
-- Role: [to be filled during onboarding]
-- Industry: [to be filled during onboarding]
+
+- Name: [name]
+- Role: [title]
+- Location: [city, country]
+- Industry: [industry]
+
+## Working Style
+
+- Best hours: [when you do your best work]
+- Schedule: [time blocks, focus windows]
+- Task style: [deep work, sprints, async, etc.]
 
 ## Communication Style
-- [to be filled during onboarding]
 
-## Work Preferences
-- Schedule: [to be filled during onboarding]
-- Task style: [to be filled during onboarding]
+- [how you write, talk, give feedback]
 
 ## Values
-- [to be filled during onboarding — what matters most to you]
 
-## Personality & Hobbies
-- [to be filled during onboarding — interests, hobbies, what energizes you]
+- [what matters most to you]
 
-## Learning Style
-- [to be filled during onboarding — how you prefer to learn new things]
+## Current State
+
+[Where you are right now. Active focus, recent shifts, what's working.]
+
+## Unclosed Loops
+
+- [things that should be done but aren't]
+- [decisions sitting unmade]
+- [commitments overdue]
 
 ## Tools & Integrations
-- [to be filled during onboarding]
+
+- [CRM, calendar, meeting recorder, content platforms, dev stack]
+
+## Personality & Hobbies
+
+- [interests, hobbies, what energizes you]
+
+## Learning Style
+
+- [how you prefer to learn new things]

@@ -259,7 +259,7 @@ Behavior depends on selected mode.
 
 **Solopreneurs/Professionals mode** (Q1–Q10 = solo questions):
 
-- **`Context/me.md`** — Always created. Fill from Q1 (identity, role, location, work style) + Q8 (tools section). If Q10 had content, append an `## Unclosed Loops` section.
+- **`Context/me.md`** — Always created. Fill from Q1 (identity, role, location, work style), Q8 (tools), Q10 (Unclosed Loops section). Read `references/context-me.md` as template.
 - **`Context/business.md`** — Only if Q2 had content. Read `references/context-business.md` as template.
 - **`Context/services.md`** — Only if Q2 listed multiple revenue lines or named services / products. Read `references/context-services.md` as template.
 - **`Context/icp.md`** — Only if Q3 had content. Read `references/context-icp.md` as template.
@@ -271,7 +271,7 @@ Behavior depends on selected mode.
 
 **Business mode** (Q1–Q10 = business questions):
 
-- **`Context/operator.md`** — Always created. Fill from Q1 (role, decision authority, responsibilities, location, working style). If Q1 mentioned unclosed loops, append an `## Unclosed Loops` section. Read `references/context-operator.md` as template.
+- **`Context/operator.md`** — Always created. Fill from Q1 (role, decision authority, responsibilities, location, working style, unclosed loops). Read `references/context-operator.md` as template.
 - **`Context/organization.md`** — Always created. Fill from Q2 (company info, mission, headcount, stage). Read `references/context-organization.md` as template.
 - **`Context/services.md`** — Only if Q3 had content. Read `references/context-services.md` as template.
 - **`Context/icp.md`** — Only if Q4 had content. Read `references/context-icp.md` as template.

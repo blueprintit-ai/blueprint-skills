@@ -1,15 +1,35 @@
 ---
 type: context
-tags: [services, products]
+tags: [services, products, businesses]
 updated: [YYYY-MM-DD]
 ---
+
 # Services
 
-## Active Services / Products
+One section per business unit / revenue line. Add or remove sections as needed.
 
-| Name | Description | Audience | Revenue Baseline | Status | Tech Stack |
-|---|---|---|---|---|---|
-| [name] | [what it does] | [who buys it] | [$ / mo or yr] | [active / scaling / paused] | [tools, platforms] |
+## 1. [Business / Product Name]
+
+[One-paragraph description: what it does, who it's for.]
+
+### Products
+
+| Product | What it does | Price |
+|---|---|---|
+| [name] | [description] | [$ / mo or one-time] |
+
+### Revenue
+
+- Current baseline: [$ / mo or yr]
+- Status: [active / scaling / paused / sunsetting]
+
+### Tech Stack
+
+- [tools, platforms, infrastructure powering this business]
+
+## 2. [Next Business / Product]
+
+[Repeat structure as needed.]
 
 ## Sunsetting / Archived
 
