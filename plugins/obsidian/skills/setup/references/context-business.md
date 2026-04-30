@@ -1,6 +1,7 @@
 ---
 type: context
 tags: [business, company]
+updated: [YYYY-MM-DD]
 ---
 # Business
 

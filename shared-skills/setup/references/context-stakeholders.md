@@ -1,6 +1,7 @@
 ---
 type: context
 tags: [stakeholders, external]
+updated: [YYYY-MM-DD]
 ---
 # Stakeholders
 

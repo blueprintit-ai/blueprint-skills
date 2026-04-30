@@ -1,6 +1,7 @@
 ---
 type: context
 tags: [organization, company]
+updated: [YYYY-MM-DD]
 ---
 # Organization
 

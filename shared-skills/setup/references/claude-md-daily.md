@@ -4,7 +4,7 @@ This folder contains org-level daily notes. In business mode these are AGGREGATE
 
 Do NOT write directly to this folder during profile sessions. All session output goes to the active profile's daily folder at `Team/{org}/Profiles/{name}/Daily/YYYY-MM-DD.md`.
 
-This folder is populated by aggregation schedules in `Team Schedules/` (when configured) that scan all profile dailies and compile them into a single org-level view.
+If the org configures aggregation schedules later (e.g. a `Team Schedules/` folder with scheduled scripts), those would populate this folder by scanning all profile dailies and compiling them into a single org-level view. By default, this folder stays empty in business mode.
 
 ## When You CAN Write Here
 

@@ -128,7 +128,7 @@ Read each reference file and write it to the corresponding local path. The refer
 | `references/claudeignore-template.md` | `./.claudeignore` |
 | `references/gitignore-template.md` | `./.gitignore` |
 
-**Mode-specific claude.md template:**
+**Mode-specific root CLAUDE.md template:**
 
 | Mode | Reference File | Creates at Local Path |
 |---|---|---|

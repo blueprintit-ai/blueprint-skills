@@ -1,6 +1,7 @@
 ---
 type: context
 tags: [team]
+updated: [YYYY-MM-DD]
 ---
 # Team
 
