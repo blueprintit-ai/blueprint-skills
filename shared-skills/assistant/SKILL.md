@@ -11,6 +11,12 @@ description: BenAI Obsidian Plugin assistant — manages sessions, daily routine
 2. If missing: tell the user "This vault hasn't been set up yet. Run `/setup` to bootstrap your vault." — then stop
 3. If present: continue
 
+## Path Conventions
+
+- **Reference files** (`references/foo.md`) live next to **this SKILL.md** — read them relative to the SKILL.md file, not the vault root.
+- **Vault paths** (`Context/me.md`, `Daily/YYYY-MM-DD.md`, `Team/{org}/Profiles/{name}/...`) are relative to the user's current working directory (the vault root).
+- If a `references/...` read fails, locate the references directory once with `find / -type d -path '*/assistant/references' 2>/dev/null | head -1` and reuse the absolute path. Don't retry per-file.
+
 ## Mode Detection
 
 Read the root `CLAUDE.md` and check the `os-mode` field in its YAML frontmatter:

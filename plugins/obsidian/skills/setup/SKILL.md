@@ -51,6 +51,22 @@ Store the selected mode. It will be written to `CLAUDE.md` frontmatter as `os-mo
 
 Create the directory structure and write all system files for the selected mode.
 
+### Resolving reference file paths
+
+Every `references/<file>.md` mentioned below lives in the `references/` subdirectory next to **this SKILL.md** — not in the user's working directory. Two conventions matter:
+
+- **Read paths** (`references/foo.md`) → resolve relative to this SKILL.md's directory.
+- **Write paths** (`./Foo/CLAUDE.md`) → resolve relative to the user's current working directory (the vault root).
+
+If the Read tool can't open a `references/...` path directly (some harnesses mount the skill at a path that differs between Read and Bash), run a quick discovery step **once** before Step A.2:
+
+```bash
+# Find the references directory; cache the result for the rest of Phase A.
+find / -type d -path '*/setup/references' 2>/dev/null | head -1
+```
+
+Use that absolute path as the prefix for every reference read in Phase A and Phase B. Don't retry path resolution per-file — do it once and reuse.
+
 ### Step A.1: Create Directory Structure
 
 **All modes** share this base:
