@@ -13,6 +13,25 @@ updated: [YYYY-MM-DD]
 - Location: [city, country]
 - Industry: [industry]
 
+### 5 Attributes
+
+- [attribute 1, one or two words]
+- [attribute 2]
+- [attribute 3]
+- [attribute 4]
+- [attribute 5]
+
+### Introduce Me In A Room
+
+[How you'd want a respected peer to introduce you in a room of people you respect.]
+
+## Origin & Point of View
+
+- **Why I do what I'm doing**: [origin story, what made you start or join]
+- **Strong belief / POV**: [a belief you hold even when it's unpopular]
+- **Big idea / wedge / thesis**: [the central idea your work is built on]
+- **Enemy**: [the category, behavior, competitor archetype, or status quo you're fighting]
+
 ## Working Style
 
 - Best hours: [when you do your best work]

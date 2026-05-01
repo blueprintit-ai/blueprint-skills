@@ -16,6 +16,10 @@ updated: [YYYY-MM-DD]
 - [mission statement]
 - [core values]
 
+## Origin & POV
+- **Why the company started**: [the originating reason or moment]
+- **Belief / POV the company stands for**: [the conviction the brand is built around]
+
 ## Products & Services
 - [what the org delivers]
 

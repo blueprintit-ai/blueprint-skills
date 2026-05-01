@@ -207,35 +207,205 @@ Then proceed to Phase B.
 
 ## Phase B: Onboarding
 
-Ten questions. Present them all in a single message. The user can answer one-by-one, paste a doc that covers several, upload files, or skip any individually. Don't ask follow-ups. Extract what's there. The questions differ by mode.
+Twelve questions. Present them all in a single message. The user can answer one-by-one, paste a doc that covers several, upload files, or skip any individually. Don't ask follow-ups. Extract what's there. The questions differ by mode.
+
+**Tip for the user (include in the message)**: You can paste links (LinkedIn profiles, company websites, blog posts, About pages, intake docs) instead of typing answers. I'll fetch them with WebFetch / WebSearch and pull what's relevant. The more I have, the less generic the assistant will feel on day one.
 
 ### Mode-specific Questions
 
-**Solopreneurs/Professionals mode** — present all 10 in one message:
+**Solopreneurs/Professionals mode** — present all 12 in one message:
 
-1. **Who are you?** Name, role/title, location, industry, when you do your best work.
-2. **What you're building or selling.** One paragraph per business or product line — name, what it does, who it's for, stage, revenue baseline if applicable. Skip if no business.
-3. **Who you serve.** Ideal customer / audience: their role, their pain, what they're hiring you to fix.
-4. **People you work with regularly.** Team, contractors, key external contacts — name, role, how you work together. Skip if fully solo.
-5. **Voice + visual identity.** A paragraph (or paste a writing sample) on how you sound. Brand colors, fonts, taglines if you have them. Skip if N/A.
-6. **This year's priorities — measurable.** 1–3 outcomes with a number attached (revenue, audience size, ship date) + the *why* for each.
-7. **What you're actively working on.** For each project: name, one-line purpose, status, deadline if any, business it belongs to.
-8. **Tools and integrations you use daily.** CRM, calendar, meeting recorder, content platforms, dev stack, automation tools.
-9. **Top 1–2 painful, repetitive workflows** you'd offload to Claude first. Be specific about input → output.
-10. **What's draining your attention right now?** Unclosed loops: things that should be done but aren't, decisions sitting unmade, commitments overdue.
+#### IDENTITY
 
-**Business mode** — present all 10 in one message:
+1. **Who you are.**
+   - Name, role/title, location, industry
+   - When and how you do your best work (mornings? deep blocks? after a walk?)
+   - If someone you respected had to introduce you in a room of people you respected, how would you want them to describe you?
+   - 5 attributes that describe you (one or two words each)
 
-1. **You — operator profile.** Name, title, department, who you report to, decision authority, where you're based, working style, what's draining your attention right now (unclosed loops).
-2. **Company essentials.** Legal entity name, industry, stage, founded, headcount (FT + contractors), location, one-sentence mission.
-3. **Products / services / business units.** For each revenue line: name, what it does, who buys it, current revenue baseline, status. Multiple lines OK.
-4. **Who you serve + key pain points.** Ideal customer + the top 3 pains your product addresses.
-5. **Departments and leads.** List the departments and the lead for each.
-6. **Team members getting profiles.** For each: name, role, reports-to, FT/contractor, location. These get full profile folders with their own daily notes.
-7. **Annual objectives + key results.** 1–3 objectives. For each KR: target number, owner, current status.
-8. **Active projects and initiatives.** For each: name, owner, status, client-facing or internal, business unit.
-9. **Brand voice + visual identity.** Tagline, value prop, voice in a paragraph, signature phrases, colors / fonts. Skip if N/A.
-10. **Tool stack + top 3 workflows to automate first + external stakeholders.** Stack across communication, meetings, CRM, PM, content, finance, dev + 3 painful repetitive workflows + investors / partners / vendors / top clients.
+2. **Origin and point of view.**
+   - Why you started or joined what you're doing now
+   - A belief or POV you hold strongly, even when it's unpopular
+   - The "big idea" your work is built on (the wedge, the thesis)
+   - Who or what you're fighting against. Could be a category, a behavior, a competitor archetype, a status quo.
+
+#### WHAT YOU SELL
+
+3. **Business or product lines.**
+   For each revenue line (one paragraph each, or skip if none yet):
+   - Name, what it does, who it's for, stage
+   - Current revenue baseline if applicable
+   - How it came to exist. What made you start it.
+
+4. **Offer and promises.**
+   - The 1 to 3 problems you solve for customers
+   - For each problem: are customers already aware they have it, or do you have to teach them? (this changes everything about how you market)
+   - Your value proposition in one sentence
+   - The promise or guarantee you make (explicit or implicit)
+   - Why customers actually pick you. In their words if you've heard them say it.
+
+#### WHO YOU SERVE
+
+5. **Ideal customer.**
+   - Title, role, industry, responsibilities
+   - What their day looks like, what tools they live in
+   - The language and words *they* use to describe their problem
+   - The dream outcome they want
+   - The situation they're in *before* they come to you. What triggered the search.
+   - How long they typically take to decide to buy
+   - The media, podcasts, newsletters, or creators they follow
+   - 3 to 5 real examples (names, LinkedIn profiles, or company names)
+
+#### BRAND
+
+6. **Voice and visual identity.**
+   - Tone descriptors that fit (direct, warm, dry, technical, playful, serious, supportive, or your own)
+   - 5 attributes that describe how you *sound*
+   - Signature phrases you actually use
+   - Words or phrases you'd never use
+   - Topics you love talking about
+   - Topics you refuse to discuss publicly
+   - Brand colors, fonts, taglines if you have them
+   - The feeling people should carry away after reading your stuff
+   - Or: paste a writing sample and I'll extract from it
+
+7. **Positioning.**
+   - The enemy you're fighting (the category, behavior, or competitor archetype)
+   - How you solve the problem *differently* from the obvious alternatives
+   - 3 to 4 distinct messages you want associated with your name or brand
+
+#### STRATEGY
+
+8. **This year's priorities (measurable).**
+   - 1 to 3 outcomes with a number attached (revenue, audience size, ship date)
+   - The *why* behind each
+   - What you're explicitly saying no to in order to focus here
+
+#### OPERATIONS
+
+9. **Active projects.**
+   For each project:
+   - Name, one-line purpose, status, deadline if any
+   - Which business it belongs to (if multiple)
+   - Who else is involved
+
+10. **People you work with regularly.**
+    - Team, contractors, key external contacts
+    - For each: name, role, how you work together
+    - Skip if fully solo
+
+11. **Tools and infrastructure.**
+    - Stack across communication, meetings, CRM, content, finance, dev, automation
+    - Source of truth for each main workflow. Where deals live, where decisions live, where writing actually happens, where the calendar lives.
+
+12. **Workflows to automate and what's draining your attention.**
+    - Top 1 to 2 painful, repetitive workflows. Use this template:
+      When **X** happens → I do **Y** → it takes **Z** time → output is **W** → what I want is **V**
+    - What's draining your attention right now. Unclosed loops, decisions sitting unmade, things that should be done but aren't.
+
+**Business mode** — present all 12 in one message:
+
+#### YOU AND THE COMPANY
+
+1. **You. Operator profile.**
+   - Name, title, department, who you report to
+   - Decision authority (what you can sign off on alone)
+   - Location, working style
+   - What's draining your attention right now. Unclosed loops, decisions sitting unmade.
+
+2. **Company essentials.**
+   - Legal entity name, industry, stage
+   - Founded year, headcount (FT + contractors)
+   - Headquarters and where the team is based
+   - One-sentence mission
+   - Why the company started (origin)
+   - The belief or POV the company stands for
+
+#### MARKET
+
+3. **Industry and market context.**
+   - The broad target industry
+   - The specific niche you operate in
+   - Trends and hot topics in the industry right now
+   - What's not going well in the industry. The inefficiency or broken thing you're betting against.
+   - What changed in the last 5 to 10 years
+   - The main players (incumbents, competitors, adjacent categories)
+
+#### WHAT YOU SELL
+
+4. **Products, services, or business units.**
+   For each revenue line:
+   - Name, what it does, who buys it
+   - Current revenue baseline, status (active, new, sunsetting)
+
+5. **Offer and promises.**
+   - The 1 to 3 problems you solve for customers
+   - For each: are customers already aware they have it, or do you teach them?
+   - Value proposition in one sentence
+   - The promise or guarantee you make
+   - Key features and capabilities that deliver the value
+   - Why customers actually pick you over alternatives
+   - The kind of results you typically deliver. Include a real example if you have one.
+
+#### WHO YOU SERVE
+
+6. **ICP and customer journey.**
+   - Who's in charge of buying. Title, role, responsibilities.
+   - What their day looks like, what tools they use
+   - The language and words *they* use to describe their problem
+   - Dream outcome they want
+   - Situation before buying. What triggered them to look.
+   - How long the buying decision typically takes
+   - Market trends affecting them right now
+   - Media, podcasts, or creators they follow
+   - 3 to 5 real examples (LinkedIn profiles or company names)
+
+#### BRAND
+
+7. **Voice and visual identity.**
+   - Tagline and value prop in plain language
+   - Voice in a paragraph or as descriptors (direct, warm, dry, technical)
+   - 5 attributes that describe how the brand sounds
+   - Signature phrases used across your content
+   - Words or phrases you'd never use
+   - Topics you love covering
+   - Topics you avoid publicly
+   - Brand colors, fonts, logo notes
+   - The feeling readers and customers should carry away
+
+8. **Positioning.**
+   - The enemy. The category, status quo, or competitor archetype you're fighting.
+   - How you solve the problem *differently* from obvious competitors
+   - Brand personality in 5 adjectives
+   - The "big concept" the company is built on
+   - 3 to 4 distinct messages you want associated with the brand
+
+#### OPERATIONS
+
+9. **Departments and team members getting profiles.**
+   - The departments and the lead for each
+   - Team members getting their own profile folders. For each: name, role, reports-to, FT or contractor, location.
+   - (Profile folders include their own daily notes, tasks, and sub-schedules.)
+
+10. **Annual objectives and key results.**
+    - 1 to 3 objectives for the year (or quarter)
+    - For each KR: target number, owner, current status
+    - The *why* behind each objective
+    - What you're explicitly saying no to in order to focus here
+
+11. **Active projects and initiatives.**
+    For each project:
+    - Name, owner, status, deadline if any
+    - Client-facing or internal
+    - Which business unit or department it sits under
+    - Key collaborators
+
+12. **Tools, workflows, and stakeholders.**
+    - Stack across communication, meetings, CRM, PM, content, finance, dev
+    - Source of truth for each main workflow. Where deals live, where decisions live, where writing happens, where the calendar lives.
+    - Top 3 painful, repetitive workflows. Template:
+      When **X** happens → we do **Y** → it takes **Z** → output is **W** → what we want is **V**
+    - External stakeholders: investors, partners, vendors, top clients. Name, type, nature of the relationship.
 
 The user might give you:
 - One-by-one numbered answers
@@ -257,34 +427,35 @@ After the ten questions (or skips), build everything you can from what the user 
 
 Behavior depends on selected mode.
 
-**Solopreneurs/Professionals mode** (Q1–Q10 = solo questions):
+**Solopreneurs/Professionals mode** (Q1–Q12 = solo questions):
 
-- **`Context/me.md`** — Always created. Fill from Q1 (identity, role, location, work style), Q8 (tools), Q10 (Unclosed Loops section). Read `references/context-me.md` as template.
-- **`Context/business.md`** — Only if Q2 had content. Read `references/context-business.md` as template.
-- **`Context/services.md`** — Only if Q2 listed multiple revenue lines or named services / products. Read `references/context-services.md` as template.
-- **`Context/icp.md`** — Only if Q3 had content. Read `references/context-icp.md` as template.
-- **`Context/pain-points.md`** — Only if Q3 mentioned pains or what customers are hiring you to fix. Read `references/context-pain-points.md` as template.
-- **`Context/team.md`** — Only if Q4 had content. Read `references/context-team.md` as template.
-- **`Context/brand.md`** — Only if Q5 had content. Read `references/context-brand.md` as template.
-- **`Context/strategy.md`** — Only if Q6 had content. Read `references/context-strategy.md` as template.
-- **`Context/infrastructure.md`** — Only if Q8 listed tools. Read `references/context-infrastructure.md` as template.
+- **`Context/me.md`** — Always created. Fill from Q1 (identity, role, location, work style, intro phrase, 5 attributes), Q2 (Origin & POV section: why started, belief, big idea, enemy), Q12 (Unclosed Loops section). Read `references/context-me.md` as template.
+- **`Context/business.md`** — Only if Q3 had content. Fill name, what it does, who it's for, stage, revenue, origin. Read `references/context-business.md` as template.
+- **`Context/services.md`** — Only if Q3 listed multiple revenue lines or named services / products. Read `references/context-services.md` as template.
+- **`Context/pain-points.md`** — Only if Q4 had content. Fill from the 1–3 problems with the awareness column (aware vs teach them). Read `references/context-pain-points.md` as template.
+- **`Context/icp.md`** — Only if Q5 had content. Fill role, day, language, dream outcome, trigger, decision time, media, real examples. Read `references/context-icp.md` as template.
+- **`Context/brand.md`** — Only if Q6 or Q7 had content. From Q4 take value prop, promise, why-pick-you. From Q6 take voice, attributes, signature phrases, words-to-avoid, topics, visual identity, feeling. From Q7 take Positioning section: enemy, differentiation, key messages. Read `references/context-brand.md` as template.
+- **`Context/strategy.md`** — Only if Q8 had content. Read `references/context-strategy.md` as template.
+- **`Context/team.md`** — Only if Q10 had content. Read `references/context-team.md` as template.
+- **`Context/infrastructure.md`** — Only if Q11 listed tools or Q12 listed workflows. Combine tool stack (Q11) with workflows-to-automate template (Q12). Read `references/context-infrastructure.md` as template.
 
-**Business mode** (Q1–Q10 = business questions):
+**Business mode** (Q1–Q12 = business questions):
 
-- **`Context/operator.md`** — Always created. Fill from Q1 (role, decision authority, responsibilities, location, working style, unclosed loops). Read `references/context-operator.md` as template.
-- **`Context/organization.md`** — Always created. Fill from Q2 (company info, mission, headcount, stage). Read `references/context-organization.md` as template.
-- **`Context/services.md`** — Only if Q3 had content. Read `references/context-services.md` as template.
-- **`Context/icp.md`** — Only if Q4 had content. Read `references/context-icp.md` as template.
-- **`Context/pain-points.md`** — Only if Q4 listed pains. Read `references/context-pain-points.md` as template.
-- **`Context/team.md`** — Always created. Fill with any team members from Q6. Read `references/context-team.md` as template.
-- **`Context/strategy.md`** — Always created. Fill from Q7 (OKRs, KRs, owners). Read `references/context-strategy-business.md` as template.
-- **`Context/brand.md`** — Only if Q9 had content. Read `references/context-brand.md` as template.
-- **`Context/infrastructure.md`** — Only if Q10 listed tools. Read `references/context-infrastructure.md` as template.
-- **`Context/stakeholders.md`** — Only if Q10 mentioned investors, partners, vendors, or top clients. Read `references/context-stakeholders.md` as template.
+- **`Context/operator.md`** — Always created. Fill from Q1 (role, decision authority, location, working style, unclosed loops). Read `references/context-operator.md` as template.
+- **`Context/organization.md`** — Always created. Fill from Q2 (company info, mission, headcount, stage, plus Origin & POV section: why started + belief). Read `references/context-organization.md` as template.
+- **`Context/market.md`** — Only if Q3 had content. Fill industry, niche, trends, what's broken, what changed, main players. Read `references/context-market.md` as template.
+- **`Context/services.md`** — Only if Q4 had content. Read `references/context-services.md` as template.
+- **`Context/pain-points.md`** — Only if Q5 had content. Fill problems with awareness column. Read `references/context-pain-points.md` as template.
+- **`Context/icp.md`** — Only if Q6 had content. Fill role, day, language, dream outcome, trigger, decision time, market trends, media, real examples. Read `references/context-icp.md` as template.
+- **`Context/brand.md`** — Only if Q7 or Q8 had content. From Q5 take value prop, promise, results. From Q7 take voice + visual. From Q8 take Positioning section: enemy, differentiation, brand personality, big concept, key messages. Read `references/context-brand.md` as template.
+- **`Context/team.md`** — Always created. Fill with any team members from Q9. Read `references/context-team.md` as template.
+- **`Context/strategy.md`** — Always created. Fill from Q10 (OKRs, KRs, owners, why behind each, what you're saying no to). Read `references/context-strategy-business.md` as template.
+- **`Context/infrastructure.md`** — Only if Q12 listed tools or workflows. Combine tool stack with the workflows-to-automate template. Read `references/context-infrastructure.md` as template.
+- **`Context/stakeholders.md`** — Only if Q12 mentioned investors, partners, vendors, or top clients. Read `references/context-stakeholders.md` as template.
 
 ### Build Step 2: Create Project Folders
 
-Solo: from Q7. Business: from Q8. Intelligently structure each project based on what the user gave you.
+Solo: from Q9. Business: from Q11. Intelligently structure each project based on what the user gave you.
 
 **Analyze the info and decide the right structure:**
 - Simple mention ("working on a podcast") → just a `README.md`
@@ -327,11 +498,11 @@ updated: YYYY-MM-DD
 
 Don't create empty subdirs. Don't cram everything into the README. Distribute content into the right files based on what it actually is.
 
-**Business mode only** — from Q5, also create `Departments/{name}/README.md` for each department with the lead's name, charter placeholder, and `sops/` subfolder.
+**Business mode only** — from Q9, also create `Departments/{name}/README.md` for each department with the lead's name, charter placeholder, and `sops/` subfolder.
 
 ### Build Step 3: Profile-First Team Scaffolding (Business mode only)
 
-From Q6, scaffold each person's profile workspace. Slug names are kebab-case.
+From Q9, scaffold each person's profile workspace. Slug names are kebab-case.
 
 `{org-slug}` is derived from Q2 (company name → kebab-case). If no company name given, default to `team`.
 
@@ -351,12 +522,12 @@ mkdir -p Team/External/contractors/{person-slug}
 ```
 Then write the same `team-profile-template.md` (with `employment: contractor` or `advisor`) → `./Team/External/contractors/{person-slug}/{Person Name}.md`.
 
-If Q6 was skipped, don't scaffold anything under `Team/{org-slug}/Profiles/`. Leave `Team/` with just the `CLAUDE.md` routing index.
+If Q9 listed no team members, don't scaffold anything under `Team/{org-slug}/Profiles/`. Leave `Team/` with just the `CLAUDE.md` routing index.
 
 ### Build Step 4: Mode-specific Additional Setup
 
 **Business mode only:**
-- If Q10 mentioned org-wide processes / SOPs, capture them in `Intelligence/processes/{name}.md`
+- If Q12 mentioned org-wide processes / SOPs, capture them in `Intelligence/processes/{name}.md`
 - If user provided onboarding docs, route them to `Onboarding/{name}.md`
 
 ### Build Step 5: Create First Daily Note
@@ -388,8 +559,9 @@ Tell the user:
 
 - Phase 0 is one question — mode selection
 - Phase A is fully automated — no user input needed
-- Phase B is exactly 10 questions, presented together — no follow-ups, no drilling deeper
-- Accept any format: numbered answers, pasted docs, uploaded files, or skips
+- Phase B is exactly 12 questions, presented together — no follow-ups, no drilling deeper
+- Accept any format: numbered answers, pasted docs, uploaded files, links (LinkedIn, websites, blog posts), or skips
+- If the user pastes a link, fetch it with WebFetch / WebSearch and extract what's relevant before mapping into the context files
 - Extract as much as you can from whatever the user provides
 - Only create context files that have real content — don't create empty placeholder files
 - Use the user's actual project names and people names, not generic placeholders
