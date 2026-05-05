@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Vault Optimizer Report — {{DATE}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --dark: #020309;
+    --bg: #FAF3E3;
+    --light-blue: #E5F5F9;
+    --green: #D2ECD0;
+    --red: #F3C1C0;
+    --dark-yellow: #FDEEC4;
+    --paper: #FFFFFF;
+    --shadow: 8px 8px 0 var(--dark);
+    --border: 2px solid var(--dark);
+    --radius: 8px;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--dark);
+    font-family: 'Montserrat', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  body { padding: 32px 24px 64px; }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  h1, h2, h3 { font-family: 'Space Grotesk', system-ui, sans-serif; font-weight: 700; letter-spacing: -0.01em; margin: 0; }
+  h1 { font-size: 38px; line-height: 1.1; }
+  h2 { font-size: 22px; margin: 0 0 12px; }
+  h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 8px; opacity: 0.65; }
+  .muted { opacity: 0.65; font-size: 13px; }
+  .row { display: flex; gap: 18px; flex-wrap: wrap; }
+
+  /* Header */
+  .header {
+    background: var(--paper);
+    border: var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .header .title-block .eyebrow { font-family: 'Space Grotesk', sans-serif; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.65; margin-bottom: 6px; }
+  .score-badge {
+    background: var(--green);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 12px 18px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    min-width: 180px;
+    box-shadow: 4px 4px 0 var(--dark);
+  }
+  .score-badge .label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.7; display: block; }
+  .score-badge .value { font-size: 28px; line-height: 1; margin-top: 4px; }
+  .score-badge .delta { font-size: 13px; opacity: 0.75; margin-top: 4px; }
+
+  /* Stat cards */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 28px; }
+  .stat {
+    background: var(--paper);
+    border: var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 22px;
+  }
+  .stat .num { font-family: 'Space Grotesk', sans-serif; font-size: 34px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+  .stat.saved .num { color: #1f6f1a; }
+  .stat .sub { margin-top: 10px; font-size: 13px; opacity: 0.7; }
+
+  /* Table */
+  .table-wrap {
+    background: var(--paper);
+    border: var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 24px;
+    overflow-x: auto;
+    margin-bottom: 28px;
+  }
+  table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; }
+  thead th {
+    text-align: left;
+    padding: 10px 12px;
+    background: var(--light-blue);
+    border-bottom: var(--border);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  thead th.num { text-align: right; }
+  tbody td { padding: 14px 12px; border-bottom: 1px solid rgba(2, 3, 9, 0.08); vertical-align: top; }
+  tbody td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr.total td { font-weight: 700; background: var(--dark-yellow); }
+  tbody tr.total td:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+  tbody tr.total td:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--green);
+    border: 1.5px solid var(--dark);
+  }
+  .pill.neg { background: var(--green); }
+  .section-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+
+  /* Per-session impact */
+  .impact {
+    background: var(--paper);
+    border: var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 24px;
+  }
+  .impact .row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .impact-card {
+    background: var(--light-blue);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+  .impact-card.annual { background: var(--dark-yellow); }
+  .impact-card .num { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; line-height: 1.05; }
+  .impact-card .sub { font-size: 12px; opacity: 0.7; margin-top: 6px; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    margin-top: 36px;
+    font-size: 12px;
+    opacity: 0.5;
+  }
+
+  @media (max-width: 720px) {
+    .stats { grid-template-columns: 1fr; }
+    .impact .row-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 28px; }
+    .stat .num { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="header">
+      <div class="title-block">
+        <div class="eyebrow">{{ORG_NAME}} · OS Optimizer</div>
+        <h1>Vault Optimizer Report</h1>
+        <div class="muted" style="margin-top:6px;">{{DATE}} · Scanned {{FILES_SCANNED}} files across {{FOLDERS_COVERED}} folders · 22 passes</div>
+      </div>
+      <div class="score-badge">
+        <span class="label">Health Score</span>
+        <div class="value">{{SCORE_BEFORE}} → {{SCORE_AFTER}}</div>
+        <div class="delta">{{SCORE_DELTA_SIGN}}{{SCORE_DELTA}}</div>
+      </div>
+    </header>
+
+    <section class="stats">
+      <div class="stat saved">
+        <h3>Tokens Saved</h3>
+        <div class="num">−{{TOTAL_SAVED}}</div>
+        <div class="sub">{{TOTAL_BEFORE}} → {{TOTAL_AFTER}}</div>
+      </div>
+      <div class="stat">
+        <h3>Reduction</h3>
+        <div class="num">{{TOTAL_PCT}}%</div>
+        <div class="sub">across all tracked files</div>
+      </div>
+      <div class="stat">
+        <h3>Annual Savings</h3>
+        <div class="num">{{ANNUAL_SAVINGS}}</div>
+        <div class="sub">at {{SESSIONS_PER_WEEK}} sessions/week</div>
+      </div>
+    </section>
+
+    <div class="table-wrap">
+      <h2>Per-Section Impact</h2>
+      <p class="muted" style="margin: 0 0 14px;">Token counts before and after the fixes you approved this run. "What changed" cites the passes applied.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Section</th>
+            <th class="num">Before</th>
+            <th class="num">After</th>
+            <th class="num">Saved</th>
+            <th class="num">%</th>
+            <th>What changed</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{ROWS}}
+          <tr class="total">
+            <td class="section-name">TOTAL</td>
+            <td class="num">{{TOTAL_BEFORE}}</td>
+            <td class="num">{{TOTAL_AFTER}}</td>
+            <td class="num">−{{TOTAL_SAVED}}</td>
+            <td class="num">−{{TOTAL_PCT}}%</td>
+            <td>{{TOTAL_SUMMARY}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section class="impact">
+      <h2>Per-Session Impact</h2>
+      <p class="muted" style="margin: 0 0 14px;">What every Claude session in this vault now loads.</p>
+      <div class="row-grid">
+        <div class="impact-card">
+          <h3>Auto-Load Context</h3>
+          <div class="num">{{SESSION_BEFORE}} → {{SESSION_AFTER}}</div>
+          <div class="sub">tokens loaded on every session start ({{SESSION_PCT}}% lighter)</div>
+        </div>
+        <div class="impact-card annual">
+          <h3>Compounding Effect</h3>
+          <div class="num">~{{ANNUAL_SAVINGS}} tokens / year</div>
+          <div class="sub">based on {{SESSIONS_PER_WEEK}} sessions × {{WEEKS_PER_YEAR}} weeks</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Generated by {{ORG_NAME}} OS Optimizer · {{TIMESTAMP}}
+    </footer>
+
+  </div>
+</body>
+</html>

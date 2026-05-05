@@ -1,6 +1,6 @@
 ---
-name: setup
-description: Bootstrap the BenAI Obsidian Plugin vault structure and run personalized onboarding. Creates all directories, system files, Obsidian config, memory system, hooks, and output styles, then interviews the user to personalize everything. Two modes — Solopreneurs/Professionals (default), Business/Teams. Use when user says "set up", "bootstrap", "initialize", "onboarding", or runs /setup.
+name: os-setup
+description: Bootstrap the BenAI OS Plugin vault structure and run personalized onboarding. Creates all directories, system files, Obsidian config, memory system, hooks, and output styles, then interviews the user to personalize everything. Two modes — Solopreneurs/Professionals (default), Business/Teams. Use when user says "set up", "bootstrap", "initialize", "onboarding", or runs /os-setup.
 ---
 
 # BenAI Obsidian Plugin — Setup + Onboarding

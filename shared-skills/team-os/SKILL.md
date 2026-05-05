@@ -1,36 +1,65 @@
 ---
-name: relay-swap
-description: Swap the official Relay (`system3-relay`) Obsidian plugin for the BenAI fork (`benai-relay-fork`). Bundled production build ships inside the skill — user just points to their Obsidian vault path. Use when the user wants to "install BenAI Relay", "swap relay for the fork", "replace the official relay plugin", or "use BenAI's relay in my vault".
+name: team-os
+description: Install the BenAI Relay fork in an Obsidian vault as the foundation for a shared Team OS — replaces the official Relay (`system3-relay`) plugin with the BenAI fork (`benai-relay-fork`) which ships custom RBAC + access controls for team-wide vault sharing. Bundled production build ships inside the skill — user just points to their Obsidian vault path. Use when the user wants to "set up team os", "install BenAI Relay", "swap relay for the fork", "replace the official relay plugin", or "use BenAI's relay in my vault".
 ---
 
 # Relay Swap — Install BenAI Relay Fork
 
-This skill replaces the upstream Relay plugin (`system3-relay`) with the BenAI fork (`benai-relay-fork`) in a target Obsidian vault. The compiled fork ships at `${CLAUDE_PLUGIN_ROOT}/skills/relay-swap/reference/benai-relay-fork/` (three files: `main.js`, `manifest.json`, `styles.css`). Copy from there — do not fetch from anywhere else.
+This skill replaces the upstream Relay plugin (`system3-relay`) with the BenAI fork (`benai-relay-fork`) in a target Obsidian vault. The compiled fork ships at `${CLAUDE_PLUGIN_ROOT}/skills/team-os/reference/benai-relay-fork/` (three files: `main.js`, `manifest.json`, `styles.css`). Copy from there — do not fetch from anywhere else.
 
 ## What the user provides
 
-**Just the absolute path to their Obsidian vault** (the folder containing `.obsidian/`). Example: `/Users/jane/Documents/MyVault`.
+**Just their Obsidian vault folder** — the one they open inside Obsidian itself. The skill will auto-detect it if they invoke `/team-os` from inside the vault, otherwise it'll walk them through finding it via Obsidian's Settings → About → "Show vault folder".
 
-That's it.
+Example paths the user might give: `~/Documents/MyVault`, `/Users/jane/Obsidian/Work`, or a folder dragged from Finder/Explorer. The skill normalizes all of them.
 
 ---
 
 # Workflow
 
-## Step 0 — Confirm intent + collect vault path
+## Step 0 — Confirm intent + locate the vault folder
 
 Tell the user what this will do, in plain language:
 
 > I'm about to replace the official Relay plugin with the BenAI fork in your Obsidian vault. The fork has custom RBAC + access controls. This will:
-> 1. Delete `<vault>/.obsidian/plugins/system3-relay/` if present.
-> 2. Install the bundled BenAI Relay build into `<vault>/.obsidian/plugins/benai-relay-fork/`.
-> 3. Update `<vault>/.obsidian/community-plugins.json` to disable the old one and enable the new one.
+> 1. Delete the old `system3-relay` plugin if it's there.
+> 2. Install the bundled BenAI Relay build.
+> 3. Update Obsidian's community-plugins config to switch over.
 >
-> **Close Obsidian first** — modifying plugin files while Obsidian is running can corrupt the install.
->
-> Paste the absolute path to your vault (the folder containing `.obsidian/`):
+> **Close Obsidian first** — modifying plugin files while it's running can corrupt the install.
 
-Wait for the path. Do not proceed until you have it.
+### Get the vault folder (no jargon)
+
+Don't ask for an "absolute path". Most users don't think in those terms. Try this order:
+
+**1. Try the current working directory first.**
+
+If the cwd contains a `.obsidian/` folder, ask:
+
+> I see this folder (`{cwd}`) is already an Obsidian vault. Is this the one you want to install BenAI Relay into? (yes / no — I'll ask where it is)
+
+If yes, set `VAULT="$(pwd)"` and skip to Step 1.
+
+**2. Otherwise, ask in plain language with platform-specific hints.**
+
+`AskUserQuestion` framed like:
+
+> Where is your Obsidian vault — the folder you open inside Obsidian itself?
+>
+> Easiest way to find it:
+> - **Open Obsidian** → Settings → "About" → click **"Show vault folder"** (or right-click your vault name in the vault switcher → "Reveal in Finder/Explorer"). Drag that folder into this chat, or copy its path.
+> - On **macOS** it usually looks like `/Users/yourname/Documents/MyVault` or `~/Obsidian/MyVault`.
+> - On **Windows** it usually looks like `C:\Users\yourname\Documents\MyVault`.
+> - The folder you want is the one with a hidden `.obsidian` subfolder inside it (not the Documents folder above it).
+
+Accept any of:
+- A pasted path (with or without quotes, `~` expansion, trailing slash).
+- A folder dragged-and-dropped (which the terminal usually expands to a path).
+- "I don't know" → walk the user through the Obsidian UI step ("Settings → About → Show vault folder").
+
+Normalize whatever they give you: strip surrounding quotes, expand `~`, drop trailing `/`. Save as `VAULT`.
+
+Do not proceed until `VAULT` is set.
 
 ## Step 1 — Verify it's a valid Obsidian vault
 
@@ -76,7 +105,7 @@ This is destructive — that's why Step 0 told the user upfront. If the user has
 ## Step 5 — Install the fork from the skill bundle
 
 ```bash
-SRC="${CLAUDE_PLUGIN_ROOT}/skills/relay-swap/reference/benai-relay-fork"
+SRC="${CLAUDE_PLUGIN_ROOT}/skills/team-os/reference/benai-relay-fork"
 DST="$VAULT/.obsidian/plugins/benai-relay-fork"
 
 mkdir -p "$DST"
@@ -129,7 +158,7 @@ All three should print `OK`.
 
 # Troubleshooting
 
-**`NOT_A_VAULT`** — the path is wrong, or it's pointing at a parent. The right path is the folder that contains `.obsidian/` directly (e.g. `~/Documents/MyVault`, not `~/Documents`).
+**`NOT_A_VAULT`** — the path is wrong, or it's pointing at a parent. The right folder is the one that has a hidden `.obsidian` folder inside it directly (e.g. `~/Documents/MyVault`, not `~/Documents`). Easiest way to find it: open Obsidian → Settings → About → "Show vault folder".
 
 **Plugin doesn't appear in Obsidian.** Check `.obsidian/community-plugins.json` — it must contain `"benai-relay-fork"`. Restart Obsidian.
 
@@ -137,4 +166,4 @@ All three should print `OK`.
 
 **User wants to revert to upstream Relay.** Remove `<vault>/.obsidian/plugins/benai-relay-fork/`, edit `community-plugins.json` to remove `benai-relay-fork`, then install `system3-relay` from the Obsidian community plugins store normally.
 
-**Want to update the bundled fork later.** The plugin is built into this skill — to update, the maintainer rebuilds `relay-fork`, copies the three artifacts into `shared-skills/relay-swap/reference/benai-relay-fork/`, runs `./sync-skills.sh && ./build-zips.sh`, and republishes.
+**Want to update the bundled fork later.** The plugin is built into this skill — to update, the maintainer rebuilds `relay-fork`, copies the three artifacts into `shared-skills/team-os/reference/benai-relay-fork/`, runs `./sync-skills.sh && ./build-zips.sh`, and republishes.

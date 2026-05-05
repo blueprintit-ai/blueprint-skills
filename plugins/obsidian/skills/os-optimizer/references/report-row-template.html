@@ -1,0 +1,21 @@
+<!--
+Row fragment for the per-section impact table. The skill substitutes:
+
+  {{SECTION_LABEL}}     A. Size & Tokens | B. Wiki Lint | C. Skills | D. Hygiene
+  {{BEFORE}}            12,400
+  {{AFTER}}             9,830
+  {{SAVED}}             2,570            (positive number, no minus — the cell prefixes it)
+  {{PCT}}               20.7             (positive number, no minus)
+  {{WHAT_CHANGED}}      Trimmed 3 oversized CLAUDE.md; compressed 8 files >10KB
+
+If a section was untouched (no fixes applied), still emit the row with
+{{SAVED}}=0, {{PCT}}=0.0, and {{WHAT_CHANGED}}="No fixes applied this run".
+-->
+<tr>
+  <td class="section-name">{{SECTION_LABEL}}</td>
+  <td class="num">{{BEFORE}}</td>
+  <td class="num">{{AFTER}}</td>
+  <td class="num"><span class="pill neg">−{{SAVED}}</span></td>
+  <td class="num">−{{PCT}}%</td>
+  <td>{{WHAT_CHANGED}}</td>
+</tr>

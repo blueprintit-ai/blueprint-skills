@@ -147,15 +147,19 @@ A marketplace of expert automation plugins for Claude Code, organized by departm
 
 **Agents:** `audit-google`, `audit-meta`, `audit-budget`, `audit-creative`, `audit-compliance`, `audit-tracking`
 
-### Obsidian (2 skills)
+### Obsidian (6 skills)
 | Skill | Command | Purpose |
 |-------|---------|---------|
-| setup | `/setup` | Bootstrap vault structure + mode selection + onboarding |
+| os-setup | `/os-setup` | Bootstrap vault structure + mode selection + onboarding |
+| os-optimizer | `/os-optimizer` | Multi-pass second brain audit and optimizer (22 passes, 4 groups) |
+| os-operator | `/os-operator` | Schedule recurring routines that operate the second brain (stub — full scheduling lands later) |
+| vault-mcp | `/vault-mcp` | Deploy a self-hosted Relay MCP server to Railway |
+| team-os | `/team-os` | Install the BenAI Relay fork as the foundation for a shared Team OS |
 | assistant | `/assistant` | Sessions, daily routines, tasks, memory, resources, output styles, meeting intelligence |
 
 #### Mode Selection
 
-Setup asks one preliminary question:
+`/os-setup` asks one preliminary question:
 
 > "What type of vault do you want?"
 
