@@ -1,21 +1,35 @@
 <!--
-Row fragment for the per-section impact table. The skill substitutes:
+Per-framework summary row. The skill renders 7 of these (F1..G7) and
+concatenates them into {{ROWS}} of report-template.html.
 
-  {{SECTION_LABEL}}     A. Size & Tokens | B. Wiki Lint | C. Skills | D. Hygiene
-  {{BEFORE}}            12,400
-  {{AFTER}}             9,830
-  {{SAVED}}             2,570            (positive number, no minus — the cell prefixes it)
-  {{PCT}}               20.7             (positive number, no minus)
-  {{WHAT_CHANGED}}      Trimmed 3 oversized CLAUDE.md; compressed 8 files >10KB
+Substitute:
 
-If a section was untouched (no fixes applied), still emit the row with
-{{SAVED}}=0, {{PCT}}=0.0, and {{WHAT_CHANGED}}="No fixes applied this run".
+  {{FRAMEWORK_TAG}}        F1 | F2 | F3 | F4 | F5 | F6 | G7
+  {{FRAMEWORK_NAME}}       Anthropic CLAUDE.md | Karpathy Wiki | Caveman | …
+  {{FILES}}                14
+  {{CHECKS}}               12
+  {{FINDINGS}}             47
+  {{FAIL}}                 8
+  {{WARN}}                 39
+  {{FIXABLE}}              3   (count of findings with fixable:true)
+  {{FIXED}}                2   (count of findings with fixed:true; always ≤ FIXABLE)
+
+If the framework had no findings: still emit the row with FINDINGS=0,
+FAIL=0, WARN=0, FIXABLE=0, FIXED=0. The detail section will render the clean state.
+
+If FIXABLE > 0 and FIXED < FIXABLE: that gap is "fixable items the user
+skipped or denied this run" — visible at a glance.
 -->
 <tr>
-  <td class="section-name">{{SECTION_LABEL}}</td>
-  <td class="num">{{BEFORE}}</td>
-  <td class="num">{{AFTER}}</td>
-  <td class="num"><span class="pill neg">−{{SAVED}}</span></td>
-  <td class="num">−{{PCT}}%</td>
-  <td>{{WHAT_CHANGED}}</td>
+  <td>
+    <span class="framework-name">{{FRAMEWORK_NAME}}</span>
+    <span class="framework-tag">{{FRAMEWORK_TAG}}</span>
+  </td>
+  <td class="num">{{FILES}}</td>
+  <td class="num">{{CHECKS}}</td>
+  <td class="num">{{FINDINGS}}</td>
+  <td class="num">{{FAIL}}</td>
+  <td class="num">{{WARN}}</td>
+  <td class="num">{{FIXABLE}}</td>
+  <td class="num">{{FIXED}}</td>
 </tr>

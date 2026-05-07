@@ -186,7 +186,6 @@
     },
     {
       "name": "obsidian",
-      "displayName": "Ben AI Obsidian Plugin",
       "source": "./plugins/obsidian",
       "description": "BenAI Obsidian Plugin — Turn any folder into an AI-powered operating system with persistent memory, task management, meeting intelligence, daily routines, and multiple output styles. Includes /os-setup (bootstrap + onboarding), /os-optimizer (22-pass vault audit), /os-operator (scheduled second-brain routines), /vault-mcp (self-hosted Relay MCP on Railway), /team-os (BenAI Relay fork install for shared team vaults), and /assistant (sessions, daily routines, output styles, meeting intelligence). Two modes: Solopreneurs/Professionals and Business/Teams.",
       "version": "3.8.0",

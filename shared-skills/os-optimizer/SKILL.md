@@ -1,127 +1,105 @@
 ---
 name: os-optimizer
-description: "Discovery-first audit and optimizer for any markdown-based second brain / OS vault. Walks the entire vault, classifies every .md file by role (root CLAUDE.md, folder CLAUDE.md, index/README, SKILL.md, daily, meeting, transcript, decision, template, context, note), flags missing folder leaders, prioritizes the audit by load weight, then runs 22 passes across 4 groups (size & tokens, wiki linting, skills/progressive disclosure, vault hygiene) applying the right framework per file role. Approves fixes per category via AskUserQuestion, applies what's approved, renders a brand-aware HTML dashboard saved to a discovered decisions folder. Encodes 5 frameworks (Anthropic CLAUDE.md, Karpathy Wiki lint, Caveman compression, Chroma context rot, Anthropic Memory). TRIGGERS: os optimizer, optimize vault, vault audit, lint vault, vault health check, audit my brain, second brain audit, clean up vault. Run from the user's vault root."
+description: "Framework-driven audit and optimizer for any markdown vault. Discovers and classifies every .md file, then applies 7 frameworks one-by-one — Anthropic CLAUDE.md (F1), Karpathy LLM Wiki (F2), Caveman Compression (F3), Chroma Context Rot (F4), Anthropic Memory (F5), Progressive Disclosure (F6), General Hygiene (G7). Each framework's auditable signals run as judgment-based checks: triggers surface candidates, the agent reads context and reasons, and every finding includes a reasoning sentence specific to the case. Audits every file (only technical skips: .git, .obsidian, .trash, node_modules, dist, build). Asks per-framework what to fix via AskUserQuestion, applies approved fixes, saves a comprehensive HTML dashboard grouped by framework, opens it in the browser, and surfaces it as a renderable artifact. TRIGGERS: os optimizer, optimize vault, vault audit, lint vault, vault health check, audit my brain, second brain audit, clean up vault, framework audit. Run from the user's vault root."
 ---
 
-# Vault Audit
+# Vault Optimizer
 
-Comprehensively scan a second brain vault. Run 22 passes across 4 groups. Present findings, let the user approve fixes per group, apply only what's approved, save a dated audit report.
+Apply 6 frameworks + general hygiene to every markdown file in the vault. For each framework, read its pass-implementation file, run every check the framework defines, log findings, ask per-framework what to fix, apply approved fixes. Save one comprehensive HTML report grouped by framework. **Do not inline the HTML in chat — only the saved path and a one-paragraph summary.**
 
-## Reference files
+## Frameworks
 
-This skill ships with 11 reference files. Read each on demand.
+| # | Framework | Reference (the *why*) | Pass file (the *how*) | Applies to |
+|---|---|---|---|---|
+| F1 | Anthropic CLAUDE.md | `references/anthropic-claude-md.md` | `references/passes-anthropic-claude-md.md` | every `CLAUDE.md` |
+| F2 | Karpathy LLM Wiki | `references/karpathy-llm-wiki.md` | `references/passes-karpathy-wiki.md` | wiki content notes |
+| F3 | Caveman compression | `references/caveman-compression.md` | `references/passes-caveman.md` | instruction-layer files |
+| F4 | Chroma context rot | `references/chroma-context-rot.md` | `references/passes-chroma-context-rot.md` | every `.md` |
+| F5 | Anthropic Memory | `references/anthropic-managed-memory.md` | `references/passes-anthropic-memory.md` | every `.md` |
+| F6 | Progressive Disclosure | `references/progressive-disclosure.md` | `references/passes-progressive-disclosure.md` | every `SKILL.md` |
+| G7 | General Hygiene | (project rules + practitioner notes) | `references/passes-general-hygiene.md` | every `.md` |
 
-### Framework references (the *why*)
-
-| File | Read when |
-|---|---|
-| `references/anthropic-claude-md.md` | Pass A1, D5, D6 — full CLAUDE.md rules and rationale |
-| `references/karpathy-llm-wiki.md` | Pass B1, B2, B3 — lint operation rules |
-| `references/caveman-compression.md` | Pass A3 — compression targets and protected zones |
-| `references/chroma-context-rot.md` | Pass A3, A4 — token cost and position effect |
-| `references/anthropic-managed-memory.md` | Pass A2, D2, D3 — file-size and naming rules |
-| `references/progressive-disclosure.md` | Pass C1–C5 — skill structure rules |
-| `references/practitioner-notes.md` | When user asks "why does this matter" — production friction context |
-
-### Pass-implementation references (the *how*)
-
-| File | Passes | What |
-|---|---|---|
-| `references/passes-size-tokens.md` | A1–A4 | CLAUDE.md size, per-file budget, token estimate, position effect |
-| `references/passes-wiki-lint.md` | B1–B5 | Dead wikilinks, orphans, same-role duplicates, routing compliance, stubs |
-| `references/passes-skills.md` | C1–C5 | Skill-vault duplication, SKILL.md size, frontmatter validation, reference depth, reference TOC |
-| `references/passes-vault-hygiene.md` | D1–D8 | Frontmatter, filename quality, index presence, em dashes, generic emphasis, code-style rules, H1=filename, README hygiene |
-
-When running a pass, **read the relevant `passes-*.md` file** for the exact regex/heuristic/finding format. Don't paraphrase from this SKILL.md — the implementation files are authoritative.
-
-When surfacing a finding to the user, cite the framework reference so they can verify the rule.
+When running a check, **read the pass-implementation file** and follow its regex / heuristic / finding format exactly. Don't paraphrase. Cite the framework reference in every finding.
 
 ## Flow
 
-1. **Verify the cwd looks like a vault** — light check, no hardcoded folder names (Step 0)
-2. **Discover and classify every `.md` file** across the whole vault (Step 1)
-3. **Run all 4 pass groups** against the classified map — prioritized by what gets loaded most (Step 2)
-4. **Render a clean markdown summary** with what was found and what's flagged (Step 3)
-5. **Ask what to do per category** with `AskUserQuestion` (Step 4)
+1. **Verify the cwd looks like a vault** — light check (Step 0)
+2. **Discover & classify every `.md` file** — only technical skips (Step 1)
+3. **Iterate frameworks F1 → G7**, applying each framework's lens with judgment to its scoped files; every finding includes reasoning specific to the case (Step 2)
+4. **Aggregate findings, compute health score** (Step 3)
+5. **Ask per-framework what to fix via AskUserQuestion** (Step 4)
 6. **Apply approved fixes** (Step 5)
-7. **Render the HTML dashboard, save to `{decisions-folder}/{YYYY-MM-DD}-vault-audit.html`, show inline** (Step 6)
-
-### Why discovery comes first
-
-Different vaults have different shapes. We can't assume `Context/`, `Intelligence/`, or any specific folder layout exists. The skill **discovers** what's there, **classifies** every file by role, **prioritizes** the audit by load weight (root `CLAUDE.md` first, folder `CLAUDE.md`s next, index/README files, then content notes), then **applies the right framework per file role.**
-
-A `CLAUDE.md` is checked against Anthropic's CLAUDE.md rules. A `SKILL.md` is checked against progressive-disclosure rules. An `index.md` / `README.md` is checked against routing/hygiene rules. A daily note is checked for freshness. We don't apply CLAUDE.md rules to skill files or vice versa.
+7. **Render HTML dashboard, save, open in browser, emit as artifact** (Step 6)
 
 ---
 
-## Step 0 — Verify the cwd looks like a vault (light check, no hardcoded shape)
+## Step 0 — Verify the cwd looks like a vault
 
-Don't require any specific folder layout. Different vaults have different shapes.
-
-Check (any one of these is sufficient):
+Don't require any specific folder layout. Check (any one is sufficient):
 
 ```bash
-# Workable vault if ANY of these are true:
-test -f CLAUDE.md || test -f claude.md         # has a brain file at root
-[ "$(find . -maxdepth 4 -name 'CLAUDE.md' | head -1)" ]  # has at least one CLAUDE.md anywhere
-[ "$(find . -maxdepth 1 -name '*.md' | wc -l)" -gt 0 ]   # has markdown content at the cwd
+test -f CLAUDE.md || test -f claude.md
+[ "$(find . -maxdepth 4 -name 'CLAUDE.md' | head -1)" ]
+[ "$(find . -maxdepth 1 -name '*.md' | wc -l)" -gt 0 ]
 ```
 
-If **none** are true, stop and tell the user:
+If none are true → stop:
 
-> This doesn't look like a markdown-based vault — I couldn't find any `.md` files or a `CLAUDE.md` here. `cd` into your vault root and re-run.
+> This doesn't look like a markdown vault — no `.md` files or `CLAUDE.md` found. `cd` into your vault root and re-run.
 
-Otherwise, proceed. Tell the user one line:
+Otherwise tell the user one line:
 
-> Scanning your vault. Discovering, classifying, and auditing every markdown file. Back in a moment with the results.
+> Auditing your vault against 6 frameworks. Every file gets every check that applies to its role. Saving the report when done.
 
 Proceed silently into Step 1.
 
 ---
 
-## Step 1 — Discovery & classification (build the map)
+## Step 1 — Discover & classify every `.md` file
 
-The optimizer's first real job is to figure out **what files exist** and **what role each one plays**. The audit prioritizes what's loaded most often.
-
-### 1.1 — Glob the whole vault
+### 1.1 — Universal glob (every file audited)
 
 ```bash
-# every .md file, with the universal skip list applied
-find . -name '*.md' -not -path '*/.git/*' -not -path '*/.obsidian/*' \
-  -not -path '*/.trash/*' -not -path '*/.claude/worktrees/*' \
-  -not -path '*/node_modules/*' -not -path '*/dist/*' -not -path '*/build/*'
+find . -name '*.md' \
+  -not -path '*/.git/*' \
+  -not -path '*/.obsidian/*' \
+  -not -path '*/.trash/*' \
+  -not -path '*/.claude/worktrees/*' \
+  -not -path '*/node_modules/*' \
+  -not -path '*/dist/*' \
+  -not -path '*/build/*'
 ```
 
-Cache the full file list. Every later pass operates against this list, not against fresh globs.
+**No role-based skips.** No "templates skipped", no "Daily skipped", no "Onboarding skipped". Every `.md` outside the technical skip list above gets audited against every framework rule that applies to its role. Classification routes the right rules to the right files; classification does NOT exclude files.
 
-### 1.2 — Classify every file by role
-
-Walk the file list and tag each entry with one of these roles. **Order matters** — first match wins.
+### 1.2 — Classify each file by role (first match wins)
 
 | Role | Detection |
 |---|---|
 | `root-claude` | `./CLAUDE.md` or `./claude.md` (cwd root only) |
-| `folder-claude` | any other `CLAUDE.md` / `claude.md` in any subfolder |
-| `skill` | `SKILL.md` inside a folder also containing `references/` or matching `**/skills/*/SKILL.md` |
-| `index` | `index.md` |
+| `folder-claude` | any other `CLAUDE.md` / `claude.md` in subfolders |
+| `claude-rules` | files inside `.claude/rules/` |
+| `skill` | `SKILL.md` files (anywhere) |
+| `index` | `index.md` (case-insensitive) |
 | `readme` | `README.md` (case-insensitive) |
-| `daily` | matches `Daily/YYYY-MM-DD.md` or `**/Daily/YYYY-MM-DD.md` patterns |
-| `meeting` | inside a `meetings/` folder, or filename matches `YYYY-MM-DD - {title}.md` outside `Daily/` |
-| `transcript` | inside `*transcripts*/` folders, or files >100KB that look like transcripts |
-| `decision` | inside `*decisions*/` folders |
-| `template` | inside `*templates*/` folders or filename ends in `-template.md` |
-| `context` | inside any `Context/` folder (case-insensitive) |
+| `daily` | matches `\d{4}-\d{2}-\d{2}\.md` inside any `Daily/` |
+| `meeting` | inside `*meetings*/` or filename matches `\d{4}-\d{2}-\d{2} - .+\.md` outside `Daily/` |
+| `transcript` | inside `*transcripts*/` or files >100KB |
+| `decision` | inside `*decisions*/` |
+| `template` | inside `*templates*/` or filename ends `-template.md` |
+| `context` | inside any `Context/` (case-insensitive) |
 | `note` | everything else |
 
-Build a structure like:
+Build the classification map:
 
 ```json
 {
   "root_claude": "./CLAUDE.md",
-  "folder_claudes": ["./Projects/CLAUDE.md", "./Team/CLAUDE.md", ...],
-  "skills": ["./Skills/foo/SKILL.md", ...],
-  "indexes": ["./Projects/index.md", ...],
-  "readmes": ["./Projects/talent-signals/README.md", ...],
+  "folder_claudes": [...],
+  "claude_rules": [...],
+  "skills": [...],
+  "indexes": [...],
+  "readmes": [...],
   "dailies": [...],
   "meetings": [...],
   "transcripts": [...],
@@ -129,356 +107,332 @@ Build a structure like:
   "templates": [...],
   "context_files": [...],
   "notes": [...],
-  "by_folder": {"./Projects": [...files...], ...},
+  "by_folder": {...},
   "stats": {"total_files": N, "total_bytes": B, "folders": F}
 }
 ```
 
-### 1.3 — Presence check (flag missing leaders)
+### 1.3 — Build supporting indexes (used by F2/F4)
 
-For every folder containing >5 markdown files (excluding skip-listed roles like `daily`, `meeting`, `transcript`):
+| Index | Built from | Used by |
+|---|---|---|
+| `vault_filename_index` | every `.md` basename, lowercased, with and without extension | F2.2, F2.4 |
+| `inbound_link_index` | grep across vault for `\[\[name(\||\]|#)` | F2.3, F2.4 |
+| `routing_table` | root CLAUDE.md routing/knowledge-routing section | F2.6 |
+| `top_level_entries` | `find . -maxdepth 1` | F2.6 |
+| `headers_index` | per-file H2/H3 list with line numbers + byte sizes | F3.6, F5.2 |
+| `protected_zones_map` | per-file map of code/URL/path/frontmatter/wikilink spans | F3.x, G7.1 |
 
-- If the folder has **no `CLAUDE.md` AND no `index.md` AND no `README.md`**, flag it as **leaderless**.
-- If the folder has >15 files and no `CLAUDE.md`, flag it harder ("missing folder-level CLAUDE.md — large folder needs LLM guidance").
-
-For the vault root:
-
-- If `root_claude` is missing entirely, this is a hard finding ("vault has no root CLAUDE.md — Claude has no anchor to start from").
-
-### 1.4 — Prioritization order
-
-The audit checks files in this priority order — most loaded / most blast-radius first:
-
-1. **`root_claude`** — checked against full Anthropic CLAUDE.md rules (size, position, anti-patterns, code-style violations, signature lines, etc.).
-2. **`folder_claudes`** — same rules as root but with adjusted size budgets (folder-level CLAUDE.mds can be smaller).
-3. **`indexes` + `readmes`** — routing rules: are they actually routing, or are they prose?
-4. **`skills`** — progressive-disclosure rules (SKILL.md size, frontmatter, reference depth, reference TOC).
-5. **`context_files`** — frontmatter compliance, em-dash, voice match.
-6. **`notes`** — wiki-lint (dead links, orphans, stubs), frontmatter, hygiene.
-7. **`dailies` / `meetings` / `transcripts` / `decisions`** — surface-level hygiene only (em-dash, duplicate H1). Don't flag size or structure.
-8. **`templates`** — skip most checks. Templates are by-design skeletons.
-
-### 1.5 — Show the discovery summary first
-
-Before running any audit pass, render a one-block summary so the user sees what was found:
+### 1.4 — Show classification summary in chat (one block, before any framework runs)
 
 ```markdown
-## 📋 Discovery — {N} markdown files across {F} folders
+## 📋 Discovery — {N} markdown files across {F} folders, {B-formatted} total
 
-| Role | Count | Notes |
-|---|---:|---|
-| Root CLAUDE.md | 1 | ✅ found |
-| Folder CLAUDE.mds | 14 | covering: Projects, Team, Departments, Resources, ... |
-| Indexes / READMEs | 23 | |
-| Skills | 6 | |
-| Context files | 8 | |
-| Notes | 412 | |
-| Dailies | 187 | |
-| Meetings | 42 | |
-| Transcripts | 19 | |
-| Decisions | 31 | |
-| Templates | 12 | |
+| Role | Count |
+|---|---:|
+| Root CLAUDE.md | 1 |
+| Folder CLAUDE.mds | {n} |
+| Skills (SKILL.md) | {n} |
+| .claude/rules | {n} |
+| Indexes / READMEs | {n} |
+| Context files | {n} |
+| Notes | {n} |
+| Dailies | {n} |
+| Meetings | {n} |
+| Transcripts | {n} |
+| Decisions | {n} |
+| Templates | {n} |
 
-**Presence check:**
-- ⚠️ {N} folders are leaderless (no CLAUDE.md / index.md / README.md)
-- ⚠️ {N} large folders (>15 files) missing a CLAUDE.md
-- ✅ Root CLAUDE.md present
+**Framework targets (every file in scope is audited):**
+- F1 Anthropic CLAUDE.md → {n} CLAUDE.md files
+- F2 Karpathy Wiki → {n} content notes (notes + context + decision + meeting + index + readme) + 1 schema doc check
+- F3 Caveman → {n} instruction-layer files (CLAUDE.md + SKILL.md + .claude/rules + skill references)
+- F4 Chroma Context Rot → {N} files (every `.md`)
+- F5 Anthropic Memory → {N} files (every `.md`)
+- F6 Progressive Disclosure → {n} skills
+- G7 General Hygiene → {N} files
 
-Auditing now using the right framework per file role — Anthropic CLAUDE.md rules for CLAUDE.mds, progressive-disclosure for skills, routing rules for indexes, wiki-lint + hygiene for notes.
+Running F1 now…
 ```
 
-This block goes into the chat once, before any per-pass output. It's how the user knows we actually scanned everything they have, not just the BenAI-shaped subset.
-
 ---
 
-## Step 2 — Run the 4 pass groups against the classified map
+## Step 2 — Iterate frameworks F1 → G7 with judgment
 
-For each group, **read the corresponding pass-implementation file**, then run every pass it describes — but operate on the classified map from Step 1, applying the right framework per file role.
+**This is not a regex pass.** For each framework, read its pass-implementation file, then apply every check it defines to the files in that framework's scope. Triggers in the pass files surface candidates; the agent reads context and judges each candidate before producing a finding. Every finding includes `reasoning` specific to the case.
 
-### Group A — Size & Token Budget
+Why: a regex match on `\bjust\b` flags "just run X" (where "just" is doing real work — contrasting with running multiple) the same as "It's just a quick check" (where it's filler). Only an agent reading the line in context can tell which is which. The same applies to "be careful" (sometimes a closing reminder, sometimes a vague platitude), `IMPORTANT:` (sometimes earned, sometimes inflation), `voice.md` + `brand.md` (sometimes overlapping, sometimes intentionally separated), and most other framework signals.
 
-Read: `references/passes-size-tokens.md`. Run A1, A2, A3, A4.
+### 2.1 — For each framework F1, F2, F3, F4, F5, F6, G7 (in this order)
 
-### Group B — Wiki Linting
+For each framework:
 
-Read: `references/passes-wiki-lint.md`. Run B1, B2, B3, B4, B5.
+1. **Read the pass-implementation file** for that framework (e.g., `references/passes-anthropic-claude-md.md` for F1). Cache it for the duration of the framework run.
+2. **Determine the file scope** from the table at the top of this SKILL.md (e.g., F1 = every CLAUDE.md; F6 = every SKILL.md; F4/F5/G7 = every `.md`).
+3. **For each check in the pass file**:
+   - Apply the **trigger heuristic** (regex / metric / structural pattern) to surface candidates fast. Some checks have no trigger — the file itself is the candidate.
+   - For each candidate, **read the surrounding 5–15 lines** with the `Read` tool, then apply the **agent-judgment criteria** the pass file lists. Read other files (linked targets, sibling clusters, the file's index) when judgment requires it.
+   - Decide: does this case actually violate the framework rule **in this file's specific context**? Or is it a false positive (the pass file lists common ones to skip)?
+   - If real → produce a finding. If not → drop it; the trigger was a candidate, not a verdict.
+   - **Every finding includes a `reasoning` field** (1–2 sentences specific to this case, not a generic restatement of the rule).
+4. **Run the framework's vault-wide checks** (using indexes from Step 1.3): orphan detection, dead wikilinks, distractor pairs, schema compliance, etc. — see each pass file's "vault-wide" sections.
+5. **Emit one progress line** when the framework completes:
 
-> [!important] B1 (dead wikilinks) and B2 (orphans) require building a vault filename index. Build it once and reuse across all B passes.
+   > F1 Anthropic CLAUDE.md — read 14 CLAUDE.md files, judged 312 candidates → 22 findings (5 fail · 17 warn)
 
-### Group C — Skills
+   The `judged` count vs `findings` count is a sanity check: if they're roughly equal, the run was lazy (regex candidates became findings without judgment); if `judged` ≫ `findings`, judgment is filtering false positives — that's the intended behavior.
 
-Read: `references/passes-skills.md`. Run C1, C2, C3, C4, C5.
+### 2.2 — Finding schema (every framework, every path)
 
-### Group D — Vault Hygiene
-
-Read: `references/passes-vault-hygiene.md`. Run D1, D2, D3, D4, D5, D6, D7, D8.
-
-### Universal skip list
-
-Every pass skips: `.claude/worktrees/`, `.git/`, `.trash/`, `node_modules/`, `.obsidian/`, `dist/`, `build/`, and any folder containing compiled artifacts (e.g., `Infrastructure/relay-mcp-server-v2/` if it exists).
-
-### Pass-specific exceptions
-
-Some passes have additional skip rules (e.g., B2 orphan detection skips `Daily/`, `index.md`, profile root files). The pass-implementation files document these — follow them exactly.
-
----
-
-## Step 3 — Render the markdown summary
-
-Output a single clean markdown block grouped by pass group. Use emoji as visual anchors. Format:
-
-```markdown
-## 🔍 Vault Audit — {YYYY-MM-DD}
-
-**Score: {score} / 100**
-
-Scanned {N} markdown files across {M} folders. Ran 22 passes.
-
----
-
-### 📏 A. Size & Token Budget
-
-#### A1 — CLAUDE.md size ({n} flagged)
-{table or "✅ All under 200 lines"}
-
-#### A2 — Per-file size budget ({n} flagged)
-{table of files >10KB or >100KB}
-
-#### A3 — Token estimate (informational)
-- Per-session auto-load: {tokens}
-- Total CLAUDE.md tree: {tokens}
-- Top 3 reduction targets: {list}
-
-#### A4 — Position effect ({n} flagged)
-{table of files with buried critical info}
-
----
-
-### 🔗 B. Wiki Linting
-
-#### B1 — Dead wikilinks ({n} flagged)
-{list, max 10 shown, "...and N more" if truncated}
-
-#### B2 — Orphan notes ({n} flagged)
-{list, max 10 shown}
-
-#### B3 — Same-role duplicates ({n} flagged)
-{list of overlap candidates}
-
-#### B4 — Routing compliance ({n} flagged)
-{vault-root files + unmapped folders}
-
-#### B5 — Stub notes ({n} flagged)
-{list, max 10 shown}
-
----
-
-### 🛠️ C. Skills (Progressive Disclosure)
-
-#### C1 — Skill-vault duplication ({n} flagged)
-{table: skill | duplicate ref | vault file}
-
-#### C2 — SKILL.md size ({n} flagged)
-{list of skills >500 lines}
-
-#### C3 — Frontmatter validation ({n} flagged)
-{list of frontmatter violations}
-
-#### C4 — Reference depth ({n} flagged)
-{list of 2-hop references}
-
-#### C5 — Reference TOC ({n} flagged)
-{list of refs >100 lines without TOC}
-
----
-
-### 🧹 D. Vault Hygiene
-
-#### D1 — Frontmatter compliance
-- Missing `status:`: {n} files
-- Missing `tags:`: {n} files
-- Missing `type:`: {n} files
-- Missing `project:` / `department:`: {n} files
-
-#### D2 — Filename quality ({n} flagged)
-{list of ambiguous filenames}
-
-#### D3 — Index file presence ({n} flagged)
-{list of folders >5 files without index}
-
-#### D4 — Em dashes ({n} occurrences across {f} files)
-{summary count}
-
-#### D5 — Generic emphasis ({n} flagged)
-{list of CLAUDE.md files with overuse}
-
-#### D6 — Code-style rules in CLAUDE.md ({n} flagged)
-{list with line excerpts}
-
-#### D7 — H1 duplicating filename ({n} flagged)
-{list, max 10 shown}
-
-#### D8 — Project README hygiene ({n} flagged)
-{list, max 10 shown}
-
----
-
-### 📊 Summary
-
-- **Auto-fixable now:** {n} items (dead wikilinks, skill-vault duplicates, em dashes, duplicate H1s)
-- **Needs review:** {n} items (orphans, duplicates, routing, READMEs, frontmatter)
-- **Manual rewrite needed:** {n} items (oversized CLAUDE.md, oversized files, sparse/bloated READMEs)
-- **Informational:** token estimate
+```json
+{
+  "framework": "F1",
+  "check_id": "F1.2",
+  "check_name": "Specificity heuristic",
+  "path": "./Projects/foo/CLAUDE.md",
+  "line": 42,
+  "severity": "warn",
+  "excerpt": "Be careful with auth",
+  "reasoning": "This rule sits in the top half of a CLAUDE.md that's otherwise a routing index — there's no specific auth boundary, file path, or function named anywhere else. As a primary rule it falls into the 35%-compliance bucket; either anchor it to a specific path/function or remove it.",
+  "action": "Either delete or rewrite as 'All /api/admin/* routes must call requireAdmin() from src/auth/middleware.ts'.",
+  "fixable": false,
+  "fixed": false,
+  "citation": "anthropic-claude-md.md → Specificity beats vagueness"
+}
 ```
 
-### Score formula
+The `reasoning` field is mandatory. Every finding has it.
+
+The `fixable` field marks whether the check supports an auto-fix (set by the pass file).
+The `fixed` field is set by **Step 5** after a fix lands successfully. It starts `false`. The HTML render uses these two flags to display three states:
+- `fixable: false` → grey FLAG-ONLY pill (manual review)
+- `fixable: true && fixed: false` → yellow FIXABLE pill (could be fixed; user skipped or denied)
+- `fixable: true && fixed: true` → green FIXED pill (applied this run)
+
+---
+
+## Step 3 — Aggregate findings + compute score
+
+For each framework F1–G7, count: total findings, severity breakdown (fail/warn/info), fixable count, files touched.
+
+### Score formula (framework-weighted)
 
 ```
-score = 100
-  - (A1 size-flagged CLAUDE.md * 5)
-  - (A2 oversized files * 2 each, capped at 20)
-  - (A4 buried-info files * 1)
-  - (B1 dead wikilinks * 1, capped at 30)
-  - (B2 orphan notes * 1, capped at 20)
-  - (B3 duplicate roles * 3)
-  - (B4 routing violations * 5)
-  - (B5 stubs * 1, capped at 10)
-  - (C1 skill-vault duplicates * 3)
-  - (C2 oversized SKILL.md * 2)
-  - (C3 frontmatter violations * 1, capped at 20)
-  - (C4 reference depth violations * 5)
-  - (C5 missing TOC * 1)
-  - (D1 missing required fields * 1, capped at 30)
-  - (D2 ambiguous filenames * 1, capped at 10)
-  - (D3 missing indexes * 1, capped at 10)
-  - (D4 em dashes * 1, capped at 20)
-  - (D5 generic emphasis * 2)
-  - (D6 code-style rules in CLAUDE.md * 2)
-  - (D7 duplicate H1 * 1, capped at 20)
-  - (D8 README hygiene * 1, capped at 10)
+For each framework:
+  deduction = (fail_count × 5) + (warn_count × 1)
+  capped_deduction = min(deduction, 25)
+score = max(0, 100 - sum(capped_deduction for F1..G7))
 ```
-
-Cap at 0.
 
 | Score | Interpretation |
 |---|---|
 | 90–100 | Well-tuned. Run audit monthly. |
-| 70–89 | Visible drift. Address top findings, then re-run. |
-| 50–69 | Bloat is hurting per-session performance. Fix before adding more skills. |
-| <50 | Vault rot. Major cleanup needed; possibly split or restructure. |
+| 70–89 | Visible drift. Address top findings. |
+| 50–69 | Bloat is hurting performance. |
+| <50 | Vault rot. Major cleanup needed. |
 
-After rendering the block, go directly to Step 4.
+After scoring, **do not render a long markdown summary in chat**. Emit one short block:
 
----
+```
+✅ All 7 frameworks applied.
 
-## Step 4 — Ask what to do (use `AskUserQuestion`)
+| Framework | Files | Checks | Findings | Fail | Warn | Fixable |
+|---|---:|---:|---:|---:|---:|---:|
+| F1 Anthropic CLAUDE.md | … | … | … | … | … | … |
+| F2 Karpathy Wiki | … | … | … | … | … | … |
+| F3 Caveman | … | … | … | … | … | … |
+| F4 Chroma Context Rot | … | … | … | … | … | … |
+| F5 Anthropic Memory | … | … | … | … | … | … |
+| F6 Progressive Disclosure | … | … | … | … | … | … |
+| G7 Hygiene | … | … | … | … | … | … |
+| **TOTAL** | … | … | … | … | … | … |
 
-Use `AskUserQuestion` with **one question, four options.** The summary above gave the full picture; the question is what to do across the audit.
-
-**Question:** *"What should I do with these findings?"*
-
-**Options:**
-
-1. **Apply all auto-fixable items** — wikilink fixes, skill-vault rewrites, em dash replacements (period substitution), duplicate H1 removal. Everything else gets logged for manual review.
-2. **Review and choose per category** — separate `AskUserQuestion` calls for each fixable category (wikilinks, skill-vault, em dashes, duplicate H1s).
-3. **Just save the report, don't change anything** — write the audit report and exit. Useful for first-time runs or when the user wants to review changes manually.
-4. **Show me one item per category before deciding** — render a representative diff for each fixable category, then re-prompt with options 1–3.
-
-If the user picks option 4: show one example diff per fixable category, then re-ask 1–3.
-
-If the user picks option 2: ask one follow-up `AskUserQuestion` per category. Each option: Yes / No / Skip and save report.
+Score: {score_before}/100. Asking per-framework what to fix…
+```
 
 ---
 
-## Step 5 — Apply approved fixes
+## Step 4 — Ask per-framework what to fix (AskUserQuestion) — STRICT
 
-Apply in this order (smallest blast radius first):
+**The most common failure mode of this skill is the agent batching the asks or skipping frameworks.** Don't. Every framework with a fixable finding fires its own `AskUserQuestion`. No batching. No skipping because the count is small.
 
-### Em dash substitution (D4)
-- Replace `—` with `. ` (period + space) and `–` with `, ` (comma + space) — most conservative substitutions per project Rule 14.
-- Skip lines that are inside code fences or inline code.
+**Fixable check IDs (the only IDs that produce `fixable: true`):**
+
+| Framework | Fixable IDs |
+|---|---|
+| F2 | F2.2 (dead wikilinks), F2.4 (missing cross-refs — opt-in) |
+| F3 | F3.1–F3.4 (caveman substitutions — opt-in) |
+| F6 | F6.11 (skill-vault duplication) |
+| G7 | G7.1 (em dashes), G7.3 (H1 = filename; deduplicates F1.10) |
+
+F1, F4, F5 never have fixable findings — every check is flag-only. Don't prompt; surface under manual review in the report.
+
+**Loop:**
+
+```
+for framework in [F2, F3, F6, G7]:
+    if fixable_count[framework] == 0: continue
+    fire AskUserQuestion("{Framework name} ({Fx}) — {N} fixable. What should I do?")
+    options:
+      1. Apply all fixable items in this framework
+      2. Show me one example diff first (renders diff, re-prompts 1/3/4)
+      3. Skip this framework (findings stay flag-only in report)
+      4. Pick item-by-item (sub-AskUserQuestion per finding: Yes/No/Skip-rest)
+    record per-finding approval status
+```
+
+Failing to fire one of these prompts when `fixable_count > 0` is a bug, not a feature.
+
+**Per-item confirmation required for these checks (bulk-apply is unsafe):**
+- **F2.2 dead wikilinks**: each needs the right repoint target. Bulk = apply agent top-1; low-confidence = log as skipped. Walk = pick per item.
+- **F2.4 missing cross-refs**: same — confidence drives bulk vs walk; default walk.
+- **F3.1–F3.4 caveman**: bulk-safe per file (agent filtered candidates via reasoning), but user opts in per file. Prompt: "Apply to all N files" / "pick files".
+
+**Track approvals** in a per-framework structure (`{choice, approved_finding_ids, skipped_finding_ids}`); drives Step 5 and the per-finding `fixed:` flag.
+
+---
+
+## Step 5 — Apply approved fixes (and mark `fixed:true` per finding)
+
+Apply in this order (smallest blast radius first). For every finding the agent fixes, **set `fixed: true` on the finding object**. The HTML render uses this flag to show FIXED vs FIXABLE pills. A finding with `fixable: true && fixed: false` got skipped or denied — the report makes that visible.
+
+### 5.1 — Em dashes (G7.1)
+- For each approved finding: replace `—` → `. `, `–` → `, ` in stripped body only.
+- Re-strip protected zones after; if any code/URL/wikilink was touched → revert that file's change AND keep `fixed: false`.
 - Use `Edit` with `replace_all: true` per file.
+- Mark `fixed: true` on every G7.1 finding whose file was successfully fixed.
 
-### Duplicate H1 removal (D7)
-- Remove the matching `# {Title}` line and any blank line immediately following it.
-- Use `Edit`.
+### 5.2 — Duplicate H1 (G7.3 / F1.10)
+- Remove the H1 line and any blank line immediately following.
+- Use `Edit`. Mark `fixed: true`.
 
-### Wikilink fixes (B1)
-- Replace `[[Old Target]]` with chosen replacement (new `[[match]]` or plain text).
-- Preserve surrounding text exactly. Use `Edit`.
+### 5.3 — Wikilink fixes (F2.2)
+- For each finding the user approved (bulk = top-1 suggestion, walk = chosen target): replace `[[Old Target]]` with the picked replacement.
+- Preserve surrounding text byte-for-byte.
+- Mark `fixed: true` per finding fixed; `fixed: false` for any skipped or low-confidence ones the user said no to.
 
-### Skill-vault rewrites (C1)
-- Update the skill's `SKILL.md` to point at the vault `Context/` path.
-- Then `grep` the rest of the skill folder for the duplicate ref filename to confirm it's no longer used.
-- If still referenced anywhere → surface the conflict and skip the deletion.
-- Otherwise → delete the duplicate ref file via `rm`.
+### 5.4 — Skill-vault rewrites (F6.11)
+- Update SKILL.md to read the vault `Context/` path instead of the duplicate ref.
+- Grep the rest of the skill folder for the duplicate ref filename.
+- If still referenced → surface conflict, skip deletion, mark `fixed: false`.
+- Otherwise → `rm` the duplicate, mark `fixed: true`.
 
-### Failures
-If any change fails (file not found, edit conflict, ambiguous match), stop, report which item failed, and ask the user how to proceed. Never silently skip a failure.
+### 5.5 — Caveman substitutions (F3.1, F3.2, F3.3, F3.4) — only if user opted in per file
+- Apply substitution table from `references/passes-caveman.md` to the stripped body.
+- Re-strip protected zones; if any was modified → abort the fix on that file, report, mark `fixed: false` for that file's findings.
+- Mark `fixed: true` on every F3.x finding for files the agent successfully substituted.
+
+### 5.6 — Verify fixed-counts add up
+
+After applying:
+- `total_fixed` (all frameworks) = sum of findings with `fixed: true`.
+- `total_fixable_not_fixed` = sum of findings with `fixable: true && fixed: false`.
+- `total_flag_only` = sum of findings with `fixable: false`.
+
+These three should equal `total_findings`. If not, the orchestrator has a bookkeeping bug — log the mismatch and continue (HTML still renders correctly from per-finding flags).
+
+### Failure handling
+If any fix fails (file missing, edit conflict, ambiguous match, protected-zone violation) → stop, report which item failed, ask the user how to proceed. Never silently skip a failure.
 
 ### Always preserve
-- Files in skip list (`.claude/worktrees/`, `.git/`, `.trash/`, `node_modules/`, `.obsidian/`)
-- Code fences (` ``` ` blocks)
-- URLs, file paths, frontmatter keys
-- Inline code spans
+- Files in technical skip list (`.git`, `.obsidian`, `.trash`, `node_modules`, `dist`, `build`).
+- Code fences, inline code, URLs, file paths, frontmatter keys, wikilinks, table delimiters, headings, dates, version numbers.
 
 ---
 
-## Step 6 — Render and save the HTML dashboard (single output)
+## Step 6 — Render, save, open, and surface the HTML
 
-The optimizer's single output is one HTML dashboard saved to the vault. No markdown report — the dashboard is the report.
+### 6.1 — Compute per-framework metrics
 
-### 6.1 — Compute the metrics
-
-Before applying fixes (Step 5), snapshot per-section token counts. After applying, snapshot again. Compute:
+Snapshot before/after per framework:
 
 | Variable | Source |
 |---|---|
-| `{{TOTAL_BEFORE}}`, `{{TOTAL_AFTER}}`, `{{TOTAL_SAVED}}`, `{{TOTAL_PCT}}` | sum across all four groups |
-| `{{SCORE_BEFORE}}`, `{{SCORE_AFTER}}` | scoring formula run before & after |
-| `{{SCORE_DELTA}}` and `{{SCORE_DELTA_SIGN}}` (`+` or `−`) | `after − before` |
-| Per-section: `{{BEFORE}}`, `{{AFTER}}`, `{{SAVED}}`, `{{PCT}}`, `{{WHAT_CHANGED}}` | per A/B/C/D group; if no fixes applied for a group, set `{{SAVED}}=0`, `{{PCT}}=0.0`, `{{WHAT_CHANGED}}="No fixes applied this run"` |
-| `{{SESSION_BEFORE}}`, `{{SESSION_AFTER}}`, `{{SESSION_PCT}}` | tokens loaded into auto-context on session start (CLAUDE.md tree) |
-| `{{ANNUAL_SAVINGS}}` | `{{TOTAL_SAVED}} × SESSIONS_PER_WEEK × WEEKS_PER_YEAR`, formatted with K/M suffix |
-| `{{SESSIONS_PER_WEEK}}` | default `50`, override if user specifies |
-| `{{WEEKS_PER_YEAR}}` | default `50` |
+| `{{F1_FILES}}`, `{{F1_CHECKS}}`, `{{F1_FINDINGS}}`, `{{F1_FAIL}}`, `{{F1_WARN}}`, `{{F1_FIXABLE}}`, `{{F1_FIXED}}`, `{{F1_DETAILS}}` | F1 bucket |
+| same for F2, F3, F4, F5, F6, G7 | each bucket |
+| `{{TOTAL_FIXABLE}}` | count of all findings with `fixable: true` |
+| `{{TOTAL_FIXED}}` | count of all findings with `fixed: true` |
+| `{{TOTAL_FIXABLE_NOT_FIXED}}` | count of findings with `fixable: true && fixed: false` (skipped/denied) |
+| `{{TOTAL_BEFORE}}`, `{{TOTAL_AFTER}}`, `{{TOTAL_SAVED}}`, `{{TOTAL_PCT}}` | sum across all frameworks |
+| `{{SCORE_BEFORE}}`, `{{SCORE_AFTER}}`, `{{SCORE_DELTA}}`, `{{SCORE_DELTA_SIGN}}` | scoring formula before & after |
+| `{{SESSION_BEFORE}}`, `{{SESSION_AFTER}}`, `{{SESSION_PCT}}` | root CLAUDE.md token count before & after |
+| `{{ANNUAL_SAVINGS}}` | `{{TOTAL_SAVED}} × SESSIONS_PER_WEEK × WEEKS_PER_YEAR`, K/M suffix |
+| `{{SESSIONS_PER_WEEK}}` (default 50) | user override if specified |
+| `{{WEEKS_PER_YEAR}}` (default 50) | — |
 | `{{FILES_SCANNED}}`, `{{FOLDERS_COVERED}}` | from Step 1 |
-| `{{ORG_NAME}}` | read from `Context/business.md` or `Context/organization.md` (title or `name:` frontmatter); fallback: cwd folder name |
-| `{{DATE}}` | `{YYYY-MM-DD}` |
-| `{{TIMESTAMP}}` | ISO UTC |
-| `{{TOTAL_SUMMARY}}` | one short phrase summarising the run, e.g. `"22 passes · 4 groups touched · score +17"` |
+| `{{ORG_NAME}}` | `Context/business.md` or `Context/organization.md` title or `name:` frontmatter; fallback cwd folder name |
+| `{{DATE}}`, `{{TIMESTAMP}}` | today (YYYY-MM-DD) and ISO UTC |
 
-Format integers with thousands separators (e.g. `12,400`). Format percentages to one decimal (`20.7%`).
+For each framework's `{{Fx_DETAILS}}`: render the findings list as HTML (severity pills, paths, excerpts, actions, framework citation). Cap at top-25 findings per framework — if more, append "and N more flagged in {decisions-folder}/{date}-vault-audit-findings.json".
+
+Format integers with thousands separators. Format percentages to one decimal.
 
 ### 6.2 — Build the HTML
 
-1. Read the template: `${CLAUDE_PLUGIN_ROOT}/skills/os-optimizer/references/report-template.html`.
-2. Read the row fragment: `${CLAUDE_PLUGIN_ROOT}/skills/os-optimizer/references/report-row-template.html`.
-3. For each of the four groups (A, B, C, D), render one row from the row fragment with the per-section metrics. Concatenate the four rendered rows.
-4. Substitute `{{ROWS}}` in the main template with that concatenated string.
-5. Substitute every other `{{PLACEHOLDER}}` with its computed value.
-6. **Sanity pass:** scan the rendered HTML for any `{{...}}` strings still left. If any remain, fix them or fail loudly — never save a half-rendered file.
+Templates (read once, substitute many times):
 
-### 6.3 — Save to the brain (path is dynamic — discover, don't hardcode)
+| File | Used as |
+|---|---|
+| `references/report-template.html` | main shell |
+| `references/report-row-template.html` | one row per framework in the summary table |
+| `references/report-section-template.html` | one detail section per framework |
+| `references/report-finding-template.html` | one card per finding inside a detail section |
+
+Steps:
+1. Read all four templates.
+2. For each framework F1..G7:
+   - Render one row from `report-row-template.html` with the framework's metrics → append to `{{ROWS}}` accumulator.
+   - For each finding (cap at top-25 per framework, ranked: fixed first, then fail before warn, then by check ID): render one card from `report-finding-template.html` → append to that section's `{{FINDINGS_HTML}}`. **HTML-escape** `EXCERPT`, `REASONING`, and `ACTION` (`<`, `>`, `&`, `"`). The `REASONING` field is mandatory — if the finding has no reasoning text, the skill is bugged; fail loudly.
+   - Compute `{{STATUS_PILL}}` per finding:
+     - `fixable: false` → `<span class="pill flag">FLAG-ONLY</span>`
+     - `fixable: true && fixed: false` → `<span class="pill fixable">FIXABLE · NOT APPLIED</span>`
+     - `fixable: true && fixed: true` → `<span class="pill fixed">FIXED THIS RUN</span>`
+   - If 0 findings: leave `{{FINDINGS_HTML}}` empty and substitute `{{CLEAN_STATE}}` with `<div class="clean">✅ All checks passed. No findings for this framework.</div>`.
+   - If total findings > 25: substitute `{{MORE_NOTE}}` with `<p class="more">…and {N} more findings logged in {YYYY-MM-DD}-vault-audit-findings.json.</p>`. Otherwise leave empty.
+   - Render the section from `report-section-template.html` → append to `{{DETAILS}}` accumulator.
+3. Substitute `{{ROWS}}` and `{{DETAILS}}` in the main template.
+4. Substitute every other `{{PLACEHOLDER}}` (header stats, score, session impact, etc.).
+5. **Sanity pass:** scan the rendered HTML for any leftover `{{...}}` or `{{ }}`. If any remain → fail loudly, never save a half-rendered file.
+
+The `{{FRAMEWORK_WHY}}` for each section comes from the matching framework reference's "Core thesis" — one short paragraph max. Fixed strings:
+
+- F1: "Anthropic guidance: keep CLAUDE.md the smallest concrete set of instructions that survives the pruning test. Specific rules earn ~89% compliance; vague rules get ~35%."
+- F2: "Karpathy's LLM Wiki: knowledge is compiled once and kept current. Lint catches dead links, orphans, contradictions, missing cross-references, and undigested sources."
+- F3: "Caveman compression: every token competes for attention. Strip filler, hedging, pleasantries, and verbose connectors from the agent-facing instruction layer."
+- F4: "Chroma context rot: every model degrades with length; distractors hurt; position matters. Lead with the load-bearing rule and keep the auto-load budget tight."
+- F5: "Anthropic Memory: per-file ≤100KB / ~25K tokens (recommended <10KB). Multiple focused files beat one mega-file. The agent navigates by name."
+- F6: "Progressive Disclosure: the context window is a public good. Skill metadata loads always; bodies on relevance; references on demand. Keep references one hop deep."
+- G7: "Project rules and practitioner field notes: em-dash discipline, frontmatter compliance, no H1 duplicating filename, README hygiene."
+
+### 6.3 — Save (path discovered, not hardcoded)
 
 Pick the save folder using this priority:
-
-1. If `Intelligence/decisions/` exists → use it.
-2. Else if `Intelligence/` exists → create `Intelligence/decisions/`.
-3. Else if any folder matching `*decisions*/` was found in Step 1's discovery map → use the first one.
+1. `Intelligence/decisions/` exists → use it.
+2. `Intelligence/` exists → create `Intelligence/decisions/`.
+3. Any folder matching `*decisions*/` was discovered in Step 1 → use the first one.
 4. Else create `audits/` at the cwd root.
 
-Save the path as `{decisions-folder}` and write to `{decisions-folder}/{YYYY-MM-DD}-vault-audit.html`.
+Save HTML to `{decisions-folder}/{YYYY-MM-DD}-vault-audit.html`.
+Save the raw findings JSON to `{decisions-folder}/{YYYY-MM-DD}-vault-audit-findings.json` (so users can mine the full list).
 
-Read the file back to confirm content present (not just file present). On mismatch, retry once, then fail loudly.
+Read the HTML back to confirm content present (not just file present). On mismatch → retry once → fail loudly.
 
-### 6.4 — Show in chat
+### 6.4 — Open + render + summarize (final response, in this order)
 
-After saving, output the HTML directly in the chat response so the user sees the dashboard inline. Use a markdown HTML block (no escaping). The user should see the full styled dashboard, not just a "saved" message.
+**Part 1 — open in browser.** `Bash`: `open "{path}"` (macOS) / `xdg-open` (Linux) / `start` (Windows).
 
-End with one short line below the dashboard:
+**Part 2 — emit the full saved HTML inside an `html` code fence.** Runtimes with artifact support (claude.ai, Claude Desktop) render it as a side panel; CLI shows it as a code block (browser already opened in Part 1). This is the only place HTML appears in chat — don't dump fragments mid-run, don't paste it twice, don't wrap commentary around it.
 
-> Saved to `{decisions-folder}/{YYYY-MM-DD}-vault-audit.html`. Open in a browser to share or print.
+**Part 3 — summary (after the HTML, no commentary in between):**
+
+```
+✅ Audit complete.
+File: {decisions-folder}/{YYYY-MM-DD}-vault-audit.html
+JSON sidecar: {decisions-folder}/{YYYY-MM-DD}-vault-audit-findings.json
+Score: {score_before} → {score_after} ({delta_sign}{delta})
+{N} files audited · {fail_total} fail · {warn_total} warn · {fixed_total} of {fixable_total} fixable applied
+Tokens saved: {total_saved}/session (~{annual_savings}/year at {sessions}/week)
+```
 
 Stop. Do not propose follow-up actions.
 
@@ -486,25 +440,26 @@ Stop. Do not propose follow-up actions.
 
 ## Rules — what to never do
 
-- **Never** apply a change the user didn't approve through `AskUserQuestion`.
-- **Never** rewrite a CLAUDE.md file automatically (Pass A1 is flag-only).
-- **Never** auto-rename files, even if the filename is ambiguous (D2 is flag-only).
-- **Never** auto-add frontmatter (D1 is flag-only — values need content understanding).
-- **Never** delete a file before grepping the rest of the vault for references to its filename.
-- **Never** modify files in skip list folders.
-- **Never** invent a fix you can't show as a diff. If you can't show before/after, surface it as a flag for manual review.
-- **Never** skip the dashboard. Saving `{decisions-folder}/{YYYY-MM-DD}-vault-audit.html` (path discovered per Step 6.3, not hardcoded) and showing it in chat is the single sanctioned output.
-- **Never** assume a vault shape. Step 0 must be a light "is there markdown here?" check; Step 1 must discover and classify before any pass runs.
-- **Never** ship a half-rendered template. If any `{{placeholder}}` survives the substitution pass, fail loudly instead of saving.
-- **Never** paraphrase a framework rule from memory when the user asks why something is flagged. Read the relevant file in `references/` and cite it.
-- **Never** apply em dash substitutions inside code blocks, URLs, or inline code.
+- **Never** apply a change the user didn't approve via `AskUserQuestion`.
+- **Never** auto-rewrite a CLAUDE.md (F1 is flag-only).
+- **Never** auto-rename files (F5.3 / F5.5 are flag-only — renames need user input).
+- **Never** auto-add frontmatter (G7.2 is flag-only).
+- **Never** delete a file before grepping for references.
+- **Never** modify files in the technical skip list (`.git`, `.obsidian`, `.trash`, `node_modules`, `dist`, `build`).
+- **Never** apply caveman substitutions (F3) without user opt-in per file.
+- **Never** apply caveman/em-dash substitutions inside protected zones (code, URLs, paths, frontmatter, wikilinks, headings, table delimiters, dates).
+- **Never** skip a file because of its role. The classification routes rules; it never excludes files.
+- **Never** skip a framework. F1–G7 all run every audit.
+- **Never** paraphrase a framework rule from memory when surfacing a finding. Read the relevant pass-implementation file when running its checks; cite the framework in the finding.
+- **Never** ship a half-rendered template. If any `{{placeholder}}` survives → fail.
+- **Never** dump partial HTML mid-run. The full HTML appears once, at the end (Step 6.4 Part 2), so the runtime can render it as an artifact / side panel. The browser also opens via `Bash open`. Don't paste HTML twice; don't paste partial fragments while findings are still being collected.
 
 ---
 
 ## Why this skill exists
 
-Five frameworks plus practitioner field notes converge on one conclusion: vaults rot without active maintenance. Karpathy calls it the **lint** operation. Anthropic calls it the **pruning test**. Chroma calls it **context rot**. Caveman calls it **token discipline**. The 22 passes encode all of them in one run, ask what to do via `AskUserQuestion`, and apply only what the user approves.
+Six frameworks plus practitioner field notes converge on one conclusion: vaults rot without active maintenance. Karpathy calls it **lint**. Anthropic calls it the **pruning test** + the **memory budget**. Chroma calls it **context rot**. Caveman calls it **token discipline**. Progressive disclosure calls it **layering**. The audit encodes every auditable signal from each framework as a discrete check, applies them all on every run, asks per-framework what to fix, and saves a categorized HTML dashboard.
 
-Run weekly while the vault is growing. Monthly once stable. Each run appends a dated decision file so the user can watch the score climb.
+Run weekly while the vault is growing. Monthly once stable. Each run appends a dated dashboard so the user can watch the score climb.
 
-For the deep rules behind each pass, read the relevant framework file and pass-implementation file. Each is complete on its own — TOC at the top, full rules, dos, don'ts, verbatim quotes, audit signals, and source URLs.
+For the deep rules behind each pass, read the relevant `references/{framework}.md` and `references/passes-{framework}.md`. Each is complete on its own — TOC, full rules, exact regex, finding format, source URLs.

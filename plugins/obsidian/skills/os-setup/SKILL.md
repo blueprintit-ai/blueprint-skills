@@ -207,255 +207,226 @@ Then proceed to Phase B.
 
 ## Phase B: Onboarding
 
-Twelve questions. Present them all in a single message. The user can answer one-by-one, paste a doc that covers several, upload files, or skip any individually. Don't ask follow-ups. Extract what's there. The questions differ by mode.
+**Six** focused questions, asked **sequentially via AskUserQuestion** — one question per call, never dumped as a wall of text. Six is intentional: cover the highest-leverage essentials only. Anything deeper comes from Phase B+ (file / link drop), where the user shares brand decks, About pages, OKR docs, project briefs, etc.
 
-**Tip for the user (include in the message)**: You can paste links (LinkedIn profiles, company websites, blog posts, About pages, intake docs) instead of typing answers. I'll fetch them with WebFetch / WebSearch and pull what's relevant. The more I have, the less generic the assistant will feel on day one.
+For each question:
+- Put the full prompt into the `question` field
+- Provide the listed quick-pick `options` (typically 3 archetype shortcuts + an explicit "Skip" option)
+- "Other" is auto-added by the tool — that's where the user types the long-form answer (most users will use this) or pastes a link
+- Use the listed `header` (max 12 chars)
+- Set `multiSelect: false`
+- After each answer, immediately move to the next question — no commentary, recap, or summarization in between
+- If the user picks "Skip" or leaves "Other" empty, treat that question as skipped and move on
 
-### Mode-specific Questions
+**Before Q1, send one short orienting message** (no AskUserQuestion yet):
+> "Six quick questions to personalize your vault, then I'll ask if you want to drop in extra files or links for deeper context. Each question has shortcut options — pick 'Other' to type or paste a link. Skip any you want. Reply 'skip all' to proceed with defaults."
 
-**Solopreneurs/Professionals mode** — present all 12 in one message:
+If the user pastes a link in the "Other" field, fetch it with WebFetch / WebSearch and extract what's relevant before mapping to context files.
 
-#### IDENTITY
+If the user replies "skip all" at any point, stop asking and proceed to Phase B+ (still ask once for files / links — that's often where the real personalization comes from).
 
-1. **Who you are.**
-   - Name, role/title, location, industry
-   - When and how you do your best work (mornings? deep blocks? after a walk?)
-   - If someone you respected had to introduce you in a room of people you respected, how would you want them to describe you?
-   - 5 attributes that describe you (one or two words each)
+The questions differ by mode.
 
-2. **Origin and point of view.**
-   - Why you started or joined what you're doing now
-   - A belief or POV you hold strongly, even when it's unpopular
-   - The "big idea" your work is built on (the wedge, the thesis)
-   - Who or what you're fighting against. Could be a category, a behavior, a competitor archetype, a status quo.
+### Solopreneurs/Professionals mode — 6 sequential AskUserQuestion calls
 
-#### WHAT YOU SELL
+For each question below: call `AskUserQuestion` with the listed `question`, `header`, and `options`. The full prompt text goes inside `question`. The options' `description` field is shown under each label.
 
-3. **Business or product lines.**
-   For each revenue line (one paragraph each, or skip if none yet):
-   - Name, what it does, who it's for, stage
-   - Current revenue baseline if applicable
-   - How it came to exist. What made you start it.
+**Q1 — You.** Header: `You`
+- Question: "Quick intro. Name, what you do in one line, where you're based, and how you'd want a respected peer to describe you in a room."
+- Options:
+  - `Founder / Solopreneur` — "Running my own thing"
+  - `Freelancer / Consultant` — "Client work, mostly solo"
+  - `Employee + side project` — "Day job plus something on the side"
+  - `Skip` — "Skip this question"
 
-4. **Offer and promises.**
-   - The 1 to 3 problems you solve for customers
-   - For each problem: are customers already aware they have it, or do you have to teach them? (this changes everything about how you market)
-   - Your value proposition in one sentence
-   - The promise or guarantee you make (explicit or implicit)
-   - Why customers actually pick you. In their words if you've heard them say it.
+**Q2 — What you sell + who buys.** Header: `Offer`
+- Question: "Your main offer, the problem it solves, and who buys it (their role / world / a few real examples or LinkedIn profiles if you have them)."
+- Options:
+  - `One main offer` — "Single product or service"
+  - `Multiple offers / lines` — "Two or more revenue lines"
+  - `Pre-revenue / building` — "Not selling yet"
+  - `Skip` — "Skip this question"
 
-#### WHO YOU SERVE
+**Q3 — Why you (POV + positioning).** Header: `Why you`
+- Question: "Why customers pick you over alternatives. The wedge — your POV, the enemy or status quo you're fighting, what you do differently. In your words or theirs."
+- Options:
+  - `Clear differentiation / enemy` — "I know what makes me different"
+  - `Strong POV / thesis` — "I'll describe my belief"
+  - `Still figuring it out` — "Keep this light for now"
+  - `Skip` — "Skip this question"
 
-5. **Ideal customer.**
-   - Title, role, industry, responsibilities
-   - What their day looks like, what tools they live in
-   - The language and words *they* use to describe their problem
-   - The dream outcome they want
-   - The situation they're in *before* they come to you. What triggered the search.
-   - How long they typically take to decide to buy
-   - The media, podcasts, newsletters, or creators they follow
-   - 3 to 5 real examples (names, LinkedIn profiles, or company names)
+**Q4 — Voice.** Header: `Voice`
+- Question: "How you sound. A few descriptors (direct, warm, dry, technical, playful), signature phrases you use, words you'd never use. Or paste a writing sample / link and I'll extract."
+- Options:
+  - `Paste a writing sample / link` — "Pull voice from my actual writing"
+  - `Describe my voice` — "I'll describe it in 'Other'"
+  - `Use sensible defaults` — "Pick a reasonable voice for now"
+  - `Skip` — "Skip this question"
 
-#### BRAND
+**Q5 — Right now (priorities + projects).** Header: `Now`
+- Question: "What's on your plate this quarter. Top 1–3 priorities (with a number if measurable) and the active projects you're shipping. Just names + a one-line purpose for each project is enough."
+- Options:
+  - `Revenue / growth focus` — "Money is the main metric"
+  - `Build / ship something` — "Building or launching"
+  - `Audience / community focus` — "Reach and trust"
+  - `Skip` — "Skip this question"
 
-6. **Voice and visual identity.**
-   - Tone descriptors that fit (direct, warm, dry, technical, playful, serious, supportive, or your own)
-   - 5 attributes that describe how you *sound*
-   - Signature phrases you actually use
-   - Words or phrases you'd never use
-   - Topics you love talking about
-   - Topics you refuse to discuss publicly
-   - Brand colors, fonts, taglines if you have them
-   - The feeling people should carry away after reading your stuff
-   - Or: paste a writing sample and I'll extract from it
+**Q6 — Stack + drains.** Header: `Stack`
+- Question: "Tool stack (where deals, decisions, writing, calendar actually live) plus the 1–2 things draining your attention or workflows you'd kill to automate."
+- Options:
+  - `Walk through stack + drains` — "I'll describe in 'Other'"
+  - `Paste from a stack doc` — "I have it somewhere"
+  - `Mostly attention drains` — "Focus on what's draining me"
+  - `Skip` — "Skip this question"
 
-7. **Positioning.**
-   - The enemy you're fighting (the category, behavior, or competitor archetype)
-   - How you solve the problem *differently* from the obvious alternatives
-   - 3 to 4 distinct messages you want associated with your name or brand
+### Business/Teams mode — 6 sequential AskUserQuestion calls
 
-#### STRATEGY
+For each question below: call `AskUserQuestion` with the listed `question`, `header`, and `options`.
 
-8. **This year's priorities (measurable).**
-   - 1 to 3 outcomes with a number attached (revenue, audience size, ship date)
-   - The *why* behind each
-   - What you're explicitly saying no to in order to focus here
+**Q1 — Company.** Header: `Company`
+- Question: "The company in plain language. Legal name, industry, stage, headcount, one-sentence mission, why it started."
+- Options:
+  - `Early stage (1–10)` — "Small, early"
+  - `Growth (10–50)` — "Scaling"
+  - `Established (50+)` — "Mature company"
+  - `Skip` — "Skip this question"
 
-#### OPERATIONS
+**Q2 — What you sell + who buys.** Header: `Offer`
+- Question: "Main products / services, the problem each solves, and who buys (their role + world). 3–5 real customer examples or LinkedIn profiles if you can. Paste a sales deck or product page link if it's faster."
+- Options:
+  - `Single product / service` — "One main offering"
+  - `Multiple products / SKUs` — "Several offerings"
+  - `Multiple business units` — "Distinct lines of business"
+  - `Skip` — "Skip this question"
 
-9. **Active projects.**
-   For each project:
-   - Name, one-line purpose, status, deadline if any
-   - Which business it belongs to (if multiple)
-   - Who else is involved
+**Q3 — Brand (voice + positioning).** Header: `Brand`
+- Question: "Brand voice + positioning. How it sounds (descriptors, signature phrases, words to avoid). Who you're fighting against and what makes you different. Paste a brand guide / About page if you have one."
+- Options:
+  - `Paste brand guidelines / About page` — "I have a doc / link"
+  - `Describe brand + positioning` — "Walk through prompts in 'Other'"
+  - `Use sensible defaults` — "Pick something reasonable for now"
+  - `Skip` — "Skip this question"
 
-10. **People you work with regularly.**
-    - Team, contractors, key external contacts
-    - For each: name, role, how you work together
-    - Skip if fully solo
+**Q4 — Team + projects.** Header: `Team`
+- Question: "The team and what's in flight. Departments + the lead for each, key people getting their own profile (name, role, FT or contractor), and the active projects / initiatives + owners."
+- Options:
+  - `List departments + key people` — "I'll list them in 'Other'"
+  - `Small team, no formal departments` — "A few key people only"
+  - `Paste an org chart / project list` — "I have docs"
+  - `Skip` — "Skip this question"
 
-11. **Tools and infrastructure.**
-    - Stack across communication, meetings, CRM, content, finance, dev, automation
-    - Source of truth for each main workflow. Where deals live, where decisions live, where writing actually happens, where the calendar lives.
+**Q5 — Goals + stack + stakeholders.** Header: `Stack`
+- Question: "This year's goals and how the company runs. 1–3 OKRs / objectives (target numbers + owners), the tool stack across comms / CRM / PM / content / finance, the top 2–3 painful workflows, and key external stakeholders (investors, partners, top clients)."
+- Options:
+  - `Walk me through it` — "I'll describe in 'Other'"
+  - `Paste OKRs / stack docs` — "I have docs"
+  - `Mostly stakeholders` — "Investors, partners are priority"
+  - `Skip` — "Skip this question"
 
-12. **Workflows to automate and what's draining your attention.**
-    - Top 1 to 2 painful, repetitive workflows. Use this template:
-      When **X** happens → I do **Y** → it takes **Z** time → output is **W** → what I want is **V**
-    - What's draining your attention right now. Unclosed loops, decisions sitting unmade, things that should be done but aren't.
+**Q6 — Operator (you).** Header: `Operator`
+- Question: "Last one — quick operator profile. Name, title, who you report to, what you can sign off on alone, and what's draining your attention right now."
+- Options:
+  - `Founder / CEO` — "I run the whole company"
+  - `Department head / VP` — "I lead a function or team"
+  - `Operator / Chief of Staff` — "Cross-org role"
+  - `Skip` — "Skip this question"
 
-**Business mode** — present all 12 in one message:
+The user might respond to any question by:
+- Picking a quick-pick option
+- Picking "Other" and typing a paragraph or pasting a link / doc
+- Picking "Skip"
+- Replying "skip all" anywhere — stop asking and move to Phase B Build
 
-#### YOU AND THE COMPANY
-
-1. **You. Operator profile.**
-   - Name, title, department, who you report to
-   - Decision authority (what you can sign off on alone)
-   - Location, working style
-   - What's draining your attention right now. Unclosed loops, decisions sitting unmade.
-
-2. **Company essentials.**
-   - Legal entity name, industry, stage
-   - Founded year, headcount (FT + contractors)
-   - Headquarters and where the team is based
-   - One-sentence mission
-   - Why the company started (origin)
-   - The belief or POV the company stands for
-
-#### MARKET
-
-3. **Industry and market context.**
-   - The broad target industry
-   - The specific niche you operate in
-   - Trends and hot topics in the industry right now
-   - What's not going well in the industry. The inefficiency or broken thing you're betting against.
-   - What changed in the last 5 to 10 years
-   - The main players (incumbents, competitors, adjacent categories)
-
-#### WHAT YOU SELL
-
-4. **Products, services, or business units.**
-   For each revenue line:
-   - Name, what it does, who buys it
-   - Current revenue baseline, status (active, new, sunsetting)
-
-5. **Offer and promises.**
-   - The 1 to 3 problems you solve for customers
-   - For each: are customers already aware they have it, or do you teach them?
-   - Value proposition in one sentence
-   - The promise or guarantee you make
-   - Key features and capabilities that deliver the value
-   - Why customers actually pick you over alternatives
-   - The kind of results you typically deliver. Include a real example if you have one.
-
-#### WHO YOU SERVE
-
-6. **ICP and customer journey.**
-   - Who's in charge of buying. Title, role, responsibilities.
-   - What their day looks like, what tools they use
-   - The language and words *they* use to describe their problem
-   - Dream outcome they want
-   - Situation before buying. What triggered them to look.
-   - How long the buying decision typically takes
-   - Market trends affecting them right now
-   - Media, podcasts, or creators they follow
-   - 3 to 5 real examples (LinkedIn profiles or company names)
-
-#### BRAND
-
-7. **Voice and visual identity.**
-   - Tagline and value prop in plain language
-   - Voice in a paragraph or as descriptors (direct, warm, dry, technical)
-   - 5 attributes that describe how the brand sounds
-   - Signature phrases used across your content
-   - Words or phrases you'd never use
-   - Topics you love covering
-   - Topics you avoid publicly
-   - Brand colors, fonts, logo notes
-   - The feeling readers and customers should carry away
-
-8. **Positioning.**
-   - The enemy. The category, status quo, or competitor archetype you're fighting.
-   - How you solve the problem *differently* from obvious competitors
-   - Brand personality in 5 adjectives
-   - The "big concept" the company is built on
-   - 3 to 4 distinct messages you want associated with the brand
-
-#### OPERATIONS
-
-9. **Departments and team members getting profiles.**
-   - The departments and the lead for each
-   - Team members getting their own profile folders. For each: name, role, reports-to, FT or contractor, location.
-   - (Profile folders include their own daily notes, tasks, and sub-schedules.)
-
-10. **Annual objectives and key results.**
-    - 1 to 3 objectives for the year (or quarter)
-    - For each KR: target number, owner, current status
-    - The *why* behind each objective
-    - What you're explicitly saying no to in order to focus here
-
-11. **Active projects and initiatives.**
-    For each project:
-    - Name, owner, status, deadline if any
-    - Client-facing or internal
-    - Which business unit or department it sits under
-    - Key collaborators
-
-12. **Tools, workflows, and stakeholders.**
-    - Stack across communication, meetings, CRM, PM, content, finance, dev
-    - Source of truth for each main workflow. Where deals live, where decisions live, where writing happens, where the calendar lives.
-    - Top 3 painful, repetitive workflows. Template:
-      When **X** happens → we do **Y** → it takes **Z** → output is **W** → what we want is **V**
-    - External stakeholders: investors, partners, vendors, top clients. Name, type, nature of the relationship.
-
-The user might give you:
-- One-by-one numbered answers
-- A wall of text (wiki, about page, LinkedIn profile, intake doc) that covers several at once
-- Uploaded files (PDFs, docs, screenshots)
-- "skip" on individual questions or the whole set
-
-**Accept whatever they give.** Don't ask follow-ups. Extract what you can.
+**Accept whatever they give.** Don't ask follow-ups inside a question. Extract what you can.
 
 **If the user skips everything** — proceed to build with defaults only.
 
 ---
 
+## Phase B+: Additional Context Drop
+
+After Q6 (or "skip all") and **before** Phase B Build, ask one final `AskUserQuestion` to invite extra source material. With only 6 questions answered, this step is where the real depth comes from. Most users have brand decks, About pages, intake forms, LinkedIn URLs, Notion docs, PDFs, slide exports, voice/style guides, OKR docs, org charts, project briefs, etc. Always ask, even if Q1–Q6 looked rich.
+
+**Call AskUserQuestion** (one question, header: `Context`):
+- Question: "Anything else I should pull from before building? Upload files (PDFs, MDs, DOCXs), paste links (LinkedIn, websites, Notion pages, Google Docs), point me at a local folder, or paste raw text. The more I have, the more personalized your vault will be — instead of template scaffolds with placeholders."
+- Options:
+  - `Yes — I'll paste links / upload files` — "Walk me through it"
+  - `Yes — point me at a folder on disk` — "I have local files"
+  - `No — use just the answers above` — "Build with what we have"
+  - `Skip` — "Skip this step"
+
+**If the user picks a "Yes" option** (or pastes content directly):
+
+1. Collect everything they share. Be greedy — accept anything they offer.
+2. **For each link**: call `WebFetch` (or `WebSearch` if the URL is a search). Extract the relevant content.
+3. **For each uploaded file or local file path**:
+   - `.md`, `.txt`, `.json`, `.yaml`, `.csv` → read directly with `Read`
+   - `.pdf` → read with `Read` (use `pages` parameter if >10 pages)
+   - `.docx`, `.pptx`, `.xlsx` → use Bash with `pandoc` or `textutil` if available; otherwise tell the user to export as PDF or MD and re-share
+   - Images / screenshots → read with `Read` (multimodal)
+4. **For a local folder path**: use `Glob` to enumerate, then read each file.
+5. **Maintain a context corpus** in working memory — every fact, name, number, quote you find. Tag each by likely target (`me.md`, `brand.md`, `icp.md`, `strategy.md`, `projects/{name}`, etc.).
+6. After ingestion, briefly tell the user what you pulled (e.g., "Pulled 4 files: brand-guidelines.pdf, about-page.md, okrs-2026.md, team-roster.csv. 18 links fetched."). One sentence. Then proceed to Build.
+
+**If the user picks `No` or `Skip`**: proceed straight to Build with only the Q1–Q12 answers.
+
+---
+
 ## Phase B Build: Personalize the Vault
 
-After the ten questions (or skips), build everything you can from what the user gave you. Work silently — don't narrate each step.
+After Q6 + the additional-context drop (or skips), build everything you can from what the user gave you. Work silently — don't narrate each step.
+
+### CRITICAL: real personalization, not template scaffolds
+
+The reference files in `references/` are **scaffolds** — they show the section structure to use. They are **not** the output. Do not copy a template verbatim with placeholders intact.
+
+For every file you write:
+
+1. **Read the reference template** to learn the section structure (headings, frontmatter shape, section order).
+2. **Replace every placeholder** (anything in `[brackets]` or marked as TBD) with real data extracted from Q1–Q12 answers + the additional-context corpus.
+3. **If a section has zero supporting data** after exhausting both Q answers and the corpus: **omit the entire section** rather than writing `[name]` or `TBD`. The output should never contain bracketed placeholders.
+4. **If only some bullets in a section have data**: keep the section, drop the empty bullets.
+5. **Use the user's actual words, names, numbers, URLs, and quotes** wherever the corpus contains them. Don't paraphrase facts — preserve specificity (exact company names, exact dollar figures, exact dates, exact phrases the user uses).
+6. **Cross-reference**: a single fact may belong in multiple files (e.g., "we sell to RevOps leaders at Series B SaaS" belongs in both `icp.md` and `brand.md` positioning). Place it in each file where it's relevant.
+7. **Frontmatter `updated:`** = today's date.
+
+A finished context file should read as a real human-written document about the user. If it reads like a fillable form, you did it wrong — go back and fill it.
 
 ### Build Step 1: Create Context Files
 
 Behavior depends on selected mode.
 
-**Solopreneurs/Professionals mode** (Q1–Q12 = solo questions):
+For every file below, source data from BOTH the Q answers AND the Phase B+ corpus (uploaded files, fetched links, folder reads). The corpus typically contains the depth — Q answers are anchors.
 
-- **`Context/me.md`** — Always created. Fill from Q1 (identity, role, location, work style, intro phrase, 5 attributes), Q2 (Origin & POV section: why started, belief, big idea, enemy), Q12 (Unclosed Loops section). Read `references/context-me.md` as template.
-- **`Context/business.md`** — Only if Q3 had content. Fill name, what it does, who it's for, stage, revenue, origin. Read `references/context-business.md` as template.
-- **`Context/services.md`** — Only if Q3 listed multiple revenue lines or named services / products. Read `references/context-services.md` as template.
-- **`Context/pain-points.md`** — Only if Q4 had content. Fill from the 1–3 problems with the awareness column (aware vs teach them). Read `references/context-pain-points.md` as template.
-- **`Context/icp.md`** — Only if Q5 had content. Fill role, day, language, dream outcome, trigger, decision time, media, real examples. Read `references/context-icp.md` as template.
-- **`Context/brand.md`** — Only if Q6 or Q7 had content. From Q4 take value prop, promise, why-pick-you. From Q6 take voice, attributes, signature phrases, words-to-avoid, topics, visual identity, feeling. From Q7 take Positioning section: enemy, differentiation, key messages. Read `references/context-brand.md` as template.
-- **`Context/strategy.md`** — Only if Q8 had content. Read `references/context-strategy.md` as template.
-- **`Context/team.md`** — Only if Q10 had content. Read `references/context-team.md` as template.
-- **`Context/infrastructure.md`** — Only if Q11 listed tools or Q12 listed workflows. Combine tool stack (Q11) with workflows-to-automate template (Q12). Read `references/context-infrastructure.md` as template.
+**Solopreneurs/Professionals mode** (Q1–Q6 = solo questions):
 
-**Business mode** (Q1–Q12 = business questions):
+- **`Context/me.md`** — Always created. Fill from Q1 (name, what you do, location, peer-intro line, archetype) + Q3 (POV / wedge / enemy) + Q6 (drains / unclosed loops) + corpus. Read `references/context-me.md` as scaffold.
+- **`Context/business.md`** — Only if Q2 had content. Fill from Q2 (offer, problem, who buys) + corpus (About page, business overview docs). Read `references/context-business.md` as scaffold.
+- **`Context/services.md`** — Only if Q2 mentioned multiple offers, or corpus has product/service docs. Read `references/context-services.md` as scaffold.
+- **`Context/pain-points.md`** — Only if Q2 named a problem or Q3 surfaced one. Include awareness column (aware vs needs education) when the user signaled it. Read `references/context-pain-points.md` as scaffold.
+- **`Context/icp.md`** — Only if Q2 mentioned buyers / examples or corpus has ICP / customer docs. Fill role, day, language, dream outcome, trigger, examples. Read `references/context-icp.md` as scaffold.
+- **`Context/brand.md`** — Only if Q3 (positioning) or Q4 (voice) had content, or corpus has brand material. From Q2 take value prop + why-pick-you. From Q3 take Positioning section (enemy, differentiation, key messages). From Q4 take voice descriptors, signature phrases, words-to-avoid, feeling. Read `references/context-brand.md` as scaffold.
+- **`Context/strategy.md`** — Only if Q5 had content (priorities). Read `references/context-strategy.md` as scaffold.
+- **`Context/team.md`** — Only if Q5 mentioned collaborators or corpus has a team / contractor list. Read `references/context-team.md` as scaffold.
+- **`Context/infrastructure.md`** — Only if Q6 listed tools or workflows, or corpus has a stack doc. Combine tool stack + workflows-to-automate. Read `references/context-infrastructure.md` as scaffold.
 
-- **`Context/operator.md`** — Always created. Fill from Q1 (role, decision authority, location, working style, unclosed loops). Read `references/context-operator.md` as template.
-- **`Context/organization.md`** — Always created. Fill from Q2 (company info, mission, headcount, stage, plus Origin & POV section: why started + belief). Read `references/context-organization.md` as template.
-- **`Context/market.md`** — Only if Q3 had content. Fill industry, niche, trends, what's broken, what changed, main players. Read `references/context-market.md` as template.
-- **`Context/services.md`** — Only if Q4 had content. Read `references/context-services.md` as template.
-- **`Context/pain-points.md`** — Only if Q5 had content. Fill problems with awareness column. Read `references/context-pain-points.md` as template.
-- **`Context/icp.md`** — Only if Q6 had content. Fill role, day, language, dream outcome, trigger, decision time, market trends, media, real examples. Read `references/context-icp.md` as template.
-- **`Context/brand.md`** — Only if Q7 or Q8 had content. From Q5 take value prop, promise, results. From Q7 take voice + visual. From Q8 take Positioning section: enemy, differentiation, brand personality, big concept, key messages. Read `references/context-brand.md` as template.
-- **`Context/team.md`** — Always created. Fill with any team members from Q9. Read `references/context-team.md` as template.
-- **`Context/strategy.md`** — Always created. Fill from Q10 (OKRs, KRs, owners, why behind each, what you're saying no to). Read `references/context-strategy-business.md` as template.
-- **`Context/infrastructure.md`** — Only if Q12 listed tools or workflows. Combine tool stack with the workflows-to-automate template. Read `references/context-infrastructure.md` as template.
-- **`Context/stakeholders.md`** — Only if Q12 mentioned investors, partners, vendors, or top clients. Read `references/context-stakeholders.md` as template.
+**Business mode** (Q1–Q6 = business questions):
+
+- **`Context/organization.md`** — Always created. Fill from Q1 (company, mission, stage, headcount, origin) + corpus (About page, company deck). Read `references/context-organization.md` as scaffold.
+- **`Context/market.md`** — Only if corpus has market / industry material, or Q1/Q2 surfaced industry context. Fill industry, niche, trends, main players. Read `references/context-market.md` as scaffold.
+- **`Context/services.md`** — Only if Q2 had content. Fill from Q2 + corpus (sales deck, product pages). Read `references/context-services.md` as scaffold.
+- **`Context/pain-points.md`** — Only if Q2 surfaced a problem or corpus has it. Read `references/context-pain-points.md` as scaffold.
+- **`Context/icp.md`** — Only if Q2 mentioned buyers / examples or corpus has ICP material. Fill role, day, language, dream outcome, trigger, examples. Read `references/context-icp.md` as scaffold.
+- **`Context/brand.md`** — Only if Q3 had content or corpus has brand material. Take voice + positioning from Q3 + brand guide / About page in corpus. Read `references/context-brand.md` as scaffold.
+- **`Context/team.md`** — Always created. Fill from Q4 (departments, key people) + corpus (org chart). Read `references/context-team.md` as scaffold.
+- **`Context/strategy.md`** — Always created. Fill from Q5 (OKRs, KRs, owners) + corpus (OKR doc). Read `references/context-strategy-business.md` as scaffold.
+- **`Context/infrastructure.md`** — Only if Q5 listed tools or workflows, or corpus has a stack / SOPs doc. Combine tool stack with workflows-to-automate. Read `references/context-infrastructure.md` as scaffold.
+- **`Context/stakeholders.md`** — Only if Q5 mentioned external stakeholders or corpus has investor / partner / client lists. Read `references/context-stakeholders.md` as scaffold.
+- **`Context/operator.md`** — Always created. Fill from Q6 (role, decision authority, drains) + corpus. Read `references/context-operator.md` as scaffold.
 
 ### Build Step 2: Create Project Folders
 
-Solo: from Q9. Business: from Q11. Intelligently structure each project based on what the user gave you.
+Solo: from Q5. Business: from Q4. Plus any project briefs / Notion exports / project lists in the corpus. Intelligently structure each project based on what the user gave you.
 
 **Analyze the info and decide the right structure:**
 - Simple mention ("working on a podcast") → just a `README.md`
@@ -498,13 +469,13 @@ updated: YYYY-MM-DD
 
 Don't create empty subdirs. Don't cram everything into the README. Distribute content into the right files based on what it actually is.
 
-**Business mode only** — from Q9, also create `Departments/{name}/README.md` for each department with the lead's name, charter placeholder, and `sops/` subfolder.
+**Business mode only** — from Q4 + corpus, also create `Departments/{name}/README.md` for each department with the lead's name, charter placeholder, and `sops/` subfolder.
 
 ### Build Step 3: Profile-First Team Scaffolding (Business mode only)
 
-From Q9, scaffold each person's profile workspace. Slug names are kebab-case.
+From Q4 + corpus (org chart, team roster), scaffold each person's profile workspace. Slug names are kebab-case.
 
-`{org-slug}` is derived from Q2 (company name → kebab-case). If no company name given, default to `team`.
+`{org-slug}` is derived from Q1 (company name → kebab-case). If no company name given, default to `team`.
 
 For each FT employee:
 ```bash
@@ -513,7 +484,7 @@ mkdir -p Team/{org-slug}/Profiles/{person-slug}/task-list
 mkdir -p Team/{org-slug}/Profiles/{person-slug}/sub-schedules
 ```
 Then write:
-- Read `references/team-profile-template.md` → write to `./Team/{org-slug}/Profiles/{person-slug}/{Person Name}.md`. Fill frontmatter and sections from Q6 (name, role, reports-to, FT, location).
+- Read `references/team-profile-template.md` → write to `./Team/{org-slug}/Profiles/{person-slug}/{Person Name}.md`. Fill frontmatter and sections from Q4 (name, role, reports-to, FT, location) + corpus.
 - Read `references/team-tasks-template.md` → write to `./Team/{org-slug}/Profiles/{person-slug}/task-list/Tasks.md`.
 
 For each contractor / advisor:
@@ -522,13 +493,13 @@ mkdir -p Team/External/contractors/{person-slug}
 ```
 Then write the same `team-profile-template.md` (with `employment: contractor` or `advisor`) → `./Team/External/contractors/{person-slug}/{Person Name}.md`.
 
-If Q9 listed no team members, don't scaffold anything under `Team/{org-slug}/Profiles/`. Leave `Team/` with just the `CLAUDE.md` routing index.
+If Q4 + corpus list no team members, don't scaffold anything under `Team/{org-slug}/Profiles/`. Leave `Team/` with just the `CLAUDE.md` routing index.
 
 ### Build Step 4: Mode-specific Additional Setup
 
 **Business mode only:**
-- If Q12 mentioned org-wide processes / SOPs, capture them in `Intelligence/processes/{name}.md`
-- If user provided onboarding docs, route them to `Onboarding/{name}.md`
+- If Q5 or corpus mentioned org-wide processes / SOPs, capture them in `Intelligence/processes/{name}.md`
+- If user provided onboarding docs in the corpus, route them to `Onboarding/{name}.md`
 
 ### Build Step 5: Create First Daily Note
 
@@ -559,10 +530,11 @@ Tell the user:
 
 - Phase 0 is one question — mode selection
 - Phase A is fully automated — no user input needed
-- Phase B is exactly 12 questions, presented together — no follow-ups, no drilling deeper
-- Accept any format: numbered answers, pasted docs, uploaded files, links (LinkedIn, websites, blog posts), or skips
-- If the user pastes a link, fetch it with WebFetch / WebSearch and extract what's relevant before mapping into the context files
-- Extract as much as you can from whatever the user provides
+- Phase B is exactly 6 questions, asked one-at-a-time via AskUserQuestion — no follow-ups, no drilling deeper, no batching into one message. The 6 cover the highest-leverage essentials only; depth comes from Phase B+
+- Phase B+ is one final AskUserQuestion inviting additional files / links / folders — always ask, even if Q1–Q6 looked rich. With only 6 questions, this step is where most personalization data comes from
+- Accept any format: numbered answers, pasted docs, uploaded files, links (LinkedIn, websites, blog posts), local folder paths, or skips
+- For every link the user pastes, fetch it (`WebFetch` / `WebSearch`); for every file or folder, read it (`Read` / `Glob`); merge into a single context corpus before building
+- **Templates are scaffolds, not outputs.** Replace every `[bracketed placeholder]` with real user data. If a section has no data after exhausting Q answers + corpus, omit the section — never leave placeholders in the written file
+- Preserve specificity: use the user's exact names, numbers, URLs, and phrasing
 - Only create context files that have real content — don't create empty placeholder files
-- Use the user's actual project names and people names, not generic placeholders
 - Don't narrate every file you're creating — just build it and summarize at the end
