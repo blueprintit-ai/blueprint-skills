@@ -28,5 +28,8 @@
       "mcp__nano-banana__*",
       "mcp__mcp-registry__*"
     ]
+  },
+  "enabledPlugins": {
+    "obsidian@benai-skills": true
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "ads",
-  "description": "Complete paid advertising toolkit with 14 skills (orchestrator + 12 sub-skills + infographic-v2) and 6 parallel audit subagents. Covers Google Ads (74 checks), Meta/Facebook (46 checks), LinkedIn B2B (25 checks), TikTok (25 checks), YouTube video ads, and Microsoft/Bing (20 checks). Includes cross-platform audit orchestration, budget allocation with 70/20/10 rule, creative audit with brand context collection and ad creative generation via infographic-v2, landing page optimization, strategic planning with 15 industry templates, and competitive intelligence via Ad Libraries.",
+  "description": "Paid ads toolkit (14 skills + 6 audit subagents). Covers Google, Meta, LinkedIn, TikTok, YouTube, and Microsoft Ads. Includes audits, budget allocation (70/20/10), creative + brand context, landing pages, strategic planning, and competitive intel.",
   "version": "1.1.0",
   "author": {
     "name": "BenAI"
