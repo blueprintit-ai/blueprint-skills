@@ -465,15 +465,26 @@ If the agent cannot identify a structural observation worth surfacing (the vault
 
 Before walking, fire one `AskUserQuestion`:
 
-> "Audit complete: {N_total} findings across 9 frameworks ({fail} fail · {warn} warn · {info} info). Every finding has a proposed fix. How do you want to walk them?"
+> "Audit complete: {N_total} findings across 9 frameworks ({fail} fail · {warn} warn · {info} info). Every finding has a proposed fix. Pick mode:"
 
 Options:
-1. **Walk every finding now** (default for vaults < 200 findings) — agent walks each item, you confirm/edit/decline per finding. ~{estimated_minutes} minutes.
-2. **Walk by framework** — pick which frameworks to walk in this run; the rest get queued into `Intelligence/decisions/{date}-reorg.md` automatically as save-to-plan items. (Use when the run is too long to do in one sitting.)
-3. **Save everything to plan** — write all proposed fixes as checklist steps into `Intelligence/decisions/{date}-reorg.md`. No edits applied this run; you execute the plan later.
+1. **Bulk-apply (apply everything, no escapes)** — every finding gets applied. Walk prompts only fire where the agent genuinely needs the user to pick a target/wording (e.g., "merge target: A or B?"). All else applies without per-item confirmation. The only valid non-applied state is `failed` (mechanical: OS lock, file conflict, dependency missing). No `saved_to_plan`, no `declined`. Use this when you've said "apply everything."
+2. **Selective walk** — fire a per-finding prompt for every fix; user picks apply / save-to-plan / decline per item. Use when reviewing carefully or for a first run on a new vault.
+3. **Save everything to plan** — write all proposed fixes as checklist steps into the discovered decisions-equivalent folder; no edits applied this run.
 4. **Cancel** — abort before any fixes.
 
-Option 4 ends the run immediately (skip to Step 6 to render the report; no fixes applied). Options 1–3 proceed to walking.
+Option 1 is the default. The user picks 2 only when they want item-by-item gating. **The user's prior instruction "apply everything" maps to Option 1, not Option 2.**
+
+### 4.1.1 — Bulk-apply mode rules (Option 1)
+
+Hard rules when this mode is active:
+
+- **No `saved_to_plan` outcomes.** That state is removed from the available `fix_status` set.
+- **No `declined` outcomes.** Same.
+- **The agent does not unilaterally decide a finding is "test fixture," "the user probably didn't want this," "too complex to apply mechanically," or "judgment-required-per-section" and route it to anything other than applied/failed.** If applying a fix mechanically would damage content, the agent attempts the safest mechanical version (e.g., split a 222KB file at H2 boundaries with a `<!-- automated split, review headings -->` marker; mark the split as `applied` with `applied_with_caveat: true`).
+- **Walk prompts fire only when the agent genuinely cannot pick a target without the user.** Example: F8.2 merge with three plausible canonical targets — fire the prompt. Example: G7.1 em-dash substitution — apply without prompting; the agent's per-occurrence reasoning already chose the substitution.
+- **Mechanical failures are still recorded as `failed`** with `failure_reason` (OS-locked file, missing parent directory, file conflict, framework-safety check rolled back the fix). Failed fixes are reported in the dashboard with their reason — they're not silently skipped.
+- **The agent must not pre-classify findings as "skip in bulk-apply mode."** Every finding is in scope. If applying a daystar/ test-fixture fix damages a deliberate test pattern, the user can revert that file specifically — but the agent doesn't make that call.
 
 ### 4.2 — Per-finding walk loop
 
@@ -562,7 +573,30 @@ If the agent skips a finding (forgets to fire its sub-prompt, batches multiple f
 
 Apply in this order (smallest blast radius first). For every finding, set `fix_status` to `applied`, `saved_to_plan`, `declined`, or `failed` based on what happened in Step 4 + this step. The HTML render uses `fix_status` directly.
 
-**Save-to-plan items** are written to `Intelligence/decisions/{date}-reorg.md` in Step 4.3 — this step (5) only handles the items the user picked "apply now" for.
+**Save-to-plan items** are written to `Intelligence/decisions/{date}-reorg.md` in Step 4.3 — this step (5) only handles the items the user picked "apply now" for. (In Bulk-apply mode there are no save-to-plan items.)
+
+### 5.0 — Capture BEFORE metrics (mandatory, before any fix lands)
+
+Before applying any fix, snapshot per-role and per-framework metrics into the `before_metrics` cache. These are what the dashboard's before/after columns render against.
+
+Per-role metrics (one row per role in the registry, plus a TOTAL row):
+- `file_count`
+- `total_chars` (sum of body bytes, post-frontmatter)
+- `total_tokens_est` (chars / 4)
+- `em_dash_count` (G7.1 trigger output)
+- `frontmatter_complete_pct` (files with `status:` + ≥2 `tags:` / total)
+- `wikilink_orphan_count` (no inbound wikilink)
+- `index_coverage_pct` (folders with the discovered folder-index file / non-trivial folder count)
+- `findings_open` (count of findings touching files in this role)
+
+Per-framework metrics (F1–F9 + TOTAL):
+- `findings_count`
+- `fail_count`, `warn_count`, `info_count`
+- `applied_count` (starts at 0)
+- `failed_count` (starts at 0)
+- `score_contribution` (per the Step 3 formula; F8/F9 always 0)
+
+Cache these. Apply fixes (5.1–5.8). Then run 5.9.
 
 ### 5.1 — Em dashes (G7.1)
 - For each `applied` finding: replace `—` → `. `, `–` → `, ` in stripped body only.
@@ -663,7 +697,21 @@ This runner handles, e.g.:
 
 The fix sub-procedure can vary per finding type — what stays constant is: read → apply confirmed edit → safety check → status. The pass file's per-check guidance still constrains what the agent drafts.
 
-### 5.9 — Verify fix-status totals add up
+### 5.9 — Capture AFTER metrics (mandatory, after every fix)
+
+After Step 5.1–5.8 finish, re-measure the same metrics captured in 5.0. This is the source of truth for the dashboard's AFTER columns and the recomputed score. Skipping this step is the bug that produced the 46/100 BEFORE-only render — never skip it.
+
+Re-measure:
+- Per-role metrics (re-run the same probes from 5.0 — files may have been split, em dashes stripped, frontmatter added).
+- Per-framework metrics (recount findings against the *current* vault state — many findings should now resolve to zero because their underlying issue was fixed).
+- **Recompute the score** using the formula in Step 3, against the re-measured findings count. This is `{{SCORE_AFTER}}`. Do not reuse the BEFORE score.
+- Compute deltas: `tokens_saved_per_role`, `em_dashes_removed`, `frontmatter_pct_delta`, `findings_resolved_per_framework`.
+
+If the re-measurement shows a finding category whose count *increased* (e.g., a fix accidentally added new orphans), surface that as a regression-warning row in the dashboard — the fix succeeded mechanically but produced a downstream issue.
+
+The re-measurement should take seconds, not minutes — same probes as Step 1 + the framework triggers, but only on files touched by Step 5 plus the small global counts (em dashes vault-wide, frontmatter coverage). Cache for Step 6.
+
+### 5.10 — Verify fix-status totals add up
 
 After applying:
 - `total_applied` = findings with `fix_status: applied`.
@@ -690,12 +738,14 @@ Snapshot before/after per framework:
 
 | Variable | Source |
 |---|---|
-| `{{F1_FILES}}`, `{{F1_CHECKS}}`, `{{F1_FINDINGS}}`, `{{F1_FAIL}}`, `{{F1_WARN}}`, `{{F1_APPLIED}}`, `{{F1_SAVED}}`, `{{F1_DECLINED}}`, `{{F1_FAILED}}`, `{{F1_DETAILS}}` | F1 bucket |
+| `{{F1_FILES}}`, `{{F1_CHECKS}}`, `{{F1_FINDINGS_BEFORE}}`, `{{F1_FINDINGS_AFTER}}`, `{{F1_FAIL_BEFORE}}`, `{{F1_FAIL_AFTER}}`, `{{F1_WARN_BEFORE}}`, `{{F1_WARN_AFTER}}`, `{{F1_INFO_BEFORE}}`, `{{F1_INFO_AFTER}}`, `{{F1_APPLIED}}`, `{{F1_FAILED}}`, `{{F1_DETAILS}}` | F1 bucket — every count has a before/after pair so the dashboard can show the delta |
 | same for F2, F3, F4, F5, F6, G7, F8, F9 | each bucket |
 | `{{ARCHITECTURAL_READ}}` | Step 3.5 paragraph, rendered above the framework rows |
 | `{{F8_INSIGHTS_SURFACED}}`, `{{F8_INSIGHTS_APPLIED}}` | F8-only — drives the "Insights surfaced / applied" tile |
-| `{{F9_PROPOSALS}}`, `{{F9_APPLIED}}`, `{{F9_SAVED}}`, `{{F9_DECLINED}}` | F9-only — drives the "Architecture changes" tile |
-| `{{REORG_PLAN_PATH}}` | path to `Intelligence/decisions/{date}-reorg.md` if any saved-to-plan items exist; empty otherwise |
+| `{{F9_PROPOSALS}}`, `{{F9_APPLIED}}`, `{{F9_FAILED}}` | F9-only — drives the "Architecture changes" tile (in bulk-apply mode there's no Saved/Declined column) |
+| `{{ROLE_METRICS_TABLE}}` | per-role before/after table (Step 6.1.5) |
+| `{{FRAMEWORK_METRICS_TABLE}}` | per-framework before/after table (Step 6.1.5) |
+| `{{REORG_PLAN_PATH}}` | path to the saved reorg plan if any saved-to-plan items exist (selective walk only); empty in bulk-apply mode |
 | `{{TOTAL_FIXABLE}}` | count of all findings with `fixable: true` |
 | `{{TOTAL_FIXED}}` | count of all findings with `fixed: true` |
 | `{{TOTAL_FIXABLE_NOT_FIXED}}` | count of findings with `fixable: true && fixed: false` (skipped/denied) |
@@ -712,6 +762,47 @@ Snapshot before/after per framework:
 For each framework's `{{Fx_DETAILS}}`: render the findings list as HTML (severity pills, paths, excerpts, actions, framework citation). Cap at top-25 findings per framework — if more, append "and N more flagged in {decisions-folder}/{date}-vault-audit-findings.json".
 
 Format integers with thousands separators. Format percentages to one decimal.
+
+### 6.1.5 — Per-role and per-framework before/after tables
+
+These two tables are the dashboard's headline evidence that the run changed the vault, not just described it. Render both above the framework detail sections (between the architectural read and the framework rows).
+
+**Per-role table** (`{{ROLE_METRICS_TABLE}}`) — one row per role in the registry plus a TOTAL row:
+
+| Role | Files | Tokens before → after | Em dashes before → after | Frontmatter complete before → after | Index coverage before → after | Findings open before → after |
+|---|---:|---:|---:|---:|---:|---:|
+| identity | 6 | 4,200 → 4,150 (-50) | 12 → 0 (-12) | 17% → 100% (+83pp) | — | 6 → 0 |
+| context | 10 | 12,400 → 11,890 (-510) | 23 → 0 (-23) | 80% → 100% (+20pp) | 100% → 100% | 5 → 0 |
+| projects | 14 | 8,200 → 8,200 (0) | 0 → 0 | 71% → 100% (+29pp) | 0% → 100% (+100pp) | 4 → 0 |
+| daily | 241 | 145,000 → 145,000 (0) | 18 → 0 | 95% → 100% | — | 18 → 0 |
+| meetings | 611 | 412,000 → 412,000 | 89 → 0 | 92% → 100% | — | 89 → 0 |
+| (etc.) | | | | | | |
+| **TOTAL** | 1,710 | 2.1M → 1.9M (-200K) | 289 → 0 | 67% → 100% | 12% → 100% | 502 → 12 |
+
+Style each delta cell with green for improvements, red for regressions, gray for unchanged. Em dash + frontmatter columns drop "before → after" when both are 0.
+
+**Per-framework table** (`{{FRAMEWORK_METRICS_TABLE}}`) — one row per framework F1–F9 plus TOTAL:
+
+| Framework | Findings before → after | Fail before → after | Warn before → after | Info before → after | Applied | Failed |
+|---|---:|---:|---:|---:|---:|---:|
+| F1 Anthropic CLAUDE.md | 9 → 0 | 2 → 0 | 6 → 0 | 1 → 0 | 9 | 0 |
+| F2 Karpathy Wiki | 4 → 0 | 1 → 0 | 2 → 0 | 1 → 0 | 4 | 0 |
+| F3 Caveman | 2 → 0 | 1 → 0 | 1 → 0 | 0 → 0 | 2 | 0 |
+| F4 Chroma | 1 → 0 | 0 → 0 | 1 → 0 | 0 → 0 | 1 | 0 |
+| F5 Memory | 3 → 1 | 2 → 0 | 1 → 1 | 0 → 0 | 2 | 1 |
+| F6 Progressive Disclosure | 3 → 0 | 1 → 0 | 2 → 0 | 0 → 0 | 3 | 0 |
+| G7 Hygiene | 3 → 0 | 1 → 0 | 1 → 0 | 1 → 0 | 3 | 0 |
+| F8 Reflection | 4 → 0 | 1 → 0 | 2 → 0 | 1 → 0 | 4 | 0 |
+| F9 Architecture | 5 → 0 | 1 → 0 | 1 → 0 | 3 → 0 | 5 | 0 |
+| **TOTAL** | 34 → 1 | 9 → 0 | 17 → 1 | 8 → 0 | 33 | 1 |
+
+Score row, separately, with before → after rendered prominently:
+
+```
+Score (F1–G7): 46 → 97 (+51) · "Vault rot" → "Well-tuned"
+```
+
+These tables are the difference between "here's what we need to do" (which is what saved-to-plan/declined would have been) and "here's what was done" (which is what bulk-apply mode produces). The dashboard frames the run retrospectively.
 
 ### 6.2 — Build the HTML
 
@@ -774,16 +865,16 @@ Read the HTML back to confirm content present (not just file present). On mismat
 **Part 3 — summary (after the HTML, no commentary in between):**
 
 ```
-✅ Audit complete.
+✅ Optimizer run complete — here's what changed:
 Report: {decisions-folder}/{YYYY-MM-DD}-vault-audit.html
 JSON sidecar: {decisions-folder}/{YYYY-MM-DD}-vault-audit-findings.json
-Reorg plan (if any saved-to-plan items): {decisions-folder}/{YYYY-MM-DD}-reorg.md
-Score (F1–G7): {score_before} → {score_after} ({delta_sign}{delta})
-F8 insights surfaced: {f8_total} ({f8_applied} applied, {f8_saved} saved, {f8_declined} declined)
-F9 architecture: {f9_total} proposals ({f9_applied} applied, {f9_saved} saved, {f9_declined} declined)
-{N} files audited · {fail_total} fail · {warn_total} warn · {applied_total} applied · {saved_total} saved-to-plan · {declined_total} declined · {failed_total} failed
-Tokens saved: {total_saved}/session (~{annual_savings}/year at {sessions}/week)
+Score (F1–G7): {score_before} → {score_after} ({delta_sign}{delta}) — "{interpretation_before}" → "{interpretation_after}"
+{N} files audited · {applied_total} fixes applied · {failed_total} mechanical failures (see report for reasons)
+Em dashes: {em_before} → {em_after} (-{em_delta}) · Frontmatter coverage: {fm_pct_before} → {fm_pct_after} (+{fm_pct_delta}pp) · Folder-index coverage: {idx_pct_before} → {idx_pct_after} (+{idx_pct_delta}pp)
+Tokens saved: {tokens_saved} ({tokens_pct_saved}% reduction in agent-load) · ~{annual_savings} tokens/year saved at {sessions}/week
 ```
+
+The summary frames the run retrospectively — what *was done*, what *changed*. In bulk-apply mode, "saved-to-plan" and "declined" lines are absent; only `applied` and `failed` exist. In selective-walk mode, append the saved-to-plan and declined counts as additional lines.
 
 Stop. Do not propose follow-up actions.
 
@@ -796,6 +887,9 @@ Stop. Do not propose follow-up actions.
 - **Never** treat the role registry as ephemeral. Persist confirmed assignments to `.claude/vault-roles.json` at end of Step 1.5 so future runs start from the user's confirmed view of their vault, not from a fresh re-classification that re-prompts everything.
 - **Never** propose a structural change purely because BenAI uses that convention. F9.0 tier-2 findings (functional improvements suggesting BenAI conventions) must cite specific evidence in *this* vault that the convention would resolve a real problem. F9.6 reorg proposals must cite the user's own stated folder purposes. "BenAI does X" is not a valid justification anywhere in the optimizer. The BenAI taxonomy is a recognition lens and an optional reference — never a target shape the user must conform to.
 - **Never** drop a tier-2 finding when the user has a custom role already serving the function. If `Lab/` (custom curated) is already playing the projects role, no F9.0 tier-2 finding fires for "you should add a projects folder." Function over name.
+- **Never** unilaterally decide a finding is "test fixture," "user probably didn't want this," "judgment-required-per-section," or any other agent-invented reason to route a finding to anything other than `applied` / `failed` in bulk-apply mode. The user said apply everything; that means everything. If applying is mechanically dangerous, attempt the safest mechanical version (e.g., split a 222KB file at H2 boundaries with an automated-split marker, mark `applied_with_caveat: true`). The only valid escape is mechanical failure with a recorded `failure_reason`.
+- **Never** render the dashboard with the BEFORE score. Step 5.9 is mandatory: re-measure after fixes, recompute score, populate `{{SCORE_AFTER}}` and the per-role/per-framework after columns. A dashboard that shows only BEFORE-state numbers is a bug.
+- **Never** frame the final summary as "what we need to do" in bulk-apply mode. The summary is retrospective: what changed, how much, what failed mechanically and why. Save-to-plan / declined / "for later" framings belong only to selective-walk mode.
 - **Never** apply a change the user didn't approve via `AskUserQuestion` walk in Step 4.
 - **Never** auto-rewrite a CLAUDE.md without per-item user confirmation. F1.x edits, F9.1 routing rewrites, and F9.7 orientation additions are walk-only — the user reviews and confirms each drafted edit before it lands.
 - **Never** delete a file before grepping for references.
