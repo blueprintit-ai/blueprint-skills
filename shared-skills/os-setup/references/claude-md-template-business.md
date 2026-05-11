@@ -47,7 +47,6 @@ For specifics, read that folder's `CLAUDE.md`.
 ## Commands
 
 - `/setup` — Interactive onboarding to personalize this vault
-- `/assistant` — Resume/compress sessions, daily reviews, tasks, memory, output styles, meeting intelligence
 
 ## Document Voice
 

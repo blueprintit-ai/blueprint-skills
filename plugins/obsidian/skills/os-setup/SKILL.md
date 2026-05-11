@@ -522,7 +522,6 @@ date: YYYY-MM-DD
 Tell the user:
 - Quick summary of what was created (which context files, how many projects, any departments, any team profiles)
 - "Open this folder in Obsidian to see your vault"
-- Key command: `/assistant` (sessions, daily reviews, tasks, meetings)
 - "You can add more context anytime — just tell me and I'll update the right files."
 - Suggest a next action based on what they told you
 

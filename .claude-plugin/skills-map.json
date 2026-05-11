@@ -408,10 +408,6 @@
           "displayName": "OS Setup",
           "summary": "Bootstrap vault structure with mode selection and personalized onboarding"
         },
-        "assistant": {
-          "displayName": "Assistant",
-          "summary": "Sessions, daily routines, tasks, memory, output styles, and meeting intelligence"
-        },
         "os-optimizer": {
           "displayName": "OS Optimizer",
           "summary": "Multi-pass second brain audit and optimizer — 22 passes across size/tokens, wiki lint, skills, and hygiene"
@@ -420,8 +416,8 @@
           "displayName": "OS Operator",
           "summary": "Set up scheduled tasks that operate your second brain on a recurring cadence (stub — full scheduling lands later)"
         },
-        "vault-mcp": {
-          "displayName": "Vault MCP",
+        "os-mcp": {
+          "displayName": "OS MCP",
           "summary": "Deploy the Relay MCP server to your own Railway account — bundled source, guided token setup, one command to deploy"
         },
         "team-os": {
