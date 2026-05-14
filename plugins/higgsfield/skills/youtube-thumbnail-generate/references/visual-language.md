@@ -142,7 +142,7 @@ Prompt phrase: `a simplified UI mockup of {interface}, white card with rounded c
 4. **One arrow per thumbnail.** More than one is too busy.
 5. **Dot-grid texture on dark backgrounds.** A subtle pattern, not aggressive. Adds depth without competing.
 6. **Negative space matters.** ~30 to 40% of the frame stays uncluttered.
-7. **Never instruct the model to leave a logo-shaped gap.** The thumbnail fills its frame edge-to-edge. The real logo gets composited on top in post (Figma or Canva), not rendered into a reserved rectangle.
+7. **Logos: pass real logo PNGs as references when available; never hallucinate them; never leave a logo-shaped gap.** Three cases: (a) a real logo PNG is in `Projects/youtube/thumbnails/logos/` or attached by the user → pass it as a `medias[]` entry and instruct the prompt to render it from the reference. (b) No logo PNG is available → describe the element generically (don't name the brand), let the user composite in post. (c) Never reserve an empty rectangle in the render for a logo (produces awkward blank box). The thumbnail fills its frame edge-to-edge either way.
 
 ## What Makes a Thumbnail Off-Brand
 

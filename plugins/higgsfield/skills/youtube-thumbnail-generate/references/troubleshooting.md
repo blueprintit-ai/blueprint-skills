@@ -15,8 +15,8 @@ These happen before any generation call.
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `Context/youtube-thumbnail-style.md` does not exist | Setup never run | Run `/youtube-thumbnail-setup` first (or fall back to locked visual-language defaults and flag at the end) |
-| Style spec has `[FILL]` blocks | Setup interrupted | Re-run `/youtube-thumbnail-setup` to finish the interview |
+| `Context/youtube-thumbnail-style.md` does not exist | Optional vault style spec absent | Fall back to the locked Ben AI thumbnail visual language in `references/visual-language.md`. Surface a one-line note to the user at the end. |
+| Style spec has `[FILL]` blocks | Partially-filled spec | Use the locked defaults for any `[FILL]` section; warn the user once at the end. |
 | `new-with-ben` mode but no Ben reference photo | No `ben_reference_*.jpg` in `refs/` AND user didn't attach one | Ask the user once for a recent photo of Ben |
 | Multiple `ben_reference_*.jpg` files, ambiguous which to use | Pipeline picks most recent by `YYYY-QQ` suffix automatically | None; note the chosen filename in the manifest |
 
@@ -58,14 +58,15 @@ Always preflight when `count > 3` or model is `gpt_image_2`. If cost looks wrong
 
 If a generation returned 0 credits debited but no image, the job failed silently. Check `job_display` for the actual status.
 
-## Model Rendered a Fake Logo
+## Model Hallucinated a Fake Brand Mark
 
-The model dropped a fake logo, watermark, or branded mark somewhere in the frame despite the negative prompt.
+The model rendered a warped, off-brand version of a real logo (Anthropic asterisk with wrong rays, Claude wordmark in the wrong font, OpenAI logo distorted) because the prompt named the brand but no real logo PNG was provided as a reference.
 
 Fixes in order:
 
-1. Tighten the negatives at the end of the prompt: `no real or rendered logos of any kind, no watermarks, no fake brand marks, no Anthropic logo, no Claude logo, no YouTube logo`. Naming specific brands helps.
-2. If a brand mark keeps appearing, the prompt is probably referencing the brand by name in Block 1 or 2. Rephrase to describe the tool without naming it (`a coding assistant interface` instead of `the Claude Code interface`), then composite the real logo in post.
+1. **Provide the real logo as a reference.** Check `Projects/youtube/thumbnails/logos/` for a matching PNG. If found, pass it as a `medias[]` entry and update block 2 of the prompt: `render the provided logo (medias[N]) at approximately 8% of frame width in the top-left, preserving its exact shape, color, and proportions.` The model uses the reference to copy the mark accurately instead of inventing one.
+2. **If no logo PNG is available**, rephrase to describe the element generically without naming the brand: `a coding assistant interface` instead of `the Claude Code interface`. Composite the real logo in post.
+3. **Tighten negatives**: `no hallucinated brand marks, no invented logos, only render logos that appear in the provided reference images`.
 
 ## Model Left an Empty Rectangle in the Frame
 

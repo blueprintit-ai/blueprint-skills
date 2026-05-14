@@ -404,13 +404,13 @@
     },
     "higgsfield": {
       "skills": {
-        "youtube-thumbnail-setup": {
-          "displayName": "YouTube Thumbnail Setup",
-          "summary": "One-time onboarding for the YouTube thumbnail pipeline: trains Ben's Soul Characters (soul-2 + soul-cinematic), builds the locked style spec, sets up vault folders, optional Brand Kit. Run once, or when retraining."
-        },
         "youtube-thumbnail-generate": {
           "displayName": "YouTube Thumbnail Generate",
-          "summary": "Generate on-brand, character-consistent YouTube thumbnails for Ben van Sprundel via Higgsfield. Four modes: variation, new-with-ben (soul_v2 or soul_cinematic), ben-plus-other, no-face. Requires youtube-thumbnail-setup to have been run first."
+          "summary": "Generate on-brand YouTube thumbnails for Ben van Sprundel via Higgsfield using reference images. Four modes: variation, new-with-ben (uses ben_reference_*.jpg from refs/), ben-plus-other, no-face. Distinct creative angles per variant; reference photo locks face across all variants."
+        },
+        "generate-visual": {
+          "displayName": "Generate Visual",
+          "summary": "Generate on-screen video visuals (slides) for Ben's YouTube videos via Higgsfield. Same brand system as the thumbnails. Two modes: single (one slide from one prompt) and progressive-disclosure (N sequential frames where each builds on the previous via image-to-image, locking background/composition across the sequence)."
         }
       }
     },

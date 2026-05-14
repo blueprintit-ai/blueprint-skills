@@ -36,9 +36,17 @@ Always cross-reference `references/visual-language.md` for the canonical palette
 
 The order matters. Higgsfield weights the front of the prompt more, so scene and subject lock first, style and constraints follow.
 
-**Logos**: never instruct the model to "reserve an empty rectangle" or leave a gap for a logo. The model takes that literally and renders an awkward empty box. Instead, the negatives block bans real logos outright; the user composites their actual logo PNG on top of the finished thumbnail in Figma or Canva. The thumbnail itself fills its frame edge-to-edge.
+**Logos** (updated rule): the goal is to USE real logos when you have them as reference PNGs, not avoid them. Two cases:
 
-**Reference images are mandatory inputs**: if the user attached or named a reference image, it MUST flow into the generation via `medias[]`. The prompt should also explicitly acknowledge the reference ("use the provided reference image as the visual anchor for the {character / style / composition}"). Never build a prompt that ignores a user-supplied reference. If you have more references than the chosen model can accept, switch model (usually to `nano_banana_2`) instead of dropping any.
+1. **Real logo PNG available** (in `Projects/youtube/thumbnails/logos/` or attached by the user): pass it as a `medias[]` entry. In block 2, refer to it explicitly: "in the top-left corner, render the provided logo (medias[N]) at approximately 8% of frame width, preserving its exact shape, color, and proportions." nano_banana_2 with a real reference renders brand marks far more faithfully than text-only attempts.
+
+2. **No logo PNG available**: don't have the model hallucinate one. Describe the element generically without naming the brand ("a small coral starburst icon" rather than "the Anthropic logo"). The user can composite the real PNG in post if needed.
+
+What stays banned in negatives: hallucinated brand marks (model invents a logo from a name in the prompt), AND empty rectangles reserved as logo zones (the awkward blank-box problem). What's now ENCOURAGED: rendering real logos from reference PNGs.
+
+**Reference images are mandatory inputs and must be READ first**: if the user attached or named a reference image, READ it with the `Read` tool BEFORE writing the prompt. Extract its palette, composition, motifs, and any brand marks visible. Build the prompt with those observations. THEN pass every relevant reference into `medias[]`. The prompt should explicitly acknowledge each reference ("use the provided reference image (medias[0]) as the visual anchor for the {character / style / composition / logo}"). Never build a prompt that ignores a user-supplied reference. If you have more references than the chosen model can accept, switch model (usually to `nano_banana_2`) instead of dropping any.
+
+**Text on the thumbnail**: keep it minimal. 2 to 4 words per line, 2 lines maximum. If the concept needs more, the concept is wrong for a thumbnail — tighten the hook. Fewer words also render cleaner kerning and sharper letterforms; long text spills, garbles, or gets cut off.
 
 ## Block-by-Block
 
@@ -85,10 +93,12 @@ Pull from the Ben AI thumbnail visual language (see `references/visual-language.
 End the prompt with a flat list. Pull from the `prohibited` section of the style spec. Default:
 
 ```
-no text overlays unless explicitly part of the design, no real or rendered logos of any kind, no empty rectangles or reserved gaps, no extra people, no busy backgrounds, no cartoon or illustrated style, no low-contrast composition, no em dashes in any rendered text.
+no hallucinated or invented brand marks (only render logos from provided reference images), no empty rectangles or reserved gaps, no extra people unless mode requires it, no busy backgrounds, no cartoon or illustrated rendering of Ben (Ben must be photoreal), no photoreal rendering of supporting visuals (folders, arrows, icons stay flat-stylized), no low-contrast composition, no excessive text — keep on-screen text to 2-4 words per line and 2 lines max, no em dashes in any rendered text.
 ```
 
-Note: explicitly ban "empty rectangles or reserved gaps" because the model otherwise sometimes leaves an awkward blank box when it senses logo intent.
+Notes:
+- "Hallucinated brand marks" is the precise ban: the model inventing the Anthropic asterisk, Claude wordmark, OpenAI logo, etc. from text alone. Real logos passed as reference PNGs in `medias[]` are ENCOURAGED, not banned.
+- "Empty rectangles or reserved gaps" stays banned because the model otherwise leaves an awkward blank box when it senses logo intent. The thumbnail fills its frame edge-to-edge; logos either get rendered from a reference PNG or composited in post.
 
 For `nano_banana_2` and `gpt_image_2` you can also pass this as `params.negative_prompt` if the model accepts it. Otherwise include it inline at the end of the prompt.
 
