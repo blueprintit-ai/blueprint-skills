@@ -185,6 +185,23 @@
       ]
     },
     {
+      "name": "higgsfield",
+      "source": "./plugins/higgsfield",
+      "description": "Generate on-brand YouTube thumbnails using Higgsfield via reference images. Includes a setup skill (style spec, vault folders, refs and logos) and a generate skill (one-shot per-thumbnail flow with creative ideation across variants).",
+      "version": "1.1.0",
+      "author": {
+        "name": "BenAI"
+      },
+      "keywords": [
+        "higgsfield",
+        "youtube",
+        "thumbnail",
+        "image-generation",
+        "ben-van-sprundel",
+        "nano-banana"
+      ]
+    },
+    {
       "name": "obsidian",
       "source": "./plugins/obsidian",
       "description": "Turn any folder into an AI-powered second brain with persistent memory, task management, meeting intelligence, daily routines, and output styles. Includes /os-setup, /os-optimizer (22-pass audit), /os-operator, /os-mcp, and /team-os. Solo or Business/Teams modes.",

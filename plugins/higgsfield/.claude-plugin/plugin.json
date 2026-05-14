@@ -1,0 +1,8 @@
+{
+  "name": "higgsfield",
+  "description": "Generate on-brand YouTube thumbnails using Higgsfield via reference images. Includes a setup skill (style spec, vault folders, refs and logos) and a generate skill (one-shot per-thumbnail flow with creative ideation across variants).",
+  "version": "1.1.0",
+  "author": {
+    "name": "BenAI"
+  }
+}

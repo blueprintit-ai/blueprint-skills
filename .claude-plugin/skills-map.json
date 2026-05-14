@@ -402,6 +402,18 @@
         }
       }
     },
+    "higgsfield": {
+      "skills": {
+        "youtube-thumbnail-setup": {
+          "displayName": "YouTube Thumbnail Setup",
+          "summary": "One-time onboarding for the YouTube thumbnail pipeline: trains Ben's Soul Characters (soul-2 + soul-cinematic), builds the locked style spec, sets up vault folders, optional Brand Kit. Run once, or when retraining."
+        },
+        "youtube-thumbnail-generate": {
+          "displayName": "YouTube Thumbnail Generate",
+          "summary": "Generate on-brand, character-consistent YouTube thumbnails for Ben van Sprundel via Higgsfield. Four modes: variation, new-with-ben (soul_v2 or soul_cinematic), ben-plus-other, no-face. Requires youtube-thumbnail-setup to have been run first."
+        }
+      }
+    },
     "obsidian": {
       "skills": {
         "os-setup": {
