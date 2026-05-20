@@ -1,8 +1,8 @@
 {
-  "name": "benai-skills",
+  "name": "blueprint-skills",
   "owner": {
-    "name": "naveedharri",
-    "email": "naveedharri@gmail.com"
+    "name": "blueprintit-ai",
+    "email": "blueprintit-ai@gmail.com"
   },
   "metadata": {
     "description": "Expert automation plugins that turn Claude into a specialist for your team. Install by department to get skills for marketing, sales, operations, creative, and product workflows."
@@ -14,7 +14,7 @@
       "description": "Rank higher and grow organic traffic with programmatic SEO, technical audits, and Search Console optimization. Create email sequences that convert, build compelling case studies, and generate professional infographics. Repurpose YouTube content into LinkedIn posts, newsletters, GIFs, and visual diagrams.",
       "version": "1.0.0",
       "author": {
-        "name": "BenAI"
+        "name": "BluePrint"
       },
       "keywords": [
         "seo",
@@ -36,7 +36,7 @@
       "description": "Research and score B2B leads, craft personalized outreach sequences, and build client success stories. Turn discovery call transcripts into actionable automation blueprints.",
       "version": "1.0.0",
       "author": {
-        "name": "BenAI"
+        "name": "BluePrint"
       },
       "keywords": [
         "lead-generation",
@@ -52,7 +52,7 @@
       "description": "Build, test, and deploy n8n workflows through incremental REST API automation. Convert discovery call transcripts into implementation-ready automation blueprints.",
       "version": "1.0.0",
       "author": {
-        "name": "BenAI"
+        "name": "BluePrint"
       },
       "keywords": [
         "n8n",
@@ -67,7 +67,7 @@
       "description": "Edit and render videos with FFmpeg and Remotion, from stitching and transitions to captions and teasers. Design presentations in Excalidraw and generate AI-powered infographics.",
       "version": "1.0.0",
       "author": {
-        "name": "BenAI"
+        "name": "BluePrint"
       },
       "keywords": [
         "video",
@@ -83,7 +83,7 @@
       "description": "Design presentations, pitch decks, and process diagrams collaboratively in Excalidraw. Turn discovery call transcripts into structured automation blueprints your team can implement.",
       "version": "1.0.0",
       "author": {
-        "name": "BenAI"
+        "name": "BluePrint"
       },
       "keywords": [
         "excalidraw",
@@ -98,7 +98,7 @@
       "description": "Plan, brief, and prepare YouTube videos from idea to filming-ready. Create video briefs, generate topic ideas, optimize titles and thumbnails, build structured outlines, write scripts, and design on-screen excalidraw visuals.",
       "version": "1.0.0",
       "author": {
-        "name": "BenAI"
+        "name": "BluePrint"
       },
       "keywords": [
         "youtube",
@@ -118,7 +118,7 @@
       "description": "Complete SEO toolkit via /seo command: full site audits with parallel subagents, technical SEO, E-E-A-T content quality, schema, sitemaps, image optimization, AI search/GEO, programmatic SEO, competitor pages, hreflang, and Search Console optimization.",
       "version": "1.0.0",
       "author": {
-        "name": "BenAI"
+        "name": "BluePrint"
       },
       "keywords": [
         "seo",
@@ -140,7 +140,7 @@
       "description": "Paid ads toolkit (14 skills + 6 audit subagents). Covers Google, Meta, LinkedIn, TikTok, YouTube, and Microsoft Ads. Includes audits, budget allocation (70/20/10), creative + brand context, landing pages, strategic planning, and competitive intel.",
       "version": "1.1.0",
       "author": {
-        "name": "BenAI"
+        "name": "BluePrint"
       },
       "keywords": [
         "ads",
@@ -167,7 +167,7 @@
       "description": "Premium frontend design skills that override default AI design biases. Includes a configurable design system with anti-slop rules for React/Next.js/Tailwind, aesthetic variants (soft, minimalist, brutalist), project redesign auditing, Google Stitch integration, and full-output enforcement.",
       "version": "1.0.0",
       "author": {
-        "name": "BenAI"
+        "name": "BluePrint"
       },
       "keywords": [
         "design",
@@ -187,17 +187,17 @@
     {
       "name": "higgsfield",
       "source": "./plugins/higgsfield",
-      "description": "Generate on-brand YouTube thumbnails and in-video visuals (slides) using Higgsfield via reference images. Includes youtube-thumbnail-generate (creative ideation across variants, locked Ben face) and generate-visual (single slides or progressive-disclosure sequences for tutorial videos).",
+      "description": "Generate on-brand YouTube thumbnails and in-video visuals (slides) using Higgsfield via reference images. Includes youtube-thumbnail-generate (creative ideation across variants, locked blueprintit face) and generate-visual (single slides or progressive-disclosure sequences for tutorial videos).",
       "version": "2.1.0",
       "author": {
-        "name": "BenAI"
+        "name": "BluePrint"
       },
       "keywords": [
         "higgsfield",
         "youtube",
         "thumbnail",
         "image-generation",
-        "ben-van-sprundel",
+        "blueprintit-van-sprundel",
         "nano-banana"
       ]
     },
@@ -207,7 +207,7 @@
       "description": "Turn any folder into an AI-powered second brain with persistent memory, task management, meeting intelligence, daily routines, and output styles. Includes /os-setup, /os-optimizer (22-pass audit), /os-operator, /os-mcp, and /team-os. Solo or Business/Teams modes.",
       "version": "3.8.0",
       "author": {
-        "name": "BenAI"
+        "name": "BluePrint"
       },
       "keywords": [
         "personal-assistant",
@@ -232,7 +232,7 @@
       "description": "Autonomous optimization loop \u2014 iterates on prompts, skills, templates, or code overnight. Two evaluation modes: deterministic (eval.py with proxy heuristics) for mechanical checks, or AI judge (LLM rubric scoring) for creative/subjective quality. Uses 4-way agent separation for unbiased evaluation.",
       "version": "1.0.0",
       "author": {
-        "name": "BenAI"
+        "name": "BluePrint"
       },
       "keywords": [
         "autoresearch",

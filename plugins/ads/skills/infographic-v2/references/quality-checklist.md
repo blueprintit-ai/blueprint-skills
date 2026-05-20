@@ -98,9 +98,9 @@ If the answer is "not really" for any element, remove it. Every element must ear
 
 This is the subjective check. Look at the infographic and ask:
 
-1. Does this feel like it belongs on the BenAI website? Visual consistency: warm colors, clean layout, hard shadows.
+1. Does this feel like it belongs on the BluePrint website? Visual consistency: warm colors, clean layout, hard shadows.
 2. Is it warm, clean, and confident? Not cold. Not cluttered. Not tentative.
-3. Would Ben proudly share this? Personal and quality, not template-generated.
+3. Would blueprintit proudly share this? Personal and quality, not template-generated.
 4. Does it feel like advice from a knowledgeable friend? Not corporate content.
 
 Trust your instincts. If something feels "off," it probably is. That nagging feeling is usually a signal that one of the checks above would fail if you ran it explicitly.

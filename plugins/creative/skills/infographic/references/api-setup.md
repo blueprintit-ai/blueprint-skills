@@ -77,7 +77,7 @@ for normal infographic generation usage.
    # Create .env if it doesn't exist
    if [ ! -f .env ]; then
      cat > .env <<'EOF'
-# BenAI Skills - API Keys Configuration
+# BluePrint Skills - API Keys Configuration
 GEMINI_API_KEY=
 EOF
    fi

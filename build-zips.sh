@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# Builds distributable zip files for BenAI skills.
+# Builds distributable zip files for BluePrint skills.
 # Reads marketplace.json, detects all department plugins, and generates:
 #
 #   dist/extension/                      Claude Code extension (Cursor, VS Code)
 #     ├── <department>.zip               One department per zip (marketplace format)
-#     └── benai-skills-marketplace.zip   All departments in one zip
+#     └── blueprint-skills-marketplace.zip   All departments in one zip
 #
 #   dist/desktop/                        Claude Desktop (upload local plugin)
 #     └── <department>.zip               Single plugin zips (plugin.json at root)
@@ -101,9 +101,9 @@ with open('$staging/.claude-plugin/marketplace.json', 'w') as f:
 done
 
 # Full marketplace zip
-(cd "$ROOT" && zip -r "$DIST/extension/benai-skills-marketplace.zip" .claude-plugin/marketplace.json plugins/ .env.example -x "*/\.*" > /dev/null 2>&1)
-SIZE=$(du -h "$DIST/extension/benai-skills-marketplace.zip" | cut -f1 | xargs)
-echo "  Created extension/benai-skills-marketplace.zip ($SIZE)"
+(cd "$ROOT" && zip -r "$DIST/extension/blueprint-skills-marketplace.zip" .claude-plugin/marketplace.json plugins/ .env.example -x "*/\.*" > /dev/null 2>&1)
+SIZE=$(du -h "$DIST/extension/blueprint-skills-marketplace.zip" | cut -f1 | xargs)
+echo "  Created extension/blueprint-skills-marketplace.zip ($SIZE)"
 
 # =============================================================
 # DESKTOP ZIPS (Claude Desktop — upload local plugin)

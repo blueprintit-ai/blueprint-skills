@@ -10,7 +10,7 @@ The thumbnail pipeline uses reference images as the identity anchor (not a train
 
 | Model ID | Strength | Weakness | Use for |
 |---|---|---|---|
-| `nano_banana_2` | Sharpest text, strongest instruction-following, multi-ref support (up to 4), 2K to 4K. Aka Nano Banana Pro. Works with a reference photo to anchor identity at ~75-85% faithfulness. | Slightly less identity-faithful than a trained Soul. Acceptable for most thumbnails. | **Default for every mode**: variation, new-with-ben, ben-plus-other, no-face |
+| `nano_banana_2` | Sharpest text, strongest instruction-following, multi-ref support (up to 4), 2K to 4K. Aka Nano Banana Pro. Works with a reference photo to anchor identity at ~75-85% faithfulness. | Slightly less identity-faithful than a trained Soul. Acceptable for most thumbnails. | **Default for every mode**: variation, new-with-blueprintit, blueprintit-plus-other, no-face |
 | `nano_banana_flash` | Fast 4K, cheaper. | Lower instruction-following than `nano_banana_2`. | Quick exploration drafts when user asks for fast/cheap |
 | `gpt_image_2` | Best at rendering legible text directly in the image. | Stylized, less photoreal. | `no-face` thumbnails where text is the hero element |
 | `flux_kontext` | Instruction-based editing of a provided image. | Less identity-faithful than `nano_banana_2`. | Surgical edits to an existing thumbnail (recolor a sticky note, swap a monitor display) |
@@ -22,7 +22,7 @@ Is the topic a slight variation of an existing thumbnail?
    YES -> nano_banana_2 with the old thumbnail as medias[0]
    NO  -> continue
 
-Does Ben's face need to be in the frame?
+Does blueprintit's face need to be in the frame?
    YES, alone           -> nano_banana_2 with the latest ben_reference_*.jpg as medias[0]
    YES, with another    -> nano_banana_2 with ben_reference as medias[0] + second subject as medias[1]
    NO                   -> continue
@@ -54,7 +54,7 @@ Surgical edit on a thumbnail you already have?
 }
 ```
 
-Supports up to 4 reference images. First ref is the strongest anchor. For `new-with-ben`, `medias[0]` is always a current photo of Ben.
+Supports up to 4 reference images. First ref is the strongest anchor. For `new-with-blueprintit`, `medias[0]` is always a current photo of blueprintit.
 
 ### `gpt_image_2`
 
@@ -124,7 +124,7 @@ The `medias[]` array entries each have a `role`. Get it wrong and the API reject
 | `gpt_image_2` | `image` | 1 |
 | `flux_kontext` | `image` | 1 |
 
-`nano_banana_2` is the only model in our stack that supports multi-ref. Use it for `ben-plus-other` and any composition with both Ben and a style anchor.
+`nano_banana_2` is the only model in our stack that supports multi-ref. Use it for `blueprintit-plus-other` and any composition with both blueprintit and a style anchor.
 
 ## Reference Sources (medias[].value)
 
@@ -134,7 +134,7 @@ Each `medias[].value` accepts three things interchangeably:
 2. A `job_id` from a prior generation (auto-detected; "vary v2" works this way)
 3. A direct image URL (publicly accessible) or a local file path the MCP can upload
 
-For thumbnails, prefer `job_id` from prior generations whenever possible. It avoids re-uploading and keeps the manifest's reference chain clean. For Ben reference photos, upload once via `media_upload`/`media_confirm` and store the returned `media_id`; reuse it across runs until the photo is replaced.
+For thumbnails, prefer `job_id` from prior generations whenever possible. It avoids re-uploading and keeps the manifest's reference chain clean. For blueprintit reference photos, upload once via `media_upload`/`media_confirm` and store the returned `media_id`; reuse it across runs until the photo is replaced.
 
 ## Discovery Guardrail
 

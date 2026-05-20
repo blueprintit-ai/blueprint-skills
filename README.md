@@ -1,4 +1,4 @@
-# BenAI Skills
+# BluePrint Skills
 
 Expert automation skills for Claude Code, organized by department.
 
@@ -6,15 +6,15 @@ Expert automation skills for Claude Code, organized by department.
 
 ```bash
 # Add marketplace
-/plugin marketplace add naveedharri/benai-skills
+/plugin marketplace add blueprintit-ai/blueprint-skills
 
 # Install a department plugin
-/plugin install marketing@benai-skills
-/plugin install sales@benai-skills
-/plugin install operations@benai-skills
-/plugin install creative@benai-skills
-/plugin install product@benai-skills
-/plugin install youtube@benai-skills
+/plugin install marketing@blueprint-skills
+/plugin install sales@blueprint-skills
+/plugin install operations@blueprint-skills
+/plugin install creative@blueprint-skills
+/plugin install product@blueprint-skills
+/plugin install youtube@blueprint-skills
 ```
 
 ## Setup
@@ -23,7 +23,7 @@ Some skills require API keys. Create a `.env` file in your project directory:
 
 ```bash
 # Quick setup
-curl -O https://raw.githubusercontent.com/naveedharri/benai-skills/main/.env.example
+curl -O https://raw.githubusercontent.com/blueprintit-ai/blueprint-skills/main/.env.example
 mv .env.example .env
 # Edit .env and add your API keys
 ```
@@ -165,7 +165,7 @@ The Sales plugin includes a full B2B outbound pipeline (`/outbound-pipeline`) th
 ## Project Structure
 
 ```
-benai-skills/
+blueprint-skills/
 ├── .claude-plugin/
 │   ├── marketplace.json
 │   └── skills-map.json          # Defines which departments get which skills
@@ -246,8 +246,8 @@ plugins/<department>/
 
 Run `./build-zips.sh` to generate downloadable zip files in `dist/`. The script runs `sync-skills.sh` first, then reads `marketplace.json` and creates:
 - One zip per department (standalone, installable individually)
-- `benai-skills-marketplace.zip` (all departments in one package)
+- `blueprint-skills-marketplace.zip` (all departments in one package)
 
 ## License
 
-BenAI
+BluePrint

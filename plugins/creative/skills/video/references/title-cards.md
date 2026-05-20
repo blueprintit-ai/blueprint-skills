@@ -50,7 +50,7 @@ Add professional title cards to introduce sections, chapters, or segments in vid
 ### Step 1: Extract Brand Colors from Website
 
 ```tsx
-// Example: BenAI Brand Colors
+// Example: BluePrint Brand Colors
 const BRAND_COLORS = {
   primary: '#000000',      // Black
   secondary: '#D2ECD0',    // Mint/sage green

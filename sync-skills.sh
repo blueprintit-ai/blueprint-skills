@@ -74,7 +74,7 @@ for dept_name, dept_config in departments.items():
         "name": dept_name,
         "description": mp.get("description", ""),
         "version": mp.get("version", "1.0.0"),
-        "author": mp.get("author", {"name": "BenAI"}),
+        "author": mp.get("author", {"name": "BluePrint"}),
     }
     if display_name and display_name != dept_name:
         plugin_data["displayName"] = display_name

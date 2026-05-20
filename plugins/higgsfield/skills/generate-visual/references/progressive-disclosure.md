@@ -4,9 +4,9 @@ The multi-frame visual pattern where each frame builds on the previous by adding
 
 ## Why It Works
 
-When Ben explains a multi-part concept (the structure of a skill folder, the layers of a system, a sequential workflow), the audience tracks better if the visual unfolds in sync with his narration. Showing the full diagram up front loses people; showing each piece as he describes it builds understanding step-by-step.
+When blueprintit explains a multi-part concept (the structure of a skill folder, the layers of a system, a sequential workflow), the audience tracks better if the visual unfolds in sync with his narration. Showing the full diagram up front loses people; showing each piece as he describes it builds understanding step-by-step.
 
-This is the YouTube tutorial version of an animated reveal. We render it as static frames so Ben can click through in his editing software at his own pace.
+This is the YouTube tutorial version of an animated reveal. We render it as static frames so blueprintit can click through in his editing software at his own pace.
 
 ## The Core Mechanic: Iterative Image-to-Image
 

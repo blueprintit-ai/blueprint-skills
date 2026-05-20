@@ -1,4 +1,4 @@
-# BenAI Skills - Expert Automation
+# BluePrint Skills - Expert Automation
 
 ## What This Is
 
@@ -154,7 +154,7 @@ A marketplace of expert automation plugins for Claude Code, organized by departm
 | os-optimizer | `/os-optimizer` | Multi-pass second brain audit and optimizer (22 passes, 4 groups) |
 | os-operator | `/os-operator` | Schedule recurring routines that operate the second brain (stub — full scheduling lands later) |
 | os-mcp | `/os-mcp` | Deploy a self-hosted Relay MCP server to Railway |
-| team-os | `/team-os` | Install the BenAI Relay fork as the foundation for a shared Team OS |
+| team-os | `/team-os` | Install the BluePrint Relay fork as the foundation for a shared Team OS |
 
 #### Mode Selection
 

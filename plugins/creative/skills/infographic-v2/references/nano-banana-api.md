@@ -175,7 +175,7 @@ into Google AI Studio (https://aistudio.google.com) to generate the image themse
 # Create .env if it doesn't exist
 if [ ! -f .env ]; then
   cat > .env <<'EOF'
-# BenAI Skills - API Keys Configuration
+# BluePrint Skills - API Keys Configuration
 GEMINI_API_KEY=
 GEMINI_IMAGE_MODEL=gemini-3-pro-image-preview
 APIFY_TOKEN=

@@ -108,7 +108,7 @@ To activate image generation, please open a new Claude Code session and run /web
 ### Starting Message
 
 ```
-Welcome to Website Launch Kit by BenAI
+Welcome to Website Launch Kit by BluePrint
 
 Ship your next landing page — fast, beautiful, and conversion-ready.
 
@@ -251,7 +251,7 @@ Proceed to Phase 1. During Phase 2 and Phase 4, leave `<!-- IMAGE NEEDED: [descr
 # Create .env if it doesn't exist
 if [ ! -f .env ]; then
   cat > .env <<'EOF'
-# BenAI Skills - API Keys Configuration
+# BluePrint Skills - API Keys Configuration
 GEMINI_API_KEY=
 GEMINI_IMAGE_MODEL=gemini-3-pro-image-preview
 EOF

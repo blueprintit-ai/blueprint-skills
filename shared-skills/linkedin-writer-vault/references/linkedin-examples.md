@@ -1,5 +1,5 @@
 LinkedIn Post Examples - Reference Library
-This document contains real LinkedIn post examples from Ben Van Sprundel. Use these as references for tone, structure, and the signature Ben voice when creating LinkedIn content.
+This document contains real LinkedIn post examples from blueprintit Van Sprundel. Use these as references for tone, structure, and the signature blueprintit voice when creating LinkedIn content.
 ─────────────────────────────────────────
 Example 1: Domain Expertise + AI = Unfair Advantage
 Type: Insight / Mindset Shift

@@ -1,6 +1,6 @@
-# Contributing to BenAI Skills
+# Contributing to BluePrint Skills
 
-This guide outlines the workflow for adding new skills to the BenAI Skills repository.
+This guide outlines the workflow for adding new skills to the BluePrint Skills repository.
 
 ## 1. Setup
 
@@ -11,7 +11,7 @@ Ensure you have both your fork (`origin`) and the main repository (`upstream`) c
 
 ```bash
 # Add upstream if you haven't already
-git remote add upstream https://github.com/naveedharri/benai-skills.git
+git remote add upstream https://github.com/blueprintit-ai/blueprint-skills.git
 
 # Verify remotes
 git remote -v
@@ -94,7 +94,7 @@ First, push your changes to the development repository for testing.
 
 ```bash
 # Add the development remote (one-time setup)
-git remote add develop https://github.com/prabha-oss/benai-skills-develop.git
+git remote add develop https://github.com/prabha-oss/blueprint-skills-develop.git
 
 # Push your branch to develop
 git push develop feature/your-skill-name

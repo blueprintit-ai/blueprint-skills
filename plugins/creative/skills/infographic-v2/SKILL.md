@@ -5,7 +5,7 @@ description: Generate professional infographics using Nano Banana MCP (Gemini AI
 
 # Infographic Generator
 
-Create professional infographics in the BenAI brand style for LinkedIn and newsletters. Uses Gemini AI via the Nano Banana MCP server for image generation.
+Create professional infographics in the BluePrint brand style for LinkedIn and newsletters. Uses Gemini AI via the Nano Banana MCP server for image generation.
 
 **Connectors:** Nano Banana MCP (Gemini AI image generation)
 
@@ -118,7 +118,7 @@ When both Layer 3 and Layer 4 are strong, pick the sub-mode based on which layer
 
 | Relative Strength | Hybrid Sub-Mode | What It Produces |
 |---|---|---|
-| Layer 4 >= Layer 3 | **Data-led hybrid** | An Information Graphic (BenAI brand system, cards, data structures) with an emotionally resonant headline or framing from Layer 3. The infographic IS the output. The claim provides the hook. |
+| Layer 4 >= Layer 3 | **Data-led hybrid** | An Information Graphic (BluePrint brand system, cards, data structures) with an emotionally resonant headline or framing from Layer 3. The infographic IS the output. The claim provides the hook. |
 | Layer 3 > Layer 4 | **Editorial-led hybrid** | An Editorial Illustration (cinematic scene, artistic style) with a small data overlay anchoring the emotion. The scene IS the output. The data provides credibility. |
 
 **Default when equal:** Data-led hybrid. Most LinkedIn content benefits more from a clear infographic with a strong headline than from an artistic scene with a data footnote.
@@ -151,7 +151,7 @@ questions:
     header: "Type"
     options:
       - label: "Infographic (Recommended)"
-        description: "Clean data visual using BenAI brand system. Cards, scorecards, diagrams. Best for frameworks and comparisons."
+        description: "Clean data visual using BluePrint brand system. Cards, scorecards, diagrams. Best for frameworks and comparisons."
       - label: "Editorial illustration"
         description: "Artistic, cinematic scene. Moebius linework, surrealism, or graphic novel style. Best for philosophical claims."
       - label: "Risograph / analog print"
@@ -168,13 +168,13 @@ The user's type selection determines the output mode. This overrides the auto-de
 
 | User Selects | Output Mode Becomes |
 |---|---|
-| **Infographic** | Information Graphic (or Data-led Hybrid if both layers were strong). Lock BenAI brand system as the style. |
+| **Infographic** | Information Graphic (or Data-led Hybrid if both layers were strong). Lock BluePrint brand system as the style. |
 | **Editorial illustration** | Editorial Illustration (or Editorial-led Hybrid if both layers were strong). Use European editorial / Adult Swim / Moebius style anchors. |
 | **Risograph / analog print** | Editorial Illustration. Use risograph style anchors. |
 | **Minimalist conceptual** | Editorial Illustration. Use minimalist conceptual style anchors. |
 | **Other (free text)** | If it describes a data visual or infographic style, route to Information Graphic. If it describes an artistic style, route to Editorial Illustration. Use their description as the style anchor. |
 
-State the locked mode after selection: "Got it -- clean infographic using the BenAI brand system." or "Got it -- editorial illustration in the risograph style."
+State the locked mode after selection: "Got it -- clean infographic using the BluePrint brand system." or "Got it -- editorial illustration in the risograph style."
 
 **This is ONE user interaction collecting TWO answers.**
 
@@ -644,7 +644,7 @@ If confirmed: append a new numbered rule to the Rules section below.
 6. Use style anchors, not abstract descriptors ("Moebius meets Adult Swim" beats "clean modern illustration")
 7. NEVER use black backgrounds
 8. Max 4-5 distinct elements per infographic, one key message rule
-9. Always include footer: "Ben Van Sprundel | Founder @ BenAI"
+9. Always include footer: "blueprintit Van Sprundel | Founder @ BluePrint"
 10. Instruct clearly in the process when to use each reference file (lazy loading)
 11. Never ask for confirmation of something the AI decided -- state it and let the user override
 12. Batch independent questions into a single AskUserQuestion when possible

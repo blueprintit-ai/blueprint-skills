@@ -1,6 +1,6 @@
 # Prompt Builder (for slides / on-screen visuals)
 
-Every prompt follows a 4-block anatomy similar to the thumbnail generate skill, with one difference: block 2 is the HERO VISUAL (not Ben). Ben is usually NOT in slide frames; the supporting visual is the subject.
+Every prompt follows a 4-block anatomy similar to the thumbnail generate skill, with one difference: block 2 is the HERO VISUAL (not blueprintit). blueprintit is usually NOT in slide frames; the supporting visual is the subject.
 
 ## Step 0 (mandatory if any reference images): READ them ALL
 
@@ -30,7 +30,7 @@ Order matters; Higgsfield weights front-of-prompt more.
 
 One sentence. The background and its texture.
 
-Default for Ben's brand:
+Default for blueprintit's brand:
 ```
 A flat deep-charcoal #1F1F1F background with a subtle dot-grid texture pattern overlay, evenly lit.
 ```

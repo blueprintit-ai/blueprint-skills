@@ -15,9 +15,9 @@ These happen before any generation call.
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `Context/youtube-thumbnail-style.md` does not exist | Optional vault style spec absent | Fall back to the locked Ben AI thumbnail visual language in `references/visual-language.md`. Surface a one-line note to the user at the end. |
+| `Context/youtube-thumbnail-style.md` does not exist | Optional vault style spec absent | Fall back to the locked blueprintit AI thumbnail visual language in `references/visual-language.md`. Surface a one-line note to the user at the end. |
 | Style spec has `[FILL]` blocks | Partially-filled spec | Use the locked defaults for any `[FILL]` section; warn the user once at the end. |
-| `new-with-ben` mode but no Ben reference photo | No `ben_reference_*.jpg` in `refs/` AND user didn't attach one | Ask the user once for a recent photo of Ben |
+| `new-with-blueprintit` mode but no blueprintit reference photo | No `ben_reference_*.jpg` in `refs/` AND user didn't attach one | Ask the user once for a recent photo of blueprintit |
 | Multiple `ben_reference_*.jpg` files, ambiguous which to use | Pipeline picks most recent by `YYYY-QQ` suffix automatically | None; note the chosen filename in the manifest |
 
 ## Validation Errors
@@ -25,7 +25,7 @@ These happen before any generation call.
 | Error | Cause | Fix |
 |---|---|---|
 | `Missing required params: prompt` | No prompt sent | Provide one |
-| `Missing required params: medias` | Mode needs a reference (variation, new-with-ben, ben-plus-other) | Pass `medias[]` with at least one ref |
+| `Missing required params: medias` | Mode needs a reference (variation, new-with-blueprintit, blueprintit-plus-other) | Pass `medias[]` with at least one ref |
 | `Invalid values: aspect_ratio=99:99 (allowed: ...)` | Not in the model's enum | Pick from the model's enum in `models.md` |
 | `Invalid values: resolution=8k` | nano_banana_2 caps at 4k | Use `resolution: "2k"` or `"4k"` |
 | `Unknown params: <name>` | Param doesn't exist on this model | Call `models_explore` for that model's schema |
@@ -74,13 +74,13 @@ The model rendered an awkward blank rectangle, usually because the prompt told i
 
 Fix: never instruct the model to leave a gap. The thumbnail should fill its frame edge-to-edge. If the current prompt has reservation language, strip it and regenerate. The negatives in `prompt-builder.md` Block 4 already explicitly ban "empty rectangles or reserved gaps."
 
-## Ben Looks Like "AI Ben" Not Ben
+## blueprintit Looks Like "AI blueprintit" Not blueprintit
 
-Symptoms: face shape is off, age is wrong, eyes don't feel like Ben.
+Symptoms: face shape is off, age is wrong, eyes don't feel like blueprintit.
 
 Diagnostics in order:
 
-1. Confirm a Ben reference photo was passed as `medias[0]` in the call (`new-with-ben` mode must always have one).
+1. Confirm a blueprintit reference photo was passed as `medias[0]` in the call (`new-with-blueprintit` mode must always have one).
 2. Confirm the reference photo is recent (under 90 days). Older photos drift in feel.
 3. Confirm the reference photo is high-quality: clear face, eyes visible, no sunglasses or hats, ≥1024px.
 4. Confirm the prompt doesn't fight the reference with conflicting facial descriptions. Let the photo carry the face; the prompt should only describe expression and framing.
@@ -114,12 +114,12 @@ Fixes:
 
 ## Multi-Reference Mode Confuses Subjects
 
-Using `nano_banana_2` with two `medias[]` (Ben + another subject), but the output blends them weirdly.
+Using `nano_banana_2` with two `medias[]` (blueprintit + another subject), but the output blends them weirdly.
 
 Fixes:
 
-1. In the prompt, explicitly say "Ben is the person on the right, the second subject is the {description} on the left." Position language helps disambiguate.
-2. Keep Ben as `medias[0]` (the strongest anchor slot).
+1. In the prompt, explicitly say "blueprintit is the person on the right, the second subject is the {description} on the left." Position language helps disambiguate.
+2. Keep blueprintit as `medias[0]` (the strongest anchor slot).
 3. Reduce `count` to 1 and iterate; multi-ref renders vary more between variants.
 
 ## Higgsfield Returns A Non-Image Result

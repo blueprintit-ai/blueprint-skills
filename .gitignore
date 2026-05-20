@@ -1,4 +1,4 @@
-# Environment configuration (created by benai-skills in user projects)
+# Environment configuration (created by blueprint-skills in user projects)
 # Note: .env files are created in the user's project directory, not in the plugin
 .env
 .env.local

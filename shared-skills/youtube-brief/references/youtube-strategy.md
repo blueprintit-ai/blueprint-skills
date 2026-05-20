@@ -2,7 +2,7 @@
 
 ## Channel Overview
 <!-- Fill in: Channel name, subscriber count, niche, launch date -->
-<!-- Example: Ben AI, 95K+ subscribers, AI automation for business, launched June 2024 -->
+<!-- Example: blueprintit AI, 95K+ subscribers, AI automation for business, launched June 2024 -->
 
 ## Content Pillars
 <!-- Fill in: 3-5 content pillars the channel focuses on -->
@@ -25,7 +25,7 @@
 <!-- Fill in: Topics the audience wants but haven't been covered yet -->
 
 ## Competitor Landscape
-<!-- Fill in: Other channels in the space, what they do well, how Ben differentiates -->
+<!-- Fill in: Other channels in the space, what they do well, how blueprintit differentiates -->
 
 ## Video Format Preferences
 <!-- Fill in: Preferred video lengths, styles, recording setup -->

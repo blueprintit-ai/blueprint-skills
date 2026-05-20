@@ -152,7 +152,7 @@ between "feel something" and "learn something." The content tells you.
 
 When both layers are strong, pick the sub-mode based on which is STRONGER:
 
-- **Data-led Hybrid:** Produces an Information Graphic (BenAI brand system, cards,
+- **Data-led Hybrid:** Produces an Information Graphic (BluePrint brand system, cards,
   data structures) with a Layer 3 claim as the emotionally resonant headline. The
   infographic IS the output. The claim provides the hook. This is the DEFAULT when
   layers are equally strong, because most LinkedIn content benefits more from a

@@ -182,7 +182,7 @@ options:
 
 ## Phase 1.75: Style Discovery
 
-**ONLY for Editorial Illustration or Hybrid mode.** If the user chose Information Graphic, SKIP this phase entirely — use the BenAI brand system (hard shadows, cream background, accent colors).
+**ONLY for Editorial Illustration or Hybrid mode.** If the user chose Information Graphic, SKIP this phase entirely — use the BluePrint brand system (hard shadows, cream background, accent colors).
 
 **Goal:** Find the visual world that matches the content's emotional register. Style should come from the content's tone, not from a default template.
 
@@ -431,7 +431,7 @@ Once user provides the key:
 # Create .env if it doesn't exist
 if [ ! -f .env ]; then
   cat > .env <<'EOF'
-# BenAI Skills - API Keys Configuration
+# BluePrint Skills - API Keys Configuration
 
 # ============================================================================
 # Marketing Plugin
@@ -541,7 +541,7 @@ In this mode, complete all phases normally, but in Phase 5.3, save the prompt to
    "Not cartoonish, not hyperreal. Not corporate. Not clipart."
 
 9. TECHNICAL
-   "Footer at the very bottom in small, clean sans-serif: 'Ben Van Sprundel | Founder @ BenAI'"
+   "Footer at the very bottom in small, clean sans-serif: 'blueprintit Van Sprundel | Founder @ BluePrint'"
    "Output as a [aspect ratio] image at approximately 2048 pixels wide."
 ```
 
@@ -580,7 +580,7 @@ In this mode, complete all phases normally, but in Phase 5.3, save the prompt to
    "The image should be scannable in 1-2 seconds. Instantly readable. No decoding required."
 
 8. TECHNICAL
-   "Footer: 'Ben Van Sprundel | Founder @ BenAI'"
+   "Footer: 'blueprintit Van Sprundel | Founder @ BluePrint'"
    "Output as a [aspect ratio] image at approximately 2048 pixels wide."
 ```
 
@@ -783,7 +783,7 @@ If yes → return to Phase 2 with the next chosen concept.
 
 ### Footer
 
-Always include: `"Ben Van Sprundel | Founder @ BenAI"`
+Always include: `"blueprintit Van Sprundel | Founder @ BluePrint"`
 
 ---
 
@@ -825,8 +825,8 @@ Always include: `"Ben Van Sprundel | Founder @ BenAI"`
 7. **For editorial illustrations: the scene IS the message.** Don't illustrate a concept — create a scene that embodies the truth. "Two rooms sharing a wall" IS the claim about chosen vs. inherited pain.
 8. **Whitespace is non-negotiable.** Every generated image should feel like a premium magazine spread. If anything feels cramped, there's too much in it. When in doubt, remove elements.
 9. **Ask "what should the viewer FEEL or KNOW?" not "what should we visualize?"** The first question leads to good output. The second leads to decoration.
-10. **Brand guidelines are for Information Graphics. Discovered style is for Editorial Illustrations.** The BenAI brand system (hard shadows, cream, accents) powers data visuals. For editorial art, the content's emotional register and the user's taste dictate the style.
+10. **Brand guidelines are for Information Graphics. Discovered style is for Editorial Illustrations.** The BluePrint brand system (hard shadows, cream, accents) powers data visuals. For editorial art, the content's emotional register and the user's taste dictate the style.
 11. **Edit, don't regenerate** — Use `edit_image`/`continue_editing` for execution tweaks. Only regenerate with `generate_image` when the concept itself is wrong.
-12. **Always include footer** — "Ben Van Sprundel | Founder @ BenAI"
+12. **Always include footer** — "blueprintit Van Sprundel | Founder @ BluePrint"
 13. **If the concept is broken, no amount of editing fixes it.** When the 2-second test fails after generation, go back to Phase 3 — don't iterate on a fundamentally wrong visual.
 14. **NEVER use black backgrounds** — Use #FAF3E3 (light yellow) or content-appropriate warm tones. This applies to ALL output modes.

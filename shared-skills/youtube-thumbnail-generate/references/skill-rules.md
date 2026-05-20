@@ -4,7 +4,7 @@ Living log of in-flight corrections from real generation runs. Append new entrie
 
 ## How This File Works
 
-- During a run, if Ben gives a correction ("never put me in a suit", "always lean yellow on tutorial topics"), append a dated entry below.
+- During a run, if blueprintit gives a correction ("never put me in a suit", "always lean yellow on tutorial topics"), append a dated entry below.
 - After 3 confirmations of the same rule across separate runs, promote it into the Core Rules block in `SKILL.md` and add a `[PROMOTED]` tag to the original entry here.
 - Never delete entries. This is the audit trail for why the skill behaves the way it does.
 
@@ -30,7 +30,7 @@ Do NOT put here:
 
 DO put here:
 - Prompt phrasing preferences ("always use 'home office' not 'workspace'")
-- Mode override patterns ("for tutorial topics, default to `new-with-ben` standard not hero")
+- Mode override patterns ("for tutorial topics, default to `new-with-blueprintit` standard not hero")
 - Output post-processing rules ("rename v1.png to v1-{quality-tag}.png")
 - Model preference shifts ("try `gpt_image_2` first for text-heavy no-face thumbnails")
 

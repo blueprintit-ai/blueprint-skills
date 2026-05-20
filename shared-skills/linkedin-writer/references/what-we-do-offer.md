@@ -28,7 +28,7 @@ Slack
 Meta
 Essential tools - step-by-step connections
 3. Direct Access & Support
-Weekly Q&As with Ben
+Weekly Q&As with blueprintit
 Strategy sessions
 Positioning guidance
 Business advice from someone running 6-figure AI services

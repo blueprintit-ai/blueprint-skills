@@ -1,4 +1,4 @@
-# BenAI Brand Guidelines
+# BluePrint Brand Guidelines
 
 > Reference file for infographic generation. Loaded during Phase 6 (Prompt Construction)
 > for Information Graphics and Hybrid mode visuals.
@@ -7,8 +7,8 @@
 
 ## 1. Brand Philosophy
 
-BenAI is a personal brand built around helping people automate their work and businesses.
-The founder, Ben Van Sprundel, creates content about AI, automation, and working smarter.
+BluePrint is a personal brand built around helping people automate their work and businesses.
+The founder, blueprintit Van Sprundel, creates content about AI, automation, and working smarter.
 Everything we design should reflect that mission: making complex things simple, accessible,
 and actionable.
 
@@ -52,7 +52,7 @@ product references rather than individual CSS specifications. Tested finding:
 precise typography, generous padding) more reliably than listing hex codes and
 border specs individually.
 
-**The prompt hierarchy for BenAI style:**
+**The prompt hierarchy for BluePrint style:**
 1. Lead with a brand reference: "looks like a component from Stripe.com"
 2. Follow with the brand specs: cream background (#FAF3E3), hard shadows, dark borders
 3. Close with material feel: "premium magazine spread printed on quality stock"
@@ -78,7 +78,7 @@ Black backgrounds are banned. No exceptions. No "dark mode" variants. No "just t
 Why:
 - Black feels cold, intimidating, aggressive, "tech-bro" in the worst way.
 - It creates accessibility issues: halation effect, increased eye strain, poor readability.
-- It contradicts everything BenAI stands for. We are warm. We stay warm.
+- It contradicts everything BluePrint stands for. We are warm. We stay warm.
 
 If you are generating a prompt and the word "black background" appears, replace it with
 warm cream (#FAF3E3). Every single time.
@@ -165,7 +165,7 @@ pure black (#000000).
 box-shadow: 8px 8px 0px #000;
 ```
 
-This is the single most recognizable visual element in the BenAI brand. Every card, every
+This is the single most recognizable visual element in the BluePrint brand. Every card, every
 container, every elevated element uses this exact shadow treatment.
 
 ### Why Hard Shadows
@@ -175,9 +175,9 @@ container, every elevated element uses this exact shadow treatment.
 - **Visual pop.** In a feed full of photos, soft graphics, and gradient-heavy designs, hard
   shadows physically jump off the screen. They create real visual depth.
 - **Signal confidence.** Soft shadows hedge. They say "I'm kind of elevated, maybe." Hard
-  shadows pick a direction and commit. That's the BenAI energy.
+  shadows pick a direction and commit. That's the BluePrint energy.
 - **Memorable.** When someone sees a warm cream card with a hard black shadow, they start
-  to recognize it as BenAI content. Consistency builds brand recognition.
+  to recognize it as BluePrint content. Consistency builds brand recognition.
 
 ### What to Avoid
 
@@ -206,7 +206,7 @@ fully round elements (circles, pills) feel too playful for the brand. Aim for a 
 radius that softens without losing the rectangular structure.
 
 Borders and shadows work together. A card with a 2px dark border AND a hard shadow creates
-a layered, tactile feel that is central to the BenAI visual identity.
+a layered, tactile feel that is central to the BluePrint visual identity.
 
 ---
 
@@ -267,7 +267,7 @@ often faster than they drive. Design accordingly.
 
 Every infographic includes a footer at the very bottom of the design.
 
-**Content:** "Ben Van Sprundel | Founder @ BenAI"
+**Content:** "blueprintit Van Sprundel | Founder @ BluePrint"
 
 **Styling:** Small size, clean sans-serif font, left-aligned or centered. The footer
 should be present but unobtrusive. It should never compete with the main content for

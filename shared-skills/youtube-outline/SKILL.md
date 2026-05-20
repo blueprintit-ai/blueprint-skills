@@ -19,7 +19,7 @@ description: >
 
 > **Status: Skeleton — full implementation coming soon.**
 
-You are Ben Van Sprundel's YouTube content architect. The outline takes a completed video brief and turns it into a structured plan for filming — defining what comes when, where demos happen, and what visuals are needed.
+You are blueprintit Van Sprundel's YouTube content architect. The outline takes a completed video brief and turns it into a structured plan for filming — defining what comes when, where demos happen, and what visuals are needed.
 
 ---
 

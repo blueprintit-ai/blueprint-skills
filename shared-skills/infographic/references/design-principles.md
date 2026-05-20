@@ -1,16 +1,16 @@
-# BenAI Infographic Design Principles
+# BluePrint Infographic Design Principles
 
-This document teaches you how to think about design for BenAI infographics. Read this carefully and internalize these principles — they should inform every design decision you make.
+This document teaches you how to think about design for BluePrint infographics. Read this carefully and internalize these principles — they should inform every design decision you make.
 
 ---
 
 ## 1. Brand Philosophy
 
-### Who Is BenAI?
+### Who Is BluePrint?
 
-BenAI is a personal brand built around helping people automate their work and businesses. The founder, Ben Van Sprundel, creates content about AI, automation, and working smarter. The visual identity needs to feel like it comes from a real person — not a faceless corporation, not a startup trying too hard to be cool, but a knowledgeable professional who genuinely wants to help.
+BluePrint is a personal brand built around helping people automate their work and businesses. The founder, blueprintit Van Sprundel, creates content about AI, automation, and working smarter. The visual identity needs to feel like it comes from a real person — not a faceless corporation, not a startup trying too hard to be cool, but a knowledgeable professional who genuinely wants to help.
 
-Think about the difference between receiving advice from a friend who happens to be an expert versus reading a corporate whitepaper. Both might contain the same information, but one feels warm and trustworthy while the other feels distant and cold. BenAI's visual identity should always feel like the former.
+Think about the difference between receiving advice from a friend who happens to be an expert versus reading a corporate whitepaper. Both might contain the same information, but one feels warm and trustworthy while the other feels distant and cold. BluePrint's visual identity should always feel like the former.
 
 ### The Visual Personality
 
@@ -32,7 +32,7 @@ This doesn't mean boring. It means prioritizing comprehension. The best infograp
 
 ### The Feeling We Want
 
-When someone sees a BenAI infographic in their feed, we want them to feel:
+When someone sees a BluePrint infographic in their feed, we want them to feel:
 - "This looks professional and trustworthy"
 - "This is easy to understand"
 - "This is worth saving for later"
@@ -147,7 +147,7 @@ Sometimes content is strong at Layer 4 but weak at Layer 3, or vice versa. Some 
 
 **Text density:** Minimal. One powerful line. Maybe a title. The image does the communicating.
 
-**Style:** Discovered from the content's emotional register + user taste (see Style Discovery section). NOT the BenAI brand template.
+**Style:** Discovered from the content's emotional register + user taste (see Style Discovery section). NOT the BluePrint brand template.
 
 **Prompt architecture:** Style anchor → emotional register → scene description → spatial composition → texture → color → text → negatives → technical specs.
 
@@ -164,7 +164,7 @@ Sometimes content is strong at Layer 4 but weak at Layer 3, or vice versa. Some 
 
 **Text density:** Moderate. Structured labels, short descriptions, exact data. Every word is planned and placed.
 
-**Style:** BenAI brand system. Hard shadows, cream background, accent colors, Space Grotesk + Montserrat. Consistent across all info graphics for brand recognition.
+**Style:** BluePrint brand system. Hard shadows, cream background, accent colors, Space Grotesk + Montserrat. Consistent across all info graphics for brand recognition.
 
 **Prompt architecture:** Format declaration → information hierarchy → data visualization → exact text → brand system → density control → scanability → technical specs.
 
@@ -195,7 +195,7 @@ Never start designing until you've decided the mode. The mode determines:
 
 ## 4. Style Discovery
 
-**This section applies ONLY to Editorial Illustration and Hybrid modes.** Information Graphics always use the BenAI brand system.
+**This section applies ONLY to Editorial Illustration and Hybrid modes.** Information Graphics always use the BluePrint brand system.
 
 ### Why Style Matters Enormously
 
@@ -253,7 +253,7 @@ In CSS terms: `box-shadow: 8px 8px 0px #000;`
 
 **They signal confidence.** Soft shadows are hedging — they're trying to create depth without committing to a direction. Hard shadows are decisive. They pick a direction (down and to the right) and commit to it fully. This confidence in design choices translates to perceived confidence in the content.
 
-**They're memorable.** When all of BenAI's visual content uses the same hard shadow treatment, it becomes a recognizable signature. People start to identify the style before they even read the content.
+**They're memorable.** When all of BluePrint's visual content uses the same hard shadow treatment, it becomes a recognizable signature. People start to identify the style before they even read the content.
 
 ### What to Avoid
 
@@ -275,7 +275,7 @@ Think about how Apple products have crisp, sharp edges — the iPhone, the MacBo
 
 ### The Foundation: Warm Cream Background (#FAF3E3)
 
-Every BenAI infographic starts with this background color. Not white. Not gray. Warm cream.
+Every BluePrint infographic starts with this background color. Not white. Not gray. Warm cream.
 
 **Why warm cream instead of white?**
 
@@ -303,7 +303,7 @@ Black backgrounds feel:
 
 They also create accessibility issues — white text on black can cause halation (glowing effect) for many readers, and the high contrast is harder on the eyes for extended viewing.
 
-Black backgrounds have their place in cinema, photography, and certain tech brands. They do NOT have a place in BenAI's warm, approachable, helpful brand.
+Black backgrounds have their place in cinema, photography, and certain tech brands. They do NOT have a place in BluePrint's warm, approachable, helpful brand.
 
 If you ever feel tempted to use a dark background because it might look "sleek" or "modern," resist. Our brand is warm. We stay warm.
 
@@ -651,11 +651,11 @@ If the answer is "not really," remove it. Every element must earn its place by s
 
 This is the subjective check. Look at the infographic and ask:
 
-1. **Does this feel like it belongs on the BenAI website?** There should be visual consistency — warm colors, clean layout, hard shadows.
+1. **Does this feel like it belongs on the BluePrint website?** There should be visual consistency — warm colors, clean layout, hard shadows.
 
 2. **Is it warm, clean, and confident?** Not cold. Not cluttered. Not tentative.
 
-3. **Would Ben proudly share this?** It should feel personal and quality, not template-generated.
+3. **Would blueprintit proudly share this?** It should feel personal and quality, not template-generated.
 
 4. **Does it feel like advice from a knowledgeable friend?** Not corporate content. Not trying too hard. Just helpful.
 
@@ -852,7 +852,7 @@ Content per section: [List exact text for each section]
 
 [TECHNICAL SPECS]
 - Output as a 4:5 portrait aspect ratio image at approximately 2048 pixels wide
-- Footer text: "Ben Van Sprundel | Founder @ BenAI"
+- Footer text: "blueprintit Van Sprundel | Founder @ BluePrint"
 ```
 
 ### What Makes Prompts Fail
@@ -971,7 +971,7 @@ When you're in the flow of designing, here are the essentials:
 
 ### Output Mode
 - **Editorial Illustration:** Viewer should FEEL. Scenes, not layouts. Discover style from content.
-- **Information Graphic:** Viewer should LEARN. Scorecards, charts, checklists. BenAI brand system.
+- **Information Graphic:** Viewer should LEARN. Scorecards, charts, checklists. BluePrint brand system.
 - **Decide the mode BEFORE designing.** Never mix them up.
 
 ### The 2-Second Test (Pre-Design)
@@ -1008,7 +1008,7 @@ When you're in the flow of designing, here are the essentials:
 - Diagnostic question: Is it the concept or the execution?
 - Squint test: Is structure clear when blurred?
 - So-what test: Does every element serve the message?
-- Brand gut check: Does it feel like BenAI? (info graphics only)
+- Brand gut check: Does it feel like BluePrint? (info graphics only)
 
 ### Prompt Vectors
 - Emotional register: quiet/bold/raw/warm/surreal
@@ -1018,7 +1018,7 @@ When you're in the flow of designing, here are the essentials:
 - Always include negative vectors (what NOT to do)
 
 ### Footer
-Always: "Ben Van Sprundel | Founder @ BenAI"
+Always: "blueprintit Van Sprundel | Founder @ BluePrint"
 
 ---
 

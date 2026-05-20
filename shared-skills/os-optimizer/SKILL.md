@@ -289,7 +289,7 @@ Build this once, cache for the rest of the run, and persist to `.claude/vault-ro
 
 ### 1.5.5 — Show the discovery summary in chat (one block)
 
-Frame this as "here's the structure I see in your vault" — not "here's what's missing from a checklist." The user's structure is the source of truth; the BenAI standard taxonomy is just one of the lenses the agent uses to recognize patterns.
+Frame this as "here's the structure I see in your vault" — not "here's what's missing from a checklist." The user's structure is the source of truth; the BluePrint standard taxonomy is just one of the lenses the agent uses to recognize patterns.
 
 ```markdown
 ## 🔍 Your vault structure — {N_folders} folders classified
@@ -308,7 +308,7 @@ Frame this as "here's the structure I see in your vault" — not "here's what's 
 
 **Folder-index convention I detected:** README.md (74% coverage)
 
-I'll audit this structure as it stands. F9.0 may suggest specific structural improvements where I see concrete evidence they'd help your vault (not just because BenAI uses them) — you'll review each suggestion in walk. Confirmed assignments persist to `.claude/vault-roles.json`.
+I'll audit this structure as it stands. F9.0 may suggest specific structural improvements where I see concrete evidence they'd help your vault (not just because BluePrint uses them) — you'll review each suggestion in walk. Confirmed assignments persist to `.claude/vault-roles.json`.
 
 Running F1 now…
 ```
@@ -885,7 +885,7 @@ Stop. Do not propose follow-up actions.
 - **Never** assume a folder or file by name. Always resolve through the role registry built in Step 1.5. `Context/`, `Projects/`, `Daily/`, `Plot.md`, `me.md`, etc. are *examples* in the documentation; the runtime resolves abstract roles to whatever the user actually has.
 - **Never** ignore a folder because it doesn't fit a standard role. Every folder is classified — standard or custom — with a layer. Custom roles (`Building/`, `Garden/`, anything user-specific) are first-class participants in every framework that operates on their layer. Skipping them defeats the discovery pass.
 - **Never** treat the role registry as ephemeral. Persist confirmed assignments to `.claude/vault-roles.json` at end of Step 1.5 so future runs start from the user's confirmed view of their vault, not from a fresh re-classification that re-prompts everything.
-- **Never** propose a structural change purely because BenAI uses that convention. F9.0 tier-2 findings (functional improvements suggesting BenAI conventions) must cite specific evidence in *this* vault that the convention would resolve a real problem. F9.6 reorg proposals must cite the user's own stated folder purposes. "BenAI does X" is not a valid justification anywhere in the optimizer. The BenAI taxonomy is a recognition lens and an optional reference — never a target shape the user must conform to.
+- **Never** propose a structural change purely because BluePrint uses that convention. F9.0 tier-2 findings (functional improvements suggesting BluePrint conventions) must cite specific evidence in *this* vault that the convention would resolve a real problem. F9.6 reorg proposals must cite the user's own stated folder purposes. "BluePrint does X" is not a valid justification anywhere in the optimizer. The BluePrint taxonomy is a recognition lens and an optional reference — never a target shape the user must conform to.
 - **Never** drop a tier-2 finding when the user has a custom role already serving the function. If `Lab/` (custom curated) is already playing the projects role, no F9.0 tier-2 finding fires for "you should add a projects folder." Function over name.
 - **Never** unilaterally decide a finding is "test fixture," "user probably didn't want this," "judgment-required-per-section," or any other agent-invented reason to route a finding to anything other than `applied` / `failed` in bulk-apply mode. The user said apply everything; that means everything. If applying is mechanically dangerous, attempt the safest mechanical version (e.g., split a 222KB file at H2 boundaries with an automated-split marker, mark `applied_with_caveat: true`). The only valid escape is mechanical failure with a recorded `failure_reason`.
 - **Never** render the dashboard with the BEFORE score. Step 5.9 is mandatory: re-measure after fixes, recompute score, populate `{{SCORE_AFTER}}` and the per-role/per-framework after columns. A dashboard that shows only BEFORE-state numbers is a bug.

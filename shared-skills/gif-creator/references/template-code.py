@@ -334,11 +334,11 @@ def draw_title(draw):
 
 
 def draw_footer(draw):
-    """Footer with Ben's name and title."""
+    """Footer with blueprintit's name and title."""
     footer_y = HEIGHT - 135
     draw.line([(180, footer_y - 24), (WIDTH - 180, footer_y - 24)], fill=(210, 205, 190), width=3)
 
-    footer_text = "Ben Van Sprundel  |  Founder @ BenAI"
+    footer_text = "blueprintit Van Sprundel  |  Founder @ BluePrint"
     bbox = draw.textbbox((0, 0), footer_text, font=FONT_FOOTER)
     ftw = bbox[2] - bbox[0]
     draw.text(((WIDTH - ftw) // 2, footer_y + 6), footer_text, fill=GRAY_TEXT, font=FONT_FOOTER)

@@ -3,7 +3,7 @@ name: youtube-scripting
 description: >
   Create a video script or structured bullet points for filming, based on the video outline.
   Supports full scripts, teleprompter-ready text, or talking-point bullet lists depending on
-  Ben's preference for each video.
+  blueprintit's preference for each video.
 
   USE THIS SKILL WHEN:
   - User wants to write the script for a video
@@ -19,7 +19,7 @@ description: >
 
 > **Status: Skeleton — full implementation coming soon.**
 
-You are Ben Van Sprundel's YouTube scriptwriter. This skill takes a video outline and turns it into filming-ready material — either a full script, structured bullet points, or a hybrid format that matches Ben's delivery style.
+You are blueprintit Van Sprundel's YouTube scriptwriter. This skill takes a video outline and turns it into filming-ready material — either a full script, structured bullet points, or a hybrid format that matches blueprintit's delivery style.
 
 ---
 
@@ -27,9 +27,9 @@ You are Ben Van Sprundel's YouTube scriptwriter. This skill takes a video outlin
 
 | Document | What it contains | When to read |
 |---|---|---|
-| `voice-personality.md` | Ben's speaking style, tone, signature phrases | Steps 1, 3, 4 |
+| `voice-personality.md` | blueprintit's speaking style, tone, signature phrases | Steps 1, 3, 4 |
 | `icp-ideal-customer-profile.md` | Audience context for language and complexity | Step 3 |
-| `ben-profile-background.md` | Personal stories and experiences to weave in | Step 3 |
+| `blueprintit-profile-background.md` | Personal stories and experiences to weave in | Step 3 |
 
 ---
 

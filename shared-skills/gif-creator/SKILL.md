@@ -1,11 +1,11 @@
 ---
 name: gif-creator
-description: Create animated GIF and static PNG infographics for LinkedIn posts following Ben AI's exact brand guidelines. Use this skill whenever the user wants to visualize a process, workflow, or step-by-step concept for LinkedIn — including phrases like "make a visual", "create a GIF", "infographic for LinkedIn", "visualize this workflow", "diagram for LinkedIn", "animated post", "process visual", or any request to turn a LinkedIn post or concept into a visual format. Always use this skill in combination with linkedin-post when the user wants both a written post and a visual.
+description: Create animated GIF and static PNG infographics for LinkedIn posts following blueprintit AI's exact brand guidelines. Use this skill whenever the user wants to visualize a process, workflow, or step-by-step concept for LinkedIn — including phrases like "make a visual", "create a GIF", "infographic for LinkedIn", "visualize this workflow", "diagram for LinkedIn", "animated post", "process visual", or any request to turn a LinkedIn post or concept into a visual format. Always use this skill in combination with linkedin-post when the user wants both a written post and a visual.
 ---
 
 # LinkedIn Visual Animation
 
-Create polished, on-brand animated GIF and static PNG infographics for LinkedIn posts. These visuals follow Ben AI's exact brand guidelines and are designed for maximum engagement on LinkedIn.
+Create polished, on-brand animated GIF and static PNG infographics for LinkedIn posts. These visuals follow blueprintit AI's exact brand guidelines and are designed for maximum engagement on LinkedIn.
 
 ## Two-Step Process
 
@@ -95,7 +95,7 @@ Font paths: `/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf` and `Poppi
 - Downward arrows between cards (5px line, triangular arrowhead)
 
 ### Footer
-Always include: `"Ben Van Sprundel  |  Founder @ BenAI"`
+Always include: `"blueprintit Van Sprundel  |  Founder @ BluePrint"`
 
 ## Icons and Logos
 
@@ -190,7 +190,7 @@ Before delivering, verify:
 - [ ] Cards have solid black shadows, borders, and rounded corners
 - [ ] Text is crisp (not blurry)
 - [ ] Text is vertically centered in cards
-- [ ] Footer includes "Ben Van Sprundel | Founder @ BenAI"
+- [ ] Footer includes "blueprintit Van Sprundel | Founder @ BluePrint"
 - [ ] Both GIF and static PNG are saved
 - [ ] GIF file size is under 500KB
 - [ ] Logos/icons are drawn programmatically (no external files)

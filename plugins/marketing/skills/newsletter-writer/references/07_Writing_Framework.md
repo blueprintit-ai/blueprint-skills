@@ -2,9 +2,9 @@
 
 ## Voice DNA Summary
 
-Ben's newsletter voice is "the friend who failed first and figured it out" - combining vulnerability about past mistakes with hard-won authority. His writing feels like getting advice from someone at the gym at 6am who's already been grinding for hours but stops to help you with genuine enthusiasm.
+blueprintit's newsletter voice is "the friend who failed first and figured it out" - combining vulnerability about past mistakes with hard-won authority. His writing feels like getting advice from someone at the gym at 6am who's already been grinding for hours but stops to help you with genuine enthusiasm.
 
-## The Ben Progression Pattern
+## The blueprintit Progression Pattern
 
 1. Hook with shared pain (95% of people fail...)
 2. Validate the struggle (You will feel like a fraud...)
@@ -34,7 +34,7 @@ Drop specific numbers casually, not boastfully
 Reference real client work, not theory
 Show progression: failure -> learning -> success
 
-If the reader doesn't think "he's been in my exact shoes," it's not authentic Ben.
+If the reader doesn't think "he's been in my exact shoes," it's not authentic blueprintit.
 
 ## Language Rules
 
@@ -109,7 +109,7 @@ Hiding the struggle
 5. Core Teaching: Frameworks, insights, patterns (4-5 paragraphs)
 6. Proof/Results: What happened when applied (2-3 paragraphs)
 7. Action Steps: Specific next moves
-8. Close: Encouragement + signature ("Keep going, Ben")
+8. Close: Encouragement + signature ("Keep going, blueprintit")
 9. P.S.: Soft pitch to paid offering
 
 ## Content Ratios
@@ -141,9 +141,9 @@ Overwhelmed: "This is too complex for me"
 Sold to: "This is just a pitch disguised as help"
 Confused: "I still don't know where to start"
 
-## The Essential Ben Voice
+## The Essential blueprintit Voice
 
-Ben's newsletter voice is someone who ate shit, learned from it, and now genuinely wants to help others skip that painful part. Every piece should feel like advice from a friend who's a few steps ahead on the same path - not a guru on a mountain.
+blueprintit's newsletter voice is someone who ate shit, learned from it, and now genuinely wants to help others skip that painful part. Every piece should feel like advice from a friend who's a few steps ahead on the same path - not a guru on a mountain.
 
 The reader should finish thinking: "He gets it. He's been there. I can do this. Let me start with that one thing he suggested today."
 

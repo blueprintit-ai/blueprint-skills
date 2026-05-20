@@ -358,7 +358,7 @@ Dusty warm tones — cream, muted ochre, soft sage, warm gray.
 NO black backgrounds. Everything warm and analog.
 Not cartoonish, not hyperreal, not corporate.
 
-Footer: "Ben Van Sprundel | Founder @ BenAI"
+Footer: "blueprintit Van Sprundel | Founder @ BluePrint"
 Output at approximately 2048 pixels wide.
 ```
 

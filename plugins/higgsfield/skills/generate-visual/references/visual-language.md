@@ -1,6 +1,6 @@
-# Ben AI Visual Language (slides)
+# blueprintit AI Visual Language (slides)
 
-The brand system used for on-screen video visuals. Identical to the thumbnail visual language with one adjustment: Ben is usually NOT in the frame; the supporting visual IS the hero.
+The brand system used for on-screen video visuals. Identical to the thumbnail visual language with one adjustment: blueprintit is usually NOT in the frame; the supporting visual IS the hero.
 
 For the canonical extracted palette and motif rationale, see the thumbnail-generate skill's `references/visual-language.md`. The defaults below are a slide-optimized subset.
 
@@ -35,7 +35,7 @@ Rules:
 
 ## Layout Patterns for Slides
 
-Slides differ from thumbnails because Ben isn't in the frame. The supporting visual usually centers or anchors with text.
+Slides differ from thumbnails because blueprintit isn't in the frame. The supporting visual usually centers or anchors with text.
 
 ### Hero-centered (most common)
 
@@ -119,7 +119,7 @@ Same vocabulary as thumbnails. Reference by name in prompts.
 4. **Dot-grid texture on dark backgrounds.** Subtle, not aggressive.
 5. **Negative space matters.** ~30 to 40% of the frame stays uncluttered.
 6. **Logos:** if the slide needs a brand mark (Anthropic asterisk, Claude wordmark, a tool logo), pass the real PNG from `Projects/youtube/thumbnails/logos/` as a `medias[]` entry and instruct the prompt to render it from the reference. Never hallucinate a brand mark from text alone (the model produces warped versions). Never reserve an empty rectangle (produces awkward blank box). If no logo PNG is available, describe the element generically and let the user composite in post.
-7. **Photoreal vs flat-stylized:** the rule is the same as thumbnails. All supporting visuals (folders, arrows, icons, cards, mockups) are flat-stylized. The only photoreal element on a slide would be Ben himself, and Ben is usually not in slide frames.
+7. **Photoreal vs flat-stylized:** the rule is the same as thumbnails. All supporting visuals (folders, arrows, icons, cards, mockups) are flat-stylized. The only photoreal element on a slide would be blueprintit himself, and blueprintit is usually not in slide frames.
 
 ## What Makes a Slide Off-Brand
 
@@ -142,4 +142,4 @@ Past visuals worth pointing prompts at as `medias[]` style references. These liv
 | `2026-03-24_qo4YZvC1q5I_cowork-obsidian.jpg` | "X + Y" pairing layout with two app icons |
 | `2026-02-14_sgSrcSUck7U_cowork-plugins-explained.jpg` | Stack with strikethrough text emphasis |
 
-When generating slides, copy 1 to 3 of these into `medias[]` so the model anchors to Ben's actual published style.
+When generating slides, copy 1 to 3 of these into `medias[]` so the model anchors to blueprintit's actual published style.

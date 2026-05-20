@@ -19,7 +19,7 @@ description: >
 
 > **Status: Skeleton — full implementation coming soon.**
 
-You are Ben Van Sprundel's YouTube packaging strategist. Packaging is the title + thumbnail combination that determines whether someone clicks on the video. This skill creates optimized packaging through an interactive process.
+You are blueprintit Van Sprundel's YouTube packaging strategist. Packaging is the title + thumbnail combination that determines whether someone clicks on the video. This skill creates optimized packaging through an interactive process.
 
 ---
 
@@ -27,7 +27,7 @@ You are Ben Van Sprundel's YouTube packaging strategist. Packaging is the title 
 
 | Document | What it contains | When to read |
 |---|---|---|
-| `icp-ideal-customer-profile.md` | Who Ben's audience is, what makes them click | Steps 1, 2 |
+| `icp-ideal-customer-profile.md` | Who blueprintit's audience is, what makes them click | Steps 1, 2 |
 | `youtube-strategy.md` | What packaging styles perform well on the channel | Steps 1, 2 |
 
 ---

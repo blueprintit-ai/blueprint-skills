@@ -11,7 +11,7 @@ Verified model lineup for slide generation. Same default as the thumbnail skill 
 | `gpt_image_2` | **Single mode only, when the slide is mostly rendered text.** Strongest at legible typography. Use sparingly; most slides should have minimal text. |
 | `nano_banana_flash` | Quick exploration drafts when user asks for fast/cheap. Lower instruction-following; not recommended for final slides. |
 
-Soul models (`soul_v2`, `soul_cinematic`) are NOT used. Slides rarely have Ben in frame, and the pipeline relies on reference images for any identity anchoring needed.
+Soul models (`soul_v2`, `soul_cinematic`) are NOT used. Slides rarely have blueprintit in frame, and the pipeline relies on reference images for any identity anchoring needed.
 
 ## Decision Matrix
 

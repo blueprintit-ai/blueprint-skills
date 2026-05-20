@@ -26,7 +26,7 @@ Three fundamentally different output types. Confusing them is one of the most co
   - "Side-by-side scorecard: Developer (2 green, 4 red) vs. Domain Expert (6 green, 0 red)."
   - "3-step numbered flow."
 - **Text density:** Moderate. Structured labels, short descriptions, exact data. Every word planned.
-- **Style:** BenAI brand system (hard shadows, cream background, accent colors).
+- **Style:** BluePrint brand system (hard shadows, cream background, accent colors).
 
 ### Hybrid
 

@@ -305,7 +305,7 @@ Use the TEXT LINE format even for minimal text to ensure exact rendering:
 ```
 CRITICAL: Spell every word EXACTLY as written below.
 TEXT LINE 1 (bottom, clean hand-lettered): The map is not the territory
-TEXT LINE 2 (small footer): Ben Van Sprundel | Founder @ BenAI
+TEXT LINE 2 (small footer): blueprintit Van Sprundel | Founder @ BluePrint
 ```
 
 Never crowd the image with text. The text-design tradeoff means that editorial
@@ -329,7 +329,7 @@ NO VISUAL SYMBOLS OF ANY KIND.
 
 Footer and output specifications. Always the last section.
 
-> "Footer at the very bottom in small, clean sans-serif: 'Ben Van Sprundel | Founder @ BenAI'"
+> "Footer at the very bottom in small, clean sans-serif: 'blueprintit Van Sprundel | Founder @ BluePrint'"
 > "Output as a [aspect ratio] image at approximately 2048 pixels wide."
 
 ---
@@ -374,7 +374,7 @@ TEXT LINE 3 (BOLD: Plan the Outcome | LIGHT: Define the result before you prompt
 TEXT LINE 4 (BOLD: Automate Workflows | LIGHT: Build repeatable AI processes)
 TEXT LINE 5 (BOLD: Scale Output | LIGHT: Multiply your capacity without multiplying effort)
 [LARGE GAP]
-TEXT LINE 6 (small footer): Ben Van Sprundel | Founder @ BenAI
+TEXT LINE 6 (small footer): blueprintit Van Sprundel | Founder @ BluePrint
 ```
 
 Tips for text accuracy:
@@ -439,7 +439,7 @@ The image must be instantly readable. No decoding, no squinting, no re-reading.
 
 Footer and output specifications. Always the last section.
 
-> "Footer: 'Ben Van Sprundel | Founder @ BenAI'"
+> "Footer: 'blueprintit Van Sprundel | Founder @ BluePrint'"
 > "Output as a [aspect ratio] image at approximately 2048 pixels wide."
 
 ---
@@ -554,7 +554,7 @@ SECTION 3: SPATIAL COMPOSITION + COLOR
 SECTION 4: TEXT ELEMENTS (TEXT LINE format, minimal)
 CRITICAL: Spell every word EXACTLY as written below.
 TEXT LINE 1 (bottom, hand-lettered): [the one line that hits]
-TEXT LINE 2 (small footer): Ben Van Sprundel | Founder @ BenAI
+TEXT LINE 2 (small footer): blueprintit Van Sprundel | Founder @ BluePrint
 
 SECTION 5: TEXTURE/MATERIALITY
 "Paper grain like quality stock. Confident ink linework."

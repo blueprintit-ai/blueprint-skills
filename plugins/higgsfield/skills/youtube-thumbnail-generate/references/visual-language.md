@@ -1,8 +1,8 @@
-# Ben AI Thumbnail Visual Language
+# blueprintit AI Thumbnail Visual Language
 
 The locked design vocabulary extracted from the 15 published thumbnails in `Projects/youtube/thumbnails/published/`. Every generated thumbnail should pull from this catalog. Anything not in here is off-brand by default.
 
-These are NOT the brand colors from the company website. They are the thumbnail-specific design system Ben has actually used in production.
+These are NOT the brand colors from the company website. They are the thumbnail-specific design system blueprintit has actually used in production.
 
 ## Canonical Palette
 
@@ -42,11 +42,11 @@ Rules:
 
 ## Layout Patterns
 
-### With Ben (the dominant pattern, ~73% of all thumbnails)
+### With blueprintit (the dominant pattern, ~73% of all thumbnails)
 
 ```
 +-----------------------------------------+
-|  TEXT BLOCK              [    BEN   ]   |
+|  TEXT BLOCK              [    blueprintit   ]   |
 |  TEXT BLOCK              [   PHOTO  ]   |
 |                          [          ]   |
 |  [supporting visual]     [    on    ]   |
@@ -57,12 +57,12 @@ Rules:
 
 - Text on the LEFT third, top-anchored
 - Supporting visual (folder, app icon, UI mockup, asterisk) below or beside the text on the left/center
-- Ben on the RIGHT third, full chest-up framing, eyes to camera
+- blueprintit on the RIGHT third, full chest-up framing, eyes to camera
 - A hand-drawn white curved arrow from the text or visual pointing toward the key element
 
-A small minority mirror this (Ben on the left, text on the right) when it serves the topic.
+A small minority mirror this (blueprintit on the left, text on the right) when it serves the topic.
 
-### Without Ben (~27% of thumbnails)
+### Without blueprintit (~27% of thumbnails)
 
 ```
 +-----------------------------------------+
@@ -79,21 +79,21 @@ A small minority mirror this (Ben on the left, text on the right) when it serves
 - Often a `[thing A]  +  [thing B]` formula for "X plus Y" topics
 - Hand-drawn arrow pointing to the rightmost or final element
 
-## Ben's On-Camera Look
+## blueprintit's On-Camera Look
 
-Locked. The reference photo (`medias[0]` in every `new-with-ben` call) anchors the face. These are the surrounding details to specify in every prompt:
+Locked. The reference photo (`medias[0]` in every `new-with-blueprintit` call) anchors the face. These are the surrounding details to specify in every prompt:
 
 - **Wardrobe**: plain black t-shirt or black hoodie. Never a suit, never branded apparel, never bright colors.
 - **Framing**: chest-up. Head fills roughly 40 to 55% of the right third's height.
 - **Expression**: one of: slight smile (default), focused neutral, big smile (for celebratory topics), slight forward lean (for "you should care" topics).
 - **Gaze**: direct to camera. Off-axis only for rare "looking at the screen" framings.
-- **Lighting**: soft key from the front-left or front-right, gentle rim light separating Ben from the dark background, no harsh shadows.
+- **Lighting**: soft key from the front-left or front-right, gentle rim light separating blueprintit from the dark background, no harsh shadows.
 - **Hair**: natural messy short red. Don't describe it; let the reference photo carry it.
 - **Microphone**: a podcast-style microphone visible bottom-right is common. Optional but on-brand.
 
 ## Recurring Visual Vocabulary
 
-These motifs appear across many thumbnails and define the Ben AI look. Reference them by name in prompts.
+These motifs appear across many thumbnails and define the blueprintit AI look. Reference them by name in prompts.
 
 ### Coral asterisk / starburst icon
 
@@ -136,8 +136,8 @@ Prompt phrase: `a simplified UI mockup of {interface}, white card with rounded c
 
 ## Composition Rules
 
-1. **Subject on a third, never centered** (when Ben is in frame). Ben right third, text left third.
-2. **The eye should travel left-to-right**: text first, then Ben, then the arrow resolves to the key visual.
+1. **Subject on a third, never centered** (when blueprintit is in frame). blueprintit right third, text left third.
+2. **The eye should travel left-to-right**: text first, then blueprintit, then the arrow resolves to the key visual.
 3. **One coral element per thumbnail minimum**, ideally two (e.g., folder + asterisk).
 4. **One arrow per thumbnail.** More than one is too busy.
 5. **Dot-grid texture on dark backgrounds.** A subtle pattern, not aggressive. Adds depth without competing.
@@ -148,13 +148,13 @@ Prompt phrase: `a simplified UI mockup of {interface}, white card with rounded c
 
 If a generated thumbnail has any of these, redo it:
 - Wrong palette (any banned color appearing as primary)
-- Centered text + centered Ben (no off-third composition)
+- Centered text + centered blueprintit (no off-third composition)
 - Multiple arrows
 - No coral element anywhere
 - Text outline or drop-shadow effects
 - Photoreal vs slightly-stylized mismatch in the supporting visuals
 - Logo rendered by the model (must be composited in post)
-- Cartoon or illustrated rendering of Ben (always photoreal)
+- Cartoon or illustrated rendering of blueprintit (always photoreal)
 - Background gradients that fight the dot-grid pattern (only special thematic thumbnails use gradients, like the "7 levels" rainbow strip)
 
 ## Reference Anchors
@@ -163,10 +163,10 @@ The thumbnails most worth pointing prompts at as `medias[]` style references:
 
 | Filename | Why it's an anchor |
 |---|---|
-| `2026-04-25_LLE6oMh7SxE_claude-routines-99pct.jpg` | Cleanest "with Ben + UI mockup" example |
+| `2026-04-25_LLE6oMh7SxE_claude-routines-99pct.jpg` | Cleanest "with blueprintit + UI mockup" example |
 | `2026-03-14_FAEKF-nr3D0_cowork-marketing.jpg` | The cream-background variant with serif wordmark + list pattern |
-| `2026-02-24_X3uum6W2xEI_build-claude-skills-99pct.jpg` | The folder + arrow + Ben canonical combo |
-| `2026-03-09_3cYusISFc9s_claude-skills-2-99pct.jpg` | Cleanest without-Ben "A → B" composition |
+| `2026-02-24_X3uum6W2xEI_build-claude-skills-99pct.jpg` | The folder + arrow + blueprintit canonical combo |
+| `2026-03-09_3cYusISFc9s_claude-skills-2-99pct.jpg` | Cleanest without-blueprintit "A → B" composition |
 | `2026-04-11_l5Diqeoffa4_7-levels-claude-context.jpg` | The gradient/rainbow strip exception, useful for "N levels" or "tiers" topics |
 
-These live in `Projects/youtube/thumbnails/published/with-ben/` and `/without-ben/`.
+These live in `Projects/youtube/thumbnails/published/with-blueprintit/` and `/without-blueprintit/`.

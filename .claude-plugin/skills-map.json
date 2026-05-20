@@ -406,11 +406,11 @@
       "skills": {
         "youtube-thumbnail-generate": {
           "displayName": "YouTube Thumbnail Generate",
-          "summary": "Generate on-brand YouTube thumbnails for Ben van Sprundel via Higgsfield using reference images. Four modes: variation, new-with-ben (uses ben_reference_*.jpg from refs/), ben-plus-other, no-face. Distinct creative angles per variant; reference photo locks face across all variants."
+          "summary": "Generate on-brand YouTube thumbnails for blueprintit van Sprundel via Higgsfield using reference images. Four modes: variation, new-with-blueprintit (uses ben_reference_*.jpg from refs/), blueprintit-plus-other, no-face. Distinct creative angles per variant; reference photo locks face across all variants."
         },
         "generate-visual": {
           "displayName": "Generate Visual",
-          "summary": "Generate on-screen video visuals (slides) for Ben's YouTube videos via Higgsfield. Same brand system as the thumbnails. Two modes: single (one slide from one prompt) and progressive-disclosure (N sequential frames where each builds on the previous via image-to-image, locking background/composition across the sequence)."
+          "summary": "Generate on-screen video visuals (slides) for blueprintit's YouTube videos via Higgsfield. Same brand system as the thumbnails. Two modes: single (one slide from one prompt) and progressive-disclosure (N sequential frames where each builds on the previous via image-to-image, locking background/composition across the sequence)."
         }
       }
     },
@@ -438,7 +438,7 @@
         },
         "team-os": {
           "displayName": "Team OS",
-          "summary": "Install the BenAI Relay fork in an Obsidian vault as the foundation for a shared Team OS — RBAC + access controls, bundled production build"
+          "summary": "Install the BluePrint Relay fork in an Obsidian vault as the foundation for a shared Team OS — RBAC + access controls, bundled production build"
         }
       }
     },

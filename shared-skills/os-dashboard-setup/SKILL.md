@@ -377,7 +377,7 @@ If a button doesn't fire, open Settings → Shell commands and confirm each alia
 
 - Do not modify user content outside `Dashboard/` and `.obsidian/`. The dashboard is read-only on `Daily/`, `Team/`, `Tasks/`, etc.
 - Do not overwrite existing `.obsidian/plugins/<id>/` installs — only side-load when missing. The user may have a newer version.
-- Do not use any branded/personal names ("Ben", "BenAI", specific people). All identifiers come from the interview.
+- Do not use any branded/personal names ("blueprintit", "BluePrint", specific people). All identifiers come from the interview.
 - Do not auto-fetch latest plugin versions at install time — the bundled versions are pinned for reproducibility. To refresh, re-run the curl commands in `references/plugins/`.
 
 ## File templates summary

@@ -1,6 +1,6 @@
 # Variation Ideation
 
-How to brainstorm N distinct creative angles for a batch of thumbnails, then build N prompts that share an identical Ben portion and differ only in scene + supporting visual.
+How to brainstorm N distinct creative angles for a batch of thumbnails, then build N prompts that share an identical blueprintit portion and differ only in scene + supporting visual.
 
 ## Why This Exists
 
@@ -50,18 +50,18 @@ When brainstorming, rotate through these hook types so the 4 angles cover differ
 
 For a batch of 4, pick 4 categories. Don't double up. For a batch of 3, pick 3. For a single variant, the user picks the angle or you default to "direct value."
 
-## Locking Ben Across Variants
+## Locking blueprintit Across Variants
 
-When Ben is in the frame, his portion of every variant's prompt is IDENTICAL. Write block 2 once, paste it into all N prompts unchanged.
+When blueprintit is in the frame, his portion of every variant's prompt is IDENTICAL. Write block 2 once, paste it into all N prompts unchanged.
 
 Locked elements:
 - Framing: same third (right third by default)
 - Expression: same (slight smile by default)
 - Wardrobe: plain black t-shirt
 - Camera angle: chest-up, eyes to camera
-- Lighting on Ben: same key / fill / rim language
+- Lighting on blueprintit: same key / fill / rim language
 
-The reference photo (`medias[0]`) is the same for every call. nano_banana_2 will produce near-identical Ben renderings across the 4 variants, so what changes is the world AROUND Ben, not Ben.
+The reference photo (`medias[0]`) is the same for every call. nano_banana_2 will produce near-identical blueprintit renderings across the 4 variants, so what changes is the world AROUND blueprintit, not blueprintit.
 
 If the user says "show different expressions across the variants," that's an explicit override. Note it; lift the lock for this batch only.
 
@@ -74,16 +74,16 @@ Only these:
 3. **Background secondary motif** if any (e.g., glow, dot-grid intensity, color panel)
 4. **Mood adjective** in the style block (e.g., "urgent" for STOP PROMPTING, "celebratory" for SKILLS UNLOCKED)
 
-What stays the same: Ben's portion, the dominant palette, the dot-grid texture, the layout grid (left third for content, right third for Ben), the hand-drawn arrow signature, the negatives block.
+What stays the same: blueprintit's portion, the dominant palette, the dot-grid texture, the layout grid (left third for content, right third for blueprintit), the hand-drawn arrow signature, the negatives block.
 
 ## Worked Example: 4 Variants for "Skills"
 
 **Concept:** Claude Code Skills, why they matter
 
-**Visual references read in Step 0:** existing published thumbnails from `Intelligence/youtube-intelligence/thumbnails-2026-02-to-2026-05/` (charcoal background with dot-grid, coral folders, white hand-drawn arrows, Ben right-third chest-up with slight smile, black t-shirt).
+**Visual references read in Step 0:** existing published thumbnails from `Intelligence/youtube-intelligence/thumbnails-2026-02-to-2026-05/` (charcoal background with dot-grid, coral folders, white hand-drawn arrows, blueprintit right-third chest-up with slight smile, black t-shirt).
 
 **Locked Subject block (used in all 4 prompts):**
-> Ben in a chest-up shot on the right third of the frame, expression: slight smile with corners up and no teeth visible, eyes engaged to camera, wearing a plain black t-shirt, soft front-left key light with gentle rim separating him from the dark background. The subject must match the provided reference image (medias[0]) exactly; same person, same face shape, same hair, same general age, same expression and pose across every variant.
+> blueprintit in a chest-up shot on the right third of the frame, expression: slight smile with corners up and no teeth visible, eyes engaged to camera, wearing a plain black t-shirt, soft front-left key light with gentle rim separating him from the dark background. The subject must match the provided reference image (medias[0]) exactly; same person, same face shape, same hair, same general age, same expression and pose across every variant.
 
 **Ideated angles:**
 
@@ -102,7 +102,7 @@ v1 PROMPT:
 
 [2] {locked subject block as above}
 
-[3] Charcoal background with dot-grid, coral accent on folder and padlock glow, white text and arrow, flat-stylized supporting visuals (folder, padlock, arrow) NOT photoreal, Ben photoreal. Mood: confident, revelatory.
+[3] Charcoal background with dot-grid, coral accent on folder and padlock glow, white text and arrow, flat-stylized supporting visuals (folder, padlock, arrow) NOT photoreal, blueprintit photoreal. Mood: confident, revelatory.
 
 [4] {locked negatives}
 ```
@@ -114,7 +114,7 @@ v1 PROMPT:
 | Symptom | Cause | Fix |
 |---|---|---|
 | All 4 variants look the same | Used one `generate_image` call with `count: 4` | Switch to N separate calls with `count: 1` each, distinct prompts |
-| Ben's face changes across variants | Ben's portion of the prompt drifted between calls, OR the reference photo wasn't passed to every call | Lock block 2 verbatim; pass `medias[0]` to every call |
+| blueprintit's face changes across variants | blueprintit's portion of the prompt drifted between calls, OR the reference photo wasn't passed to every call | Lock block 2 verbatim; pass `medias[0]` to every call |
 | Variants feel forced or random | Ideation step was skipped; angles weren't chosen deliberately | Run the ideation list in chat first, then generate |
 | User wanted slight tweaks, got 4 different concepts | Misread the intent | Ask: "Do you want 4 distinct concepts or 4 tweaks of one composition?" Default to distinct concepts |
 

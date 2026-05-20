@@ -218,7 +218,7 @@ Generate the final output as an Excel (.xlsx) file. Use the `xlsx` skill (invoke
 - Use professional fonts and clean formatting
 
 ### Presentation:
-When delivering the report, give the user a brief summary: how many high-value leads were found, the top 5 by company size, and any patterns you noticed (e.g., "Most lost deals came from Ben AI source", "Budget was cited as the reason in 3 cases"). Don't over-explain — let them open the file and explore.
+When delivering the report, give the user a brief summary: how many high-value leads were found, the top 5 by company size, and any patterns you noticed (e.g., "Most lost deals came from blueprintit AI source", "Budget was cited as the reason in 3 cases"). Don't over-explain — let them open the file and explore.
 
 ## Key Principles
 
