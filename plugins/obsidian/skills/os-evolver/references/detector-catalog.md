@@ -112,7 +112,7 @@ Use this when interpreting a graph report for a user. Read the finding, then rea
 
 **Recommended fix:** Write the canonical note for each empty hub, ordered by reference count. The act of giving a referenced concept its own page usually surfaces structure already implicit in the references.
 
-**How `/os-evolver` resolves it:** Phase 3 (`note_drafter.py`) drafts a canonical note for each empty hub grounded in the actual excerpts where it is referenced. The drafts land in `drafts/YYYY-MM-DD/` with an INDEX. The operator reviews, promotes keepers.
+**How `/os-evolver` resolves it:** Phase 3 (`note_drafter_prep.py` + agent) drafts a canonical note for each empty hub grounded in the actual excerpts where it is referenced. The agent uses the user's Claude Code subscription, no separate API key. Drafts land in `drafts/YYYY-MM-DD/` with an INDEX. The operator reviews, promotes keepers.
 
 **Caveat — convention drift**: An "empty hub" detection may actually be a casing mismatch where a canonical file already exists under a different name (e.g., `[[Claims Decision Process]]` is dangling but `claims-decision-process.md` exists). Always check for normalised-name file collisions before promoting a draft. The right fix in that case is to update the source wikilink to display-text form, not promote the draft.
 

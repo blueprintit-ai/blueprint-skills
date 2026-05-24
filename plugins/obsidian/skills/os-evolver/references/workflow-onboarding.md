@@ -69,40 +69,32 @@ Read the report aloud (paraphrased) to the user. Lead with the highest-severity 
 
 Tell the user this is the baseline. The metrics get better in the next steps.
 
-## Step 3: LLM wikilink enrichment (synonyms and context)
+## Step 3: LLM wikilink enrichment (synonyms and context, agent-driven)
 
-Catches what the mechanical pass cannot: synonyms (`"the ERP"` → `[[STORIS]]`), partial names (`"Scott"` → `[[Scott — Goals & Priorities]]`), and contextual references.
+Catches what the mechanical pass cannot: synonyms (`"the ERP"` → `[[STORIS]]`), partial names (`"Scott"` → `[[Scott — Goals & Priorities]]`), and contextual references. **No API key required** — the agent does the LLM work through the user's Claude Code subscription.
 
-Pre-flight: confirm `ANTHROPIC_API_KEY` is set. If not, walk the user through creating one at `console.anthropic.com → API Keys` and either exporting it or saving it to `~/.anthropic_key` with `chmod 600`.
-
-```sh
-export ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-$(cat ~/.anthropic_key 2>/dev/null)}"
-
-# Review mode (default). Cost: roughly $0.015 per orphan file.
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/wikilink_enricher_llm.py" \
-  --vault "$PWD" \
-  --only-orphans \
-  --max-files 50
-```
-
-The script's stderr shows per-file `raw=N kept=M dropped=K (reasons)` so the user can see whether the post-filter is over- or under-aggressive.
-
-Quality is typically 70-80% solid. Read the review queue, look for patterns of bad suggestions:
-
-- **Over-broad spans**: Claude wrapped a whole sentence. Already filtered out by the 5-word post-filter, but check for leftovers.
-- **Wrong targets**: Claude linked `"CDF systems"` to `[[CDF Smart System]]` when the prose meant `[[Capital Discount Furniture]]`. These need to be edited manually before applying.
-- **Suboptimal targets**: Claude linked `"Traefik"` to `[[actual-tech-stack]]` (the parent index) because no Traefik.md exists. Not wrong, just one hop away from optimal.
-
-When the user is satisfied, apply:
+**Step 3a: prep (Python, deterministic, free)**
 
 ```sh
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/wikilink_enricher_llm.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/wikilink_enricher_llm_prep.py" \
   --vault "$PWD" \
   --only-orphans \
-  --apply
+  --max-files 30 \
+  --max-suggestions-per-note 4
 ```
 
-The applied form is **display-text wikilink**: `[[Target|original phrase]]`. The prose reads exactly the same as before; only navigation changes. Backups at `.bak`.
+Produces a task file at `Reports/knowledge-graph/wikilink-llm-tasks-YYYY-MM-DD.md` containing orphan files with their content + the valid wikilink targets + the span rules.
+
+**Step 3b: agent processes the task file**
+
+Read the task file. For each orphan file section, propose up to 4 wikilink injections, validate against the strict span rules (≤ 5 words, no markdown chars, dedupe per target). Write proposals to a review queue at `Reports/knowledge-graph/wikilink-llm-enrichment-review-YYYY-MM-DD.md`, grouped by source file.
+
+Quality is typically 70-80% solid. Common patterns to watch for and discard:
+
+- **Wrong targets**: a span that semantically matches multiple files; the agent picks the wrong one. These need a manual fix before applying.
+- **Suboptimal targets**: the agent links a specific term to an index page because no dedicated page exists. Not wrong, one hop away from optimal.
+
+When the user approves the keepers, apply the changes using the Edit tool on each source file. The applied form is **display-text wikilink**: `[[Target|original phrase]]`. The prose reads exactly the same as before; only navigation changes. Create `.bak` backups before mutating any file.
 
 **Expected impact**: orphan rate drops another 5-15 percentage points. `STAR_TOPOLOGY` often resolves at this stage because linking gets distributed across multiple bridges.
 
@@ -126,25 +118,32 @@ Tell the user the before/after metrics in a table. Specific numbers, not adjecti
 
 If a finding downgraded from CRITICAL → HIGH → MEDIUM, name it explicitly. The user wants to see severity dropping.
 
-## Step 5: Draft notes for dangling references
+## Step 5: Draft notes for dangling references (agent-driven)
+
+**Step 5a: prep (Python, deterministic, free)**
 
 ```sh
-export ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-$(cat ~/.anthropic_key 2>/dev/null)}"
 LATEST_JSON=$(ls -t Reports/knowledge-graph/*graph-report.json | head -1)
 
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/note_drafter.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/note_drafter_prep.py" \
   --vault "$PWD" \
   --graph-json "$LATEST_JSON" \
-  --output-dir "drafts/${TODAY}" \
   --top-n 10 \
   --min-references 2
 ```
 
-Each draft is a short canonical note grounded in the actual excerpts where the concept is referenced in the vault. The `INDEX.md` lists every draft with a suggested promotion target.
+Produces a task file at `Reports/knowledge-graph/note-drafting-tasks-YYYY-MM-DD.md` with each dangling concept's real excerpts from the vault, related concepts, suggested target locations, and drafting rules.
 
-**Critical check before promoting**: search the vault for a file with the same name under different casing or slug. If `[[Claims Decision Process]]` is dangling but `claims-decision-process.md` already exists, the draft is REDUNDANT. The right fix is to update the source wikilink to display-text form (`[[claims-decision-process|Claims Decision Process]]`), not promote the draft. Always check first.
+**Step 5b: agent processes the task file**
 
-Promote keepers manually. Discard redundant drafts. Edit voice and structure as needed.
+Read the task file. For each numbered concept section:
+
+1. **Convention-drift check first.** Search the vault for any file with a normalised version of the concept name. If `[[Claims Decision Process]]` is dangling but `claims-decision-process.md` already exists, the draft is REDUNDANT. The right fix is updating the source wikilink to display-text form (`[[claims-decision-process|Claims Decision Process]]`), not promoting a new draft. Log this in the INDEX.md as a wikilink-fix recommendation.
+2. **Otherwise, draft the note** following the rules in the task file: frontmatter (type, 2+ tags, status: draft), H1 heading, 2-4 short paragraphs in teammate voice, 2-5 wikilinks woven into prose, no em dashes.
+3. Save to `drafts/YYYY-MM-DD/{Concept Name}.md`.
+4. Write `drafts/YYYY-MM-DD/INDEX.md` listing each draft and each convention-drift skip with its recommended fix.
+
+Promote keepers manually. Edit voice and structure as needed.
 
 ## Step 6: Final graph + status
 
@@ -152,10 +151,12 @@ Re-run Phase 2 one more time. Confirm `dangling: 0` (or close to it). The vault 
 
 ## Total time and cost for onboarding
 
-| Vault size | Wall clock | Anthropic spend |
+| Vault size | Wall clock | Anthropic API spend |
 |---|---|---|
-| 30-50 notes | 15-30 min | $0.30-$0.80 |
-| 50-100 notes | 30-60 min | $0.80-$1.50 |
-| 100-200 notes | 60-90 min | $1.50-$3.00 |
+| 30-50 notes | 15-30 min | **$0** (runs on the user's Claude Code subscription) |
+| 50-100 notes | 30-60 min | **$0** (uses subscription tokens, not API credits) |
+| 100-200 notes | 60-90 min | **$0** (one auth surface only) |
+
+The agent does the LLM work inside the user's existing Claude Code session. No separate `ANTHROPIC_API_KEY`, no per-token billing surface, no env var to configure.
 
 The bulk of the time is human review of the two enrichment queues. The compute itself is fast.

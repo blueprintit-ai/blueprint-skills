@@ -33,53 +33,47 @@ The recommended report-back format to the user is a one-paragraph weekly snapsho
 
 > Vault snapshot 2026-MM-DD: 84 notes (+6), 142 edges (+18), 38% orphan rate (down from 41%), 3 dangling references (up from 1), 2 medium findings. The new dangling refs are [[X]], [[Y]], [[Z]] — recommend running Phase 3 this week.
 
-## Weekly Phase 3 run
+## Weekly Phase 3 run (agent-driven)
 
 If the latest graph report has `dangling_count > 0`:
 
 ```sh
-export ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY:-$(cat ~/.anthropic_key 2>/dev/null)}"
 LATEST_JSON=$(ls -t Reports/knowledge-graph/*graph-report.json | head -1)
 
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/note_drafter.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/note_drafter_prep.py" \
   --vault "$PWD" \
   --graph-json "$LATEST_JSON" \
-  --output-dir "drafts/${TODAY}" \
   --top-n 5
 ```
 
-A weekly run typically produces 2-5 drafts. The user spends 10-15 minutes reviewing, promoting keepers, discarding redundants.
+Then the agent reads the task file at `Reports/knowledge-graph/note-drafting-tasks-YYYY-MM-DD.md` and drafts each note using the user's Claude Code subscription, saving outputs to `drafts/YYYY-MM-DD/`. A weekly run typically produces 2-5 drafts. The user spends 10-15 minutes reviewing, promoting keepers, discarding redundants. No API key needed.
 
-## Monthly LLM enricher refresh
+## Monthly LLM enricher refresh (agent-driven)
 
-Once a month, run the LLM enricher on any notes added or substantially edited in the last 30 days. The mechanical enricher catches exact title matches, but new notes may contain synonyms or contextual references the mechanical pass cannot see.
+Once a month, run the LLM enricher on any notes added or substantially edited in the last 30 days.
 
 ```sh
-# Easiest: just re-run with --only-orphans. The script's idempotency
-# means previously-enriched files are mostly skipped (existing wikilinks
-# count as "linked").
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/wikilink_enricher_llm.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/wikilink_enricher_llm_prep.py" \
   --vault "$PWD" \
   --only-orphans \
   --max-files 30
 ```
 
-Review queue, then `--apply`. Should cost $0.30-$1 per run depending on how much new content has been added.
+Agent reads the produced task file, generates a review queue at `Reports/knowledge-graph/wikilink-llm-enrichment-review-YYYY-MM-DD.md`. Operator reviews, approves, agent applies wikilinks via the Edit tool with `.bak` backups. No API key needed.
 
-## Quarterly bridge-questions run
+## Quarterly bridge-questions run (agent-driven)
 
 ```sh
 LATEST_JSON=$(ls -t Reports/knowledge-graph/*graph-report.json | head -1)
 
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/bridge_questions.py" \
-  --graph-json "$LATEST_JSON" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/bridge_questions_prep.py" \
   --vault "$PWD" \
-  --output "Reports/knowledge-graph/${TODAY}-bridge-questions.md"
+  --graph-json "$LATEST_JSON"
 ```
 
-The output is a list of questions whose answers would force a useful connection between two clusters that currently have no edges between them. Treat each question as a candidate research note. Answer in a new wiki page, link the page to both clusters, then re-graph.
+Agent reads the task file at `Reports/knowledge-graph/bridge-question-tasks-YYYY-MM-DD.md`, generates 2-3 questions per cluster gap, writes the output to `Reports/knowledge-graph/bridge-questions-YYYY-MM-DD.md` as a markdown checklist. Treat each question as a candidate research note. Answer in a new wiki page, link the page to both clusters, then re-graph.
 
-This is the highest-leverage research-direction generator the system produces. Productive once the vault has 4+ healthy clusters.
+Highest-leverage research-direction generator the system produces. Productive once the vault has 4+ healthy clusters.
 
 ## Automating the cadence via `/os-operator`
 

@@ -50,7 +50,8 @@ A vault with markdown notes ──► [enricher pass] ──► wikilinks woven 
                                      │
                   ┌──────────────────┴──────────────────┐
                   ▼                                     ▼
-            [note_drafter.py]                  [bridge_questions.py]
+        [note_drafter_prep.py]              [bridge_questions_prep.py]
+              + agent                              + agent
                   │                                     │
                   ▼                                     ▼
             drafted notes                     research questions
