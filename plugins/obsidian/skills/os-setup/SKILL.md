@@ -1,11 +1,11 @@
 ---
 name: os-setup
-description: Bootstrap the BluePrint OS Plugin vault structure and run personalized onboarding. Creates all directories, system files, Obsidian config, memory system, hooks, and output styles, then interviews the user to personalize everything. Two modes — Solopreneurs/Professionals (default), Business/Teams. Use when user says "set up", "bootstrap", "initialize", "onboarding", or runs /os-setup.
+description: Bootstrap the BenAI OS Plugin vault structure and run personalized onboarding. Creates all directories, system files, Obsidian config, memory system, hooks, and output styles, then interviews the user to personalize everything. Two modes — Solopreneurs/Professionals (default), Business/Teams. Use when user says "set up", "bootstrap", "initialize", "onboarding", or runs /os-setup.
 ---
 
-# BluePrint Obsidian Plugin — Setup + Onboarding
+# BenAI Obsidian Plugin — Setup + Onboarding
 
-USE WHEN the user runs `/setup` or asks to set up their vault, bootstrap the assistant, initialize the system, or configure the BluePrint Obsidian Plugin.
+USE WHEN the user runs `/setup` or asks to set up their vault, bootstrap the assistant, initialize the system, or configure the BenAI Obsidian Plugin.
 
 This is a three-phase process:
 - **Phase 0**: Mode Selection — Ask which OS variant to create
@@ -522,6 +522,7 @@ date: YYYY-MM-DD
 Tell the user:
 - Quick summary of what was created (which context files, how many projects, any departments, any team profiles)
 - "Open this folder in Obsidian to see your vault"
+- Key command: `/assistant` (sessions, daily reviews, tasks, meetings)
 - "You can add more context anytime — just tell me and I'll update the right files."
 - Suggest a next action based on what they told you
 

@@ -1,11 +1,11 @@
 ---
 name: team-os
-description: Install the BluePrint Relay fork in an Obsidian vault as the foundation for a shared Team OS — replaces the official Relay (`system3-relay`) plugin with the BluePrint fork (`blueprint-relay-fork`) which ships custom RBAC + access controls for team-wide vault sharing. Bundled production build ships inside the skill — user just points to their Obsidian vault path. Use when the user wants to "set up team os", "install BluePrint Relay", "swap relay for the fork", "replace the official relay plugin", or "use BluePrint's relay in my vault".
+description: Install the BenAI Relay fork in an Obsidian vault as the foundation for a shared Team OS — replaces the official Relay (`system3-relay`) plugin with the BenAI fork (`benai-relay-fork`) which ships custom RBAC + access controls for team-wide vault sharing. Bundled production build ships inside the skill — user just points to their Obsidian vault path. Use when the user wants to "set up team os", "install BenAI Relay", "swap relay for the fork", "replace the official relay plugin", or "use BenAI's relay in my vault".
 ---
 
-# Relay Swap — Install BluePrint Relay Fork
+# Relay Swap — Install BenAI Relay Fork
 
-This skill replaces the upstream Relay plugin (`system3-relay`) with the BluePrint fork (`blueprint-relay-fork`) in a target Obsidian vault. The compiled fork ships at `${CLAUDE_PLUGIN_ROOT}/skills/team-os/reference/blueprint-relay-fork/` (three files: `main.js`, `manifest.json`, `styles.css`). Copy from there — do not fetch from anywhere else.
+This skill replaces the upstream Relay plugin (`system3-relay`) with the BenAI fork (`benai-relay-fork`) in a target Obsidian vault. The compiled fork ships at `${CLAUDE_PLUGIN_ROOT}/skills/team-os/reference/benai-relay-fork/` (three files: `main.js`, `manifest.json`, `styles.css`). Copy from there — do not fetch from anywhere else.
 
 ## What the user provides
 
@@ -21,9 +21,9 @@ Example paths the user might give: `~/Documents/MyVault`, `/Users/jane/Obsidian/
 
 Tell the user what this will do, in plain language:
 
-> I'm about to replace the official Relay plugin with the BluePrint fork in your Obsidian vault. The fork has custom RBAC + access controls. This will:
+> I'm about to replace the official Relay plugin with the BenAI fork in your Obsidian vault. The fork has custom RBAC + access controls. This will:
 > 1. Delete the old `system3-relay` plugin if it's there.
-> 2. Install the bundled BluePrint Relay build.
+> 2. Install the bundled BenAI Relay build.
 > 3. Update Obsidian's community-plugins config to switch over.
 >
 > **Close Obsidian first** — modifying plugin files while it's running can corrupt the install.
@@ -36,7 +36,7 @@ Don't ask for an "absolute path". Most users don't think in those terms. Try thi
 
 If the cwd contains a `.obsidian/` folder, ask:
 
-> I see this folder (`{cwd}`) is already an Obsidian vault. Is this the one you want to install BluePrint Relay into? (yes / no — I'll ask where it is)
+> I see this folder (`{cwd}`) is already an Obsidian vault. Is this the one you want to install BenAI Relay into? (yes / no — I'll ask where it is)
 
 If yes, set `VAULT="$(pwd)"` and skip to Step 1.
 
@@ -81,7 +81,7 @@ Show the user what's there. If `community-plugins.json` doesn't exist, that's fi
 
 Confirm with the user before proceeding:
 - If `system3-relay` is present, we'll remove it.
-- If `blueprint-relay-fork` already exists, we'll overwrite it (warn and ask).
+- If `benai-relay-fork` already exists, we'll overwrite it (warn and ask).
 
 ## Step 3 — Confirm Obsidian is closed
 
@@ -105,8 +105,8 @@ This is destructive — that's why Step 0 told the user upfront. If the user has
 ## Step 5 — Install the fork from the skill bundle
 
 ```bash
-SRC="${CLAUDE_PLUGIN_ROOT}/skills/team-os/reference/blueprint-relay-fork"
-DST="$VAULT/.obsidian/plugins/blueprint-relay-fork"
+SRC="${CLAUDE_PLUGIN_ROOT}/skills/team-os/reference/benai-relay-fork"
+DST="$VAULT/.obsidian/plugins/benai-relay-fork"
 
 mkdir -p "$DST"
 cp "$SRC/main.js" "$SRC/manifest.json" "$SRC/styles.css" "$DST/"
@@ -119,7 +119,7 @@ You should see the three files (`main.js`, `manifest.json`, `styles.css`) at the
 
 Obsidian uses this file to track which community plugins are enabled. We need to:
 - Remove `system3-relay` from the enabled list.
-- Add `blueprint-relay-fork` to the enabled list.
+- Add `benai-relay-fork` to the enabled list.
 
 ```bash
 CFG="$VAULT/.obsidian/community-plugins.json"
@@ -130,8 +130,8 @@ import json, pathlib
 p = pathlib.Path("$CFG")
 data = json.loads(p.read_text() or "[]")
 data = [x for x in data if x != "system3-relay"]
-if "blueprint-relay-fork" not in data:
-    data.append("blueprint-relay-fork")
+if "benai-relay-fork" not in data:
+    data.append("benai-relay-fork")
 p.write_text(json.dumps(data, indent=2) + "\n")
 print("community-plugins.json:", data)
 PY
@@ -140,8 +140,8 @@ PY
 ## Step 7 — Verify
 
 ```bash
-test -f "$VAULT/.obsidian/plugins/blueprint-relay-fork/main.js" && echo "INSTALLED OK"
-grep -q "blueprint-relay-fork" "$VAULT/.obsidian/community-plugins.json" && echo "ENABLED OK"
+test -f "$VAULT/.obsidian/plugins/benai-relay-fork/main.js" && echo "INSTALLED OK"
+grep -q "benai-relay-fork" "$VAULT/.obsidian/community-plugins.json" && echo "ENABLED OK"
 test ! -d "$VAULT/.obsidian/plugins/system3-relay" && echo "OFFICIAL REMOVED OK"
 ```
 
@@ -149,8 +149,8 @@ All three should print `OK`.
 
 ## Step 8 — Tell the user how to finish
 
-> Done. Open Obsidian and load this vault. The BluePrint Relay plugin should be active. If you don't see it:
-> - Settings → Community plugins → confirm "BluePrint Relay" is toggled on.
+> Done. Open Obsidian and load this vault. The BenAI Relay plugin should be active. If you don't see it:
+> - Settings → Community plugins → confirm "BenAI Relay" is toggled on.
 > - If Obsidian shows a "safe mode" banner, click "Trust author and enable" or disable safe mode in Settings → Community plugins.
 > - Sign in with your Relay.md credentials when prompted.
 
@@ -160,10 +160,10 @@ All three should print `OK`.
 
 **`NOT_A_VAULT`** — the path is wrong, or it's pointing at a parent. The right folder is the one that has a hidden `.obsidian` folder inside it directly (e.g. `~/Documents/MyVault`, not `~/Documents`). Easiest way to find it: open Obsidian → Settings → About → "Show vault folder".
 
-**Plugin doesn't appear in Obsidian.** Check `.obsidian/community-plugins.json` — it must contain `"blueprint-relay-fork"`. Restart Obsidian.
+**Plugin doesn't appear in Obsidian.** Check `.obsidian/community-plugins.json` — it must contain `"benai-relay-fork"`. Restart Obsidian.
 
 **Obsidian shows "Failed to load plugin".** The bundled `main.js` may be incompatible with the user's Obsidian version. Check `manifest.json`'s `minAppVersion` against Obsidian's "About" panel. The bundled fork requires Obsidian 0.15.0+.
 
-**User wants to revert to upstream Relay.** Remove `<vault>/.obsidian/plugins/blueprint-relay-fork/`, edit `community-plugins.json` to remove `blueprint-relay-fork`, then install `system3-relay` from the Obsidian community plugins store normally.
+**User wants to revert to upstream Relay.** Remove `<vault>/.obsidian/plugins/benai-relay-fork/`, edit `community-plugins.json` to remove `benai-relay-fork`, then install `system3-relay` from the Obsidian community plugins store normally.
 
-**Want to update the bundled fork later.** The plugin is built into this skill — to update, the maintainer rebuilds `relay-fork`, copies the three artifacts into `shared-skills/team-os/reference/blueprint-relay-fork/`, runs `./sync-skills.sh && ./build-zips.sh`, and republishes.
+**Want to update the bundled fork later.** The plugin is built into this skill — to update, the maintainer rebuilds `relay-fork`, copies the three artifacts into `shared-skills/team-os/reference/benai-relay-fork/`, runs `./sync-skills.sh && ./build-zips.sh`, and republishes.
