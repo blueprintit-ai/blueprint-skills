@@ -204,8 +204,8 @@
     {
       "name": "obsidian",
       "source": "./plugins/obsidian",
-      "description": "Turn any folder into an AI-powered second brain with persistent memory, task management, meeting intelligence, daily routines, and output styles. Includes /os-setup, /os-optimizer (22-pass audit), /os-evolver (Karpathy + Nodus self-evolving knowledge graph: enrich, graph, draft, re-graph; all LLM work via Claude Code subscription, no API key), /os-operator, /vault-mcp, /team-os, and /assistant. Solo or Business/Teams modes.",
-      "version": "3.10.0",
+      "description": "Turn any folder into an AI-powered second brain with persistent memory, task management, meeting intelligence, daily routines, and output styles. Includes /os-setup, /os-digest (one-command Raw/ inbox processor), /os-optimizer (22-pass audit), /os-evolver (Karpathy + Nodus self-evolving knowledge graph: enrich, graph, draft, re-graph; all LLM work via Claude Code subscription, no API key), /os-operator, /vault-mcp, /team-os, and /assistant. Solo or Business/Teams modes.",
+      "version": "3.11.0",
       "author": {
         "name": "BluePrint"
       },
