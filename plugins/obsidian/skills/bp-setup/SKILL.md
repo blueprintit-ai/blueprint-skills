@@ -16,12 +16,19 @@ This is a three-phase process:
 
 Check if `claude.md` or `CLAUDE.md` exists **only** in the current working directory (do NOT search subdirectories or parent directories — check only the exact CWD path).
 
-- **If it exists**: The vault is already set up. Ask the user:
-  - "This vault is already set up. Would you like to:"
-  - **Re-run the interview** — Keep existing structure, update memory files based on new answers
-  - **Full reset** — Delete everything and start fresh (confirm twice before proceeding)
-  - **Cancel** — Do nothing
-- **If it does NOT exist**: Proceed with full setup (Phase 0 + Phase A + Phase B)
+- **If it does NOT exist**: Proceed with full setup (Phase 0 + Phase A + Phase B).
+
+- **If it DOES exist**: Read its YAML frontmatter and branch on the `bp-setup-state` field:
+
+  - **`bp-setup-state: pending`** → The vault was scaffolded by the Shop OS installer but onboarding hasn't run yet. Do NOT show the "already set up" dialog. Proceed straight into Phase 0 → Phase A → Phase B, treating this as a fresh setup. In Phase A.2, preserve the installer's frontmatter fields (`license-customer`, `license-product`, `installed-at`) by merging them into the new CLAUDE.md you write — do not clobber them. End of Phase B will flip `bp-setup-state` to `complete`.
+
+  - **`bp-setup-state: complete`** → A previous `/bp-setup` run already personalized this vault. Show the dialog:
+    - "This vault is already set up. Would you like to:"
+    - **Re-run the interview** — Keep existing structure, update memory files based on new answers
+    - **Full reset** — Delete everything and start fresh (confirm twice before proceeding)
+    - **Cancel** — Do nothing
+
+  - **No `bp-setup-state` field** (manual/legacy setup) → Fall back to the same dialog as `complete`. A vault with a CLAUDE.md but no state marker is one the user created by hand or with an older bp-setup; the safe default is to ask.
 
 ---
 
@@ -134,6 +141,14 @@ Read each reference file and write it to the corresponding local path. The refer
 |---|---|---|
 | Solopreneurs/Professionals | `references/claude-md-template.md` | `./CLAUDE.md` |
 | Business | `references/claude-md-template-business.md` | `./CLAUDE.md` |
+
+**Preserving installer frontmatter:** If the existing `./CLAUDE.md` had `bp-setup-state: pending` in its frontmatter (i.e. the Shop OS installer wrote it), read its frontmatter BEFORE overwriting. Carry these installer fields into the new CLAUDE.md you write from the template:
+
+- `license-customer`
+- `license-product`
+- `installed-at`
+
+Set `os-mode` to the value selected in Phase 0 (this can differ from whatever the installer wrote). Leave `bp-setup-state: pending` for now — Build Step 7 at the end of Phase B will flip it to `complete` after personalization finishes.
 
 **Per-folder routing indexes** (every major folder gets its own `CLAUDE.md` — matches production vault convention):
 
@@ -525,6 +540,10 @@ Tell the user:
 - Key command: `/assistant` (sessions, daily reviews, tasks, meetings)
 - "You can add more context anytime — just tell me and I'll update the right files."
 - Suggest a next action based on what they told you
+
+### Build Step 7: Mark Setup Complete
+
+Update the root `./CLAUDE.md` frontmatter so `bp-setup-state: complete` (replacing the `pending` value the Shop OS installer wrote, or adding the field if it wasn't present). All other frontmatter fields you wrote in Step A.2 stay as-is. This is what flips the pre-flight branch on the next `/bp-setup` run from "fresh setup" to "already set up dialog."
 
 ## Guidelines
 
