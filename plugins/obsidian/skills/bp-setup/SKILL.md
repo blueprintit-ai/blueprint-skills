@@ -25,7 +25,7 @@ Check if `claude.md` or `CLAUDE.md` exists **only** in the current working direc
   - **`bp-setup-state: complete`** → A previous `/bp-setup` run already personalized this vault. Show the dialog:
     - "This vault is already set up. Would you like to:"
     - **Re-run the interview** — Keep existing structure, update memory files based on new answers
-    - **Full reset** — Delete everything and start fresh (confirm twice before proceeding)
+    - **Full reset** — Delete everything and start fresh (one confirmation required)
     - **Cancel** — Do nothing
 
   - **No `bp-setup-state` field** (manual/legacy setup) → Fall back to the same dialog as `complete`. A vault with a CLAUDE.md but no state marker is one the user created by hand or with an older bp-setup; the safe default is to ask.
