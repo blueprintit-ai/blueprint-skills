@@ -313,8 +313,8 @@
 	width: auto !important;
 }
 
-/* BenAI: Read-only file banner */
-.benai-readonly-banner {
+/* Blueprint: Read-only file banner */
+.blueprint-readonly-banner {
 	display: flex;
 	align-items: center;
 	gap: 8px;
@@ -328,6 +328,6 @@
 	opacity: 0.9;
 }
 
-.benai-readonly-banner svg {
+.blueprint-readonly-banner svg {
 	color: var(--text-on-accent);
 }

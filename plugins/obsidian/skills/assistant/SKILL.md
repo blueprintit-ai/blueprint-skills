@@ -1,9 +1,9 @@
 ---
 name: assistant
-description: BenAI Obsidian Plugin assistant — manages sessions, daily routines, tasks, memory, resources, output styles, and meeting intelligence. Mode-aware (professional, business). Handles resume, compress, preserve, daily review, task management, resources, style switching, and meeting transcript processing. Use when user says "resume", "compress", "morning review", "tasks", "resources", "output style", "meeting", "transcript", or runs /assistant.
+description: Blueprint Obsidian Plugin assistant — manages sessions, daily routines, tasks, memory, resources, output styles, and meeting intelligence. Mode-aware (professional, business). Handles resume, compress, preserve, daily review, task management, resources, style switching, and meeting transcript processing. Use when user says "resume", "compress", "morning review", "tasks", "resources", "output style", "meeting", "transcript", or runs /assistant.
 ---
 
-# BenAI Obsidian Plugin — Assistant
+# Blueprint Obsidian Plugin — Assistant
 
 ## Pre-flight Check
 

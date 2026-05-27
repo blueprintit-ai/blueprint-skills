@@ -1,11 +1,11 @@
 ---
 name: bp-setup
-description: Bootstrap the BenAI OS Plugin vault structure and run personalized onboarding. Creates all directories, system files, Obsidian config, memory system, hooks, and output styles, then interviews the user to personalize everything. Two modes — Solopreneurs/Professionals (default), Business/Teams. Use when user says "set up", "bootstrap", "initialize", "onboarding", or runs /bp-setup.
+description: Bootstrap the Blueprint OS Plugin vault structure and run personalized onboarding. Creates all directories, system files, Obsidian config, memory system, hooks, and output styles, then interviews the user to personalize everything. Two modes — Solopreneurs/Professionals (default), Business/Teams. Use when user says "set up", "bootstrap", "initialize", "onboarding", or runs /bp-setup.
 ---
 
-# BenAI Obsidian Plugin — Setup + Onboarding
+# Blueprint Obsidian Plugin — Setup + Onboarding
 
-USE WHEN the user runs `/setup` or asks to set up their vault, bootstrap the assistant, initialize the system, or configure the BenAI Obsidian Plugin.
+USE WHEN the user runs `/setup` or asks to set up their vault, bootstrap the assistant, initialize the system, or configure the Blueprint Obsidian Plugin.
 
 This is a three-phase process:
 - **Phase 0**: Mode Selection — Ask which OS variant to create
