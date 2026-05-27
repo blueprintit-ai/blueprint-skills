@@ -16,12 +16,18 @@ This is a three-phase process:
 
 Check if `claude.md` or `CLAUDE.md` exists **only** in the current working directory (do NOT search subdirectories or parent directories — check only the exact CWD path).
 
-- **If it exists**: The vault is already set up. Ask the user:
-  - "This vault is already set up. Would you like to:"
-  - **Re-run the interview** — Keep existing structure, update memory files based on new answers
-  - **Full reset** — Delete everything and start fresh (confirm twice before proceeding)
-  - **Cancel** — Do nothing
-- **If it does NOT exist**: Proceed with full setup (Phase 0 + Phase A + Phase B)
+- **If it does NOT exist** → fresh setup. Proceed to Phase 0 + Phase A + Phase B.
+- **If it exists, read the frontmatter**:
+  - **`bp-setup-state: pending`** → **installer-seeded, not yet onboarded.** This is a fresh Shop OS install where the installer dropped a stub CLAUDE.md but the user has not run onboarding yet. Skip Phase 0 (use the `os-mode` already in the frontmatter). Proceed to Phase A — but in Step A.2 **preserve the installer's frontmatter fields** (see the note in Step A.2). Then proceed to Phase B normally.
+  - **`bp-setup-state: complete`** (or no `bp-setup-state` field at all — legacy hand-built vault) → the vault is already onboarded. Ask the user:
+    - "This vault is already set up. Would you like to:"
+    - **Re-run the interview** — Keep existing structure, update memory files based on new answers
+    - **Full reset** — Delete everything and start fresh (confirm twice before proceeding)
+    - **Cancel** — Do nothing
+
+At the end of Phase B Build Step 6, update the root `CLAUDE.md` frontmatter:
+- Set `bp-setup-state: complete`
+- Add `bp-setup-completed-at: YYYY-MM-DD` (today)
 
 ---
 
@@ -157,6 +163,8 @@ Read each reference file and write it to the corresponding local path. The refer
 | Business | `references/claude-md-processes.md` | `./Intelligence/processes/CLAUDE.md` |
 
 For each row applicable to the selected mode: read the reference file, then write its content to the local path.
+
+> When overwriting `./CLAUDE.md`, if the existing file's frontmatter contains `bp-setup-state: pending`, **merge its fields** (`license-customer`, `license-product`, `installed-at`, and any other fields not in the template) into the new template's frontmatter before writing. The installer-seeded body content is discarded — the routing template body is what the vault needs from here on. Drop `bp-setup-state: pending` from the merged frontmatter; it gets re-set to `complete` at the end of Phase B Build Step 6.
 
 ### Step A.3: Initialize Starter Context Files
 
