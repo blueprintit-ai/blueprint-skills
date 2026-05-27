@@ -28,7 +28,7 @@ Use this when interpreting a graph report for a user. Read the finding, then rea
 
 **Recommended fix:** Add lateral links between related pages. On retail sites this means a Related Categories module between sibling collections. In knowledge bases this means cross-references between related topics. This is typically the single biggest internal-linking lever available.
 
-**How `/os-evolver` resolves it:** Phase 1A (mechanical enricher) usually does not resolve it because it only matches exact titles. Phase 1B (LLM enricher with `--only-orphans`) typically does, because it adds synonym-aware links that spread bridging across multiple nodes.
+**How `/bp-evolver` resolves it:** Phase 1A (mechanical enricher) usually does not resolve it because it only matches exact titles. Phase 1B (LLM enricher with `--only-orphans`) typically does, because it adds synonym-aware links that spread bridging across multiple nodes.
 
 ## 2. `FRAGMENTED_GRAPH`
 
@@ -45,7 +45,7 @@ Use this when interpreting a graph report for a user. Read the finding, then rea
 
 **Recommended fix:** Establish hub-and-spoke topology at minimum: every leaf links back to a category hub, every hub lists its leaves. Then add lateral links between sibling leaves.
 
-**How `/os-evolver` resolves it:** Phase 1A + 1B together typically halve the component count. Phase 3 (note_drafter) adds new connector notes that further reduce fragmentation. Re-run Phase 2 to confirm.
+**How `/bp-evolver` resolves it:** Phase 1A + 1B together typically halve the component count. Phase 3 (note_drafter) adds new connector notes that further reduce fragmentation. Re-run Phase 2 to confirm.
 
 ## 3. `HIGH_ORPHAN_RATE`
 
@@ -62,7 +62,7 @@ Use this when interpreting a graph report for a user. Read the finding, then rea
 
 **Recommended fix:** Audit each orphan. Archive what is stale. Weave the rest into existing topical clusters by adding cross-links from the orphan to related concepts and from existing notes to the orphan. For a retail catalog this means category cross-links. For a knowledge base it means linking each note to its parent topic.
 
-**How `/os-evolver` resolves it:** Phase 1A + 1B both target orphans (Phase 1B has `--only-orphans` as default). After enrichment, the remaining orphans are usually genuinely standalone (daily notes, scratch notes) and should be left alone or archived.
+**How `/bp-evolver` resolves it:** Phase 1A + 1B both target orphans (Phase 1B has `--only-orphans` as default). After enrichment, the remaining orphans are usually genuinely standalone (daily notes, scratch notes) and should be left alone or archived.
 
 **Inline evidence:** The finding lists the first 6 orphan filenames in the report body for at-a-glance triage.
 
@@ -80,7 +80,7 @@ Use this when interpreting a graph report for a user. Read the finding, then rea
 
 **Recommended fix:** Distribute linking responsibility. Sibling pages should link directly to each other rather than routing every visitor and every search crawler through the hub.
 
-**How `/os-evolver` resolves it:** Phase 1B's synonym-aware enrichment spreads linking across multiple concepts (e.g., it will add links to `[[Supabase]]`, `[[Podium API]]`, `[[Renew]]` instead of routing everything through `[[STORIS]]`). This usually pulls the hub's edge share from 60-80% down to 40-55%, which clears the threshold.
+**How `/bp-evolver` resolves it:** Phase 1B's synonym-aware enrichment spreads linking across multiple concepts (e.g., it will add links to `[[Supabase]]`, `[[Podium API]]`, `[[Renew]]` instead of routing everything through `[[STORIS]]`). This usually pulls the hub's edge share from 60-80% down to 40-55%, which clears the threshold.
 
 ## 5. `SILOED_CONTENT_THEMES`
 
@@ -96,7 +96,7 @@ Use this when interpreting a graph report for a user. Read the finding, then rea
 
 **Recommended fix:** Pair each editorial piece with the catalog (or feature, or pricing) page it supports. Every blog post gets a "Shop the article" or "See the related feature" section. Every catalog page embeds 1-2 relevant buying guides.
 
-**How `/os-evolver` resolves it:** This is mostly a human / SEO-strategy fix, not a wikilink fix. The detector surfaces it for human attention. The finding lists the candidate titles inline for quick action.
+**How `/bp-evolver` resolves it:** This is mostly a human / SEO-strategy fix, not a wikilink fix. The detector surfaces it for human attention. The finding lists the candidate titles inline for quick action.
 
 ## 6. `EMPTY_HUBS`
 
@@ -112,7 +112,7 @@ Use this when interpreting a graph report for a user. Read the finding, then rea
 
 **Recommended fix:** Write the canonical note for each empty hub, ordered by reference count. The act of giving a referenced concept its own page usually surfaces structure already implicit in the references.
 
-**How `/os-evolver` resolves it:** Phase 3 (`note_drafter_prep.py` + agent) drafts a canonical note for each empty hub grounded in the actual excerpts where it is referenced. The agent uses the user's Claude Code subscription, no separate API key. Drafts land in `drafts/YYYY-MM-DD/` with an INDEX. The operator reviews, promotes keepers.
+**How `/bp-evolver` resolves it:** Phase 3 (`note_drafter_prep.py` + agent) drafts a canonical note for each empty hub grounded in the actual excerpts where it is referenced. The agent uses the user's Claude Code subscription, no separate API key. Drafts land in `drafts/YYYY-MM-DD/` with an INDEX. The operator reviews, promotes keepers.
 
 **Caveat — convention drift**: An "empty hub" detection may actually be a casing mismatch where a canonical file already exists under a different name (e.g., `[[Claims Decision Process]]` is dangling but `claims-decision-process.md` exists). Always check for normalised-name file collisions before promoting a draft. The right fix in that case is to update the source wikilink to display-text form, not promote the draft.
 

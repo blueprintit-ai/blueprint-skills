@@ -49,7 +49,7 @@ def render_task_file(graph: dict, business: str, today: str) -> str:
     lines.append(f"date: {today}")
     lines.append("project: Blueprint-OS")
     lines.append("status: ready-for-agent")
-    lines.append("tags: [knowledge-graph, bridge-questions, agent-task, os-evolver]")
+    lines.append("tags: [knowledge-graph, bridge-questions, agent-task, bp-evolver]")
     lines.append("---")
     lines.append("")
     lines.append("> [!info] How to process this file")

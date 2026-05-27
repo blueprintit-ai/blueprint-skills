@@ -1,6 +1,6 @@
 # Workflow: onboarding a fresh vault
 
-Use this walkthrough when running `/os-evolver` on a vault for the first time. It assumes `/os-setup` has already bootstrapped the directory structure and `CLAUDE.md` is in place.
+Use this walkthrough when running `/bp-evolver` on a vault for the first time. It assumes `/bp-setup` has already bootstrapped the directory structure and `CLAUDE.md` is in place.
 
 ## When to use this workflow
 
@@ -28,7 +28,7 @@ Free, deterministic, idempotent. Run twice: once in review mode, once with `--ap
 
 ```sh
 # Review pass.
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/wikilink_enricher.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts/wikilink_enricher.py" \
   --vault "$PWD"
 
 # The review queue lands at:
@@ -42,7 +42,7 @@ If the user finds noise patterns (e.g., a generic title like `Pagination` is get
 When the user is satisfied:
 
 ```sh
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/wikilink_enricher.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts/wikilink_enricher.py" \
   --vault "$PWD" \
   --apply
 ```
@@ -55,7 +55,7 @@ This injects every approved wikilink and creates `.bak` backups next to each mod
 
 ```sh
 TODAY=$(date +%Y-%m-%d)
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/vault_graph.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts/vault_graph.py" \
   --vault "$PWD" \
   --output "Reports/knowledge-graph/${TODAY}-graph-report.md" \
   --json
@@ -76,7 +76,7 @@ Catches what the mechanical pass cannot: synonyms (`"the ERP"` → `[[STORIS]]`)
 **Step 3a: prep (Python, deterministic, free)**
 
 ```sh
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/wikilink_enricher_llm_prep.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts/wikilink_enricher_llm_prep.py" \
   --vault "$PWD" \
   --only-orphans \
   --max-files 30 \
@@ -101,7 +101,7 @@ When the user approves the keepers, apply the changes using the Edit tool on eac
 ## Step 4: Graph again, see the delta
 
 ```sh
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/vault_graph.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts/vault_graph.py" \
   --vault "$PWD" \
   --output "Reports/knowledge-graph/${TODAY}-graph-report.md" \
   --json
@@ -125,7 +125,7 @@ If a finding downgraded from CRITICAL → HIGH → MEDIUM, name it explicitly. T
 ```sh
 LATEST_JSON=$(ls -t Reports/knowledge-graph/*graph-report.json | head -1)
 
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/note_drafter_prep.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts/note_drafter_prep.py" \
   --vault "$PWD" \
   --graph-json "$LATEST_JSON" \
   --top-n 10 \

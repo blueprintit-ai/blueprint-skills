@@ -1,5 +1,5 @@
 ---
-name: os-digest
+name: bp-digest
 description: Process every file in the vault's Raw/ inbox. For each file, read its contents, decide where it belongs in the vault based on CLAUDE.md routing conventions, write a structured summary note in the right place, and move the original to Raw/processed/ so the inbox stays clean. Report back what was done. TRIGGERS: os digest, digest raw, digest inbox, process raw, process inbox, ingest files, file my materials, what is in raw, empty the inbox, clean up raw, digest my files. Run from the vault root.
 ---
 
@@ -7,19 +7,19 @@ description: Process every file in the vault's Raw/ inbox. For each file, read i
 
 Sweep the vault's `Raw/` inbox. Read every file, decide where it belongs, summarize, file, archive. Report back.
 
-This is the workflow customers run to feed materials into their vault. A cabinet shop drops a supplier price list, a customer contract, photos of a finished job, a phone-call transcript into `Raw/`. They type `/os-digest`. The agent reads each file, classifies it against the vault's CLAUDE.md routing, writes a structured note in the right folder, moves the original to `Raw/processed/`, and surfaces a report.
+This is the workflow customers run to feed materials into their vault. A cabinet shop drops a supplier price list, a customer contract, photos of a finished job, a phone-call transcript into `Raw/`. They type `/bp-digest`. The agent reads each file, classifies it against the vault's CLAUDE.md routing, writes a structured note in the right folder, moves the original to `Raw/processed/`, and surfaces a report.
 
 ## Pre-flight
 
 1. Verify the current working directory is a vault root: `CLAUDE.md` or `claude.md` must exist. If missing: tell the user *"This is not a vault root. `cd` into your vault and re-run."* Stop.
-2. Verify `Raw/` exists at the vault root. If missing: create it (`mkdir -p Raw/processed`) and tell the user *"Created your `Raw/` inbox at vault root. Drop files there and re-run `/os-digest`."* Stop.
+2. Verify `Raw/` exists at the vault root. If missing: create it (`mkdir -p Raw/processed`) and tell the user *"Created your `Raw/` inbox at vault root. Drop files there and re-run `/bp-digest`."* Stop.
 3. Read the vault's root `CLAUDE.md` to learn the routing conventions. The customer's routing rules live there.
 
 ## Phase 0 — Inventory
 
 List the contents of `Raw/` excluding the `processed/` subdirectory and excluding `README.md`. Use `ls Raw/` or equivalent.
 
-If empty, tell the user *"Your Raw/ inbox is empty. Drop files there and run /os-digest again."* Stop.
+If empty, tell the user *"Your Raw/ inbox is empty. Drop files there and run /bp-digest again."* Stop.
 
 Otherwise, show the user the file list and confirm: *"Found N files in Raw/. About to process. Proceed?"* Use `AskUserQuestion` if more than 10 files. For small batches (≤10) just announce and proceed.
 
@@ -89,22 +89,22 @@ If the customer corrects a routing decision, remember it for this session and ap
 
 ## After the digest
 
-Recommend the user verify a couple of the new notes in Obsidian and approve. Once they trust the routing, future `/os-digest` runs are largely autonomous.
+Recommend the user verify a couple of the new notes in Obsidian and approve. Once they trust the routing, future `/bp-digest` runs are largely autonomous.
 
-If the inbox had ≥5 files of the same type (e.g., a batch of phone-call transcripts), point out the pattern and suggest the customer commit to a recurring habit: *"You added five phone-call transcripts this week. Want me to set up `/os-operator` to remind you to drop new ones every Friday afternoon?"*
+If the inbox had ≥5 files of the same type (e.g., a batch of phone-call transcripts), point out the pattern and suggest the customer commit to a recurring habit: *"You added five phone-call transcripts this week. Want me to set up `/bp-operator` to remind you to drop new ones every Friday afternoon?"*
 
 ## Cross-references
 
-- `/os-setup` — bootstrap the vault. Run before this skill on a fresh vault.
-- `/os-operator` — schedule a recurring agent. Can be configured to remind the user to run `/os-digest` weekly.
-- `/os-optimizer` — monthly vault audit. Catches files that ended up in the wrong place over time.
-- The `audio-transcriber` skill — invoked automatically by `/os-digest` when an audio file is in Raw/.
+- `/bp-setup` — bootstrap the vault. Run before this skill on a fresh vault.
+- `/bp-operator` — schedule a recurring agent. Can be configured to remind the user to run `/bp-digest` weekly.
+- `/bp-optimizer` — monthly vault audit. Catches files that ended up in the wrong place over time.
+- The `audio-transcriber` skill — invoked automatically by `/bp-digest` when an audio file is in Raw/.
 
 ## Triggers
 
 | User says | Run |
 |---|---|
-| `/os-digest`, "digest raw", "digest the inbox" | Full digest workflow |
+| `/bp-digest`, "digest raw", "digest the inbox" | Full digest workflow |
 | "what's in Raw/" | List inventory, do not process |
 | "process the X file in Raw/" | Digest only that file |
 | "empty the inbox" | Full digest workflow with stronger autonomy (do not prompt on small batches) |

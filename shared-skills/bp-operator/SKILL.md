@@ -1,6 +1,6 @@
 ---
-name: os-operator
-description: Build and schedule a personalized Operator prompt that runs the user's second brain on a recurring cadence. The skill is invoked from inside the vault folder locally — it reads `Context/` and `CLAUDE.md` first to infer org, team, brand voice, and paths, then asks ONLY the gaps it can't determine (cadence, connectors, DM recipient, budgets, signature). Fills `references/operator-prompt-template.md`, writes the rendered prompt locally, then invokes the `schedule` skill to wire up the recurring trigger automatically. Template is a generic version of a battle-tested vault Operator spec — cadence awareness, freshness, daily-as-state, idle-timeout protection, principles, hard rules, failure handling, report schema. Use when the user says "set up the operator", "build my operator prompt", "operate my second brain", "schedule my OS", "os operator", "vault operator", or runs /os-operator.
+name: bp-operator
+description: Build and schedule a personalized Operator prompt that runs the user's second brain on a recurring cadence. The skill is invoked from inside the vault folder locally — it reads `Context/` and `CLAUDE.md` first to infer org, team, brand voice, and paths, then asks ONLY the gaps it can't determine (cadence, connectors, DM recipient, budgets, signature). Fills `references/operator-prompt-template.md`, writes the rendered prompt locally, then invokes the `schedule` skill to wire up the recurring trigger automatically. Template is a generic version of a battle-tested vault Operator spec — cadence awareness, freshness, daily-as-state, idle-timeout protection, principles, hard rules, failure handling, report schema. Use when the user says "set up the operator", "build my operator prompt", "operate my second brain", "schedule my OS", "os operator", "vault operator", or runs /bp-operator.
 ---
 
 # OS Operator
@@ -102,7 +102,7 @@ For each connector:
 
 - ✅ **Found and probe succeeds** → mark enabled. Capture the actual MCP/tool prefix as `{{*_MCP_NAME}}` and infer the product name (e.g. `fireflies` → `Fireflies`).
 - ⚠️ **Found but probe fails** (auth error, 401, empty creds) → mark "wired but broken". Tell the user the exact error and ask whether to (a) skip this connector, (b) pause so they can fix the credentials and re-run the probe, or (c) include it anyway.
-- ❌ **Not found** → mark disabled. Do not ask "do you want to add it?" — that's a separate setup task. The user can re-run `/os-operator` later after wiring a new MCP.
+- ❌ **Not found** → mark disabled. Do not ask "do you want to add it?" — that's a separate setup task. The user can re-run `/bp-operator` later after wiring a new MCP.
 
 #### Step 2b — Confirm with the user
 

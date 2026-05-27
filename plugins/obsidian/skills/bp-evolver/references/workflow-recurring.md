@@ -16,7 +16,7 @@ After a vault is onboarded (see `workflow-onboarding.md`), the recurring weekly 
 
 ```sh
 TODAY=$(date +%Y-%m-%d)
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/vault_graph.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts/vault_graph.py" \
   --vault "$PWD" \
   --output "Reports/knowledge-graph/${TODAY}-graph-report.md" \
   --json
@@ -40,7 +40,7 @@ If the latest graph report has `dangling_count > 0`:
 ```sh
 LATEST_JSON=$(ls -t Reports/knowledge-graph/*graph-report.json | head -1)
 
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/note_drafter_prep.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts/note_drafter_prep.py" \
   --vault "$PWD" \
   --graph-json "$LATEST_JSON" \
   --top-n 5
@@ -53,7 +53,7 @@ Then the agent reads the task file at `Reports/knowledge-graph/note-drafting-tas
 Once a month, run the LLM enricher on any notes added or substantially edited in the last 30 days.
 
 ```sh
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/wikilink_enricher_llm_prep.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts/wikilink_enricher_llm_prep.py" \
   --vault "$PWD" \
   --only-orphans \
   --max-files 30
@@ -66,7 +66,7 @@ Agent reads the produced task file, generates a review queue at `Reports/knowled
 ```sh
 LATEST_JSON=$(ls -t Reports/knowledge-graph/*graph-report.json | head -1)
 
-python3 "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/bridge_questions_prep.py" \
+python3 "${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts/bridge_questions_prep.py" \
   --vault "$PWD" \
   --graph-json "$LATEST_JSON"
 ```
@@ -75,12 +75,12 @@ Agent reads the task file at `Reports/knowledge-graph/bridge-question-tasks-YYYY
 
 Highest-leverage research-direction generator the system produces. Productive once the vault has 4+ healthy clusters.
 
-## Automating the cadence via `/os-operator`
+## Automating the cadence via `/bp-operator`
 
 Hand off the recurring runs to the operator agent. When setting up the operator, add a `Weekly Vault Graph` schedule with the body:
 
 ```
-Run /os-evolver. Recon, then route to Phase 2 by default. If the latest graph
+Run /bp-evolver. Recon, then route to Phase 2 by default. If the latest graph
 report shows dangling references and the operator has Anthropic credits, run
 Phase 3 as well. Append the weekly snapshot paragraph to Daily/YYYY-MM-DD.md
 under a 'Vault graph' heading.

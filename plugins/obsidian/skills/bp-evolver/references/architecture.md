@@ -1,6 +1,6 @@
 # Architecture and core thesis
 
-The `/os-evolver` skill implements the Karpathy LLM Wiki idea with the Nodus Labs Portable GraphRAG enhancement on top. Both ideas land in markdown, where Obsidian already maintains the substrate. This document explains the *why* behind the pipeline so the agent can reason about edge cases rather than mechanically running steps.
+The `/bp-evolver` skill implements the Karpathy LLM Wiki idea with the Nodus Labs Portable GraphRAG enhancement on top. Both ideas land in markdown, where Obsidian already maintains the substrate. This document explains the *why* behind the pipeline so the agent can reason about edge cases rather than mechanically running steps.
 
 ## The core thesis
 
@@ -12,11 +12,11 @@ A markdown knowledge base is an LLM's external brain. RAG lets the LLM retrieve 
 
 The LLM uses gap-detection to generate research questions and to draft canonical notes. It writes those back into the vault. The vault re-graphs and exposes the next layer of gaps. The brain self-improves over time. **That is the loop.**
 
-## Why this complements `/os-optimizer`
+## Why this complements `/bp-optimizer`
 
-`/os-optimizer` runs seven judgment-based frameworks. Its F2 (Karpathy LLM Wiki) catches per-finding issues — a dead wikilink here, an orphan there, a stub note somewhere. Excellent for spot-checks.
+`/bp-optimizer` runs seven judgment-based frameworks. Its F2 (Karpathy LLM Wiki) catches per-finding issues — a dead wikilink here, an orphan there, a stub note somewhere. Excellent for spot-checks.
 
-`/os-evolver` runs deterministic measurement plus deterministic and LLM-based bulk action. It does not produce per-finding judgment — it produces:
+`/bp-evolver` runs deterministic measurement plus deterministic and LLM-based bulk action. It does not produce per-finding judgment — it produces:
 
 - Quantitative graph metrics that change measurably across runs
 - Bulk auto-injection of wikilinks across the entire vault in a single pass
@@ -26,8 +26,8 @@ The two skills answer different questions:
 
 | Question | Skill |
 |---|---|
-| "What specific issues exist in this file?" | `/os-optimizer` |
-| "What is the structural shape of the vault right now, and how do I close the biggest gap fastest?" | `/os-evolver` |
+| "What specific issues exist in this file?" | `/bp-optimizer` |
+| "What is the structural shape of the vault right now, and how do I close the biggest gap fastest?" | `/bp-evolver` |
 
 Run both. They are complementary, not redundant.
 

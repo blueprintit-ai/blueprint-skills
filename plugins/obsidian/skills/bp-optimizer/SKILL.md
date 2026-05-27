@@ -1,5 +1,5 @@
 ---
-name: os-optimizer
+name: bp-optimizer
 description: "Framework-driven audit and optimizer for any markdown vault. Discovers and classifies every .md file, then applies 7 frameworks one-by-one — Anthropic CLAUDE.md (F1), Karpathy LLM Wiki (F2), Caveman Compression (F3), Chroma Context Rot (F4), Anthropic Memory (F5), Progressive Disclosure (F6), General Hygiene (G7). Each framework's auditable signals run as judgment-based checks: triggers surface candidates, the agent reads context and reasons, and every finding includes a reasoning sentence specific to the case. Audits every file (only technical skips: .git, .obsidian, .trash, node_modules, dist, build). Asks per-framework what to fix via AskUserQuestion, applies approved fixes, saves a comprehensive HTML dashboard grouped by framework, opens it in the browser, and surfaces it as a renderable artifact. TRIGGERS: os optimizer, optimize vault, vault audit, lint vault, vault health check, audit my brain, second brain audit, clean up vault, framework audit. Run from the user's vault root."
 ---
 

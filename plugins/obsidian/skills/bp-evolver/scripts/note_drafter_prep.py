@@ -146,7 +146,7 @@ def render_task_file(
     lines.append(f"date: {today}")
     lines.append("project: Blueprint-OS")
     lines.append("status: ready-for-agent")
-    lines.append("tags: [knowledge-graph, drafts, agent-task, os-evolver]")
+    lines.append("tags: [knowledge-graph, drafts, agent-task, bp-evolver]")
     lines.append("---")
     lines.append("")
     lines.append("> [!info] How to process this file")

@@ -1,5 +1,5 @@
 ---
-name: os-evolver
+name: bp-evolver
 description: Karpathy + Nodus self-evolving research loop for any markdown vault. Runs deterministic graph analysis (betweenness centrality, Louvain communities, structural-hole detection), surfaces failure-mode diagnostics (star topology, fragmentation, high orphan rate, hub dependence, siloed content, empty hubs), bulk-injects [[wikilinks]] across the vault (mechanical and LLM-based), and uses the agent to draft canonical notes for dangling references. Closes the loop, so the vault literally fills its own gaps and gets structurally healthier on each pass. All LLM work runs through the user's Claude Code subscription, no separate API key required. Outputs persist inside the vault under `Reports/knowledge-graph/` and `drafts/` for review. TRIGGERS: os evolver, evolve my vault, graph my vault, graph my knowledge, knowledge graph audit, strategic knowledge audit, self-evolving wiki, wikilink enrich, fill dangling notes, draft missing notes, bridge questions. Run from the vault root.
 ---
 
@@ -21,11 +21,11 @@ This means the entire skill runs on the customer's existing Claude Code subscrip
 1. The current working directory MUST be a vault root. Verify `CLAUDE.md` or `claude.md` exists in cwd. If missing: tell the user *"This is not a vault root. `cd` into your vault and re-run."* Stop.
 2. Read the `os-mode` field in the vault's root `CLAUDE.md` frontmatter to detect mode (`professional` or `business`).
 3. Verify Python 3.10+ is available: `python3 --version`. If absent, ask the user to install Python.
-4. Install / verify dependencies once per machine: `python3 -m pip install --user -r "${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/requirements.txt"`. The requirements are `networkx`, `requests`, `beautifulsoup4`, `markdownify`. No `anthropic` package — the agent handles all LLM work.
+4. Install / verify dependencies once per machine: `python3 -m pip install --user -r "${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts/requirements.txt"`. The requirements are `networkx`, `requests`, `beautifulsoup4`, `markdownify`. No `anthropic` package — the agent handles all LLM work.
 
 ## Path conventions
 
-- **Scripts** live at `${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts/`. Invoke them with absolute paths.
+- **Scripts** live at `${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts/`. Invoke them with absolute paths.
 - **Reference files** (`references/foo.md`) live next to **this SKILL.md** — read them with absolute paths relative to the SKILL.md location.
 - **Vault outputs** land under the user's cwd:
   - Graph reports: `Reports/knowledge-graph/YYYY-MM-DD-graph-report.{md,json}`
@@ -46,7 +46,7 @@ Survey the vault before deciding what to do.
 
 ```sh
 VAULT="$PWD"
-SCRIPTS="${CLAUDE_PLUGIN_ROOT}/skills/os-evolver/scripts"
+SCRIPTS="${CLAUDE_PLUGIN_ROOT}/skills/bp-evolver/scripts"
 TODAY=$(date +%Y-%m-%d)
 
 # Count knowledge markdown files
@@ -234,13 +234,13 @@ Once a vault is enriched and producing useful drafts:
 | Monthly | Phase 1B (LLM enricher) on newly-added orphan files. |
 | Quarterly | Phase 4 (bridge questions) once the vault has healthy clusters. |
 
-Schedule the recurring runs via `/os-operator`. See `references/workflow-recurring.md`.
+Schedule the recurring runs via `/bp-operator`. See `references/workflow-recurring.md`.
 
 ## Cross-references to other skills
 
-- `/os-setup` — bootstrap a fresh vault. Run BEFORE this skill.
-- `/os-optimizer` — judgment-based 7-framework audit. Run F1 (CLAUDE.md), F3 (compression), F4 (context rot), F5 (memory), F6 (progressive disclosure), G7 (hygiene). F2 (Karpathy Wiki) overlaps with this skill on dead-link / orphan detection: this skill provides the deterministic graph metrics and bulk auto-fix, while F2 provides per-finding judgment and HTML reporting. Run both; they complement.
-- `/os-operator` — schedules everything. Add Phase 2 + Phase 3 to its weekly cadence.
+- `/bp-setup` — bootstrap a fresh vault. Run BEFORE this skill.
+- `/bp-optimizer` — judgment-based 7-framework audit. Run F1 (CLAUDE.md), F3 (compression), F4 (context rot), F5 (memory), F6 (progressive disclosure), G7 (hygiene). F2 (Karpathy Wiki) overlaps with this skill on dead-link / orphan detection: this skill provides the deterministic graph metrics and bulk auto-fix, while F2 provides per-finding judgment and HTML reporting. Run both; they complement.
+- `/bp-operator` — schedules everything. Add Phase 2 + Phase 3 to its weekly cadence.
 - `/assistant` — surfaces graph-report headlines in the morning review.
 - `/vault-mcp` — provides remote read/write. No direct dependency.
 
@@ -258,7 +258,7 @@ The artifacts are the deliverable; the chat is the navigator.
 
 | User says | Run |
 |---|---|
-| "evolve my vault", "/os-evolver" | Phase 0 then routing decision |
+| "evolve my vault", "/bp-evolver" | Phase 0 then routing decision |
 | "graph my vault" | Phase 2 directly |
 | "draft missing notes", "fill the gaps" | Phase 3 (Phase 2 first if no graph in 7+ days) |
 | "enrich wikilinks", "link the vault" | Phase 1A, then Phase 1B if mechanical was applied |

@@ -416,7 +416,7 @@
     },
     "obsidian": {
       "skills": {
-        "os-setup": {
+        "bp-setup": {
           "displayName": "OS Setup",
           "summary": "Bootstrap vault structure with mode selection and personalized onboarding"
         },
@@ -424,11 +424,11 @@
           "displayName": "OS Dashboard Setup",
           "summary": "Install a personal/team command-center dashboard in an Obsidian vault — KPI cards, activity charts, task rollup, per-profile pages via Dataview + CustomJS"
         },
-        "os-optimizer": {
+        "bp-optimizer": {
           "displayName": "OS Optimizer",
           "summary": "Multi-pass second brain audit and optimizer — 22 passes across size/tokens, wiki lint, skills, and hygiene"
         },
-        "os-operator": {
+        "bp-operator": {
           "displayName": "OS Operator",
           "summary": "Set up scheduled tasks that operate your second brain on a recurring cadence (stub — full scheduling lands later)"
         },
