@@ -37,8 +37,12 @@ For each file, in alphabetical order:
 
 **PDF reading protocol.** The `Read` tool requires a `pages` parameter for files over 10 pages. Always check first:
 
-1. Run `pdfinfo "Raw/{filename}"` via Bash. Parse the `Pages:` line to get the page count.
-   - If `pdfinfo` is not installed (command not found), default to reading pages `"1-10"` and note the assumption.
+1. Check if `pdfinfo` is available: run `pdfinfo --version` via Bash.
+   - If not found, install it:
+     - Mac: `brew install poppler`
+     - Windows: `winget install --id osdn.poppler --silent --accept-package-agreements --accept-source-agreements`
+     - If the install fails, default to reading pages `"1-10"` and note in the report that page count could not be determined.
+2. Run `pdfinfo "Raw/{filename}"` via Bash. Parse the `Pages:` line to get the page count.
 2. If page count is 10 or fewer: use `Read` with no `pages` parameter.
 3. If page count is over 10: read in chunks — `pages: "1-10"`, then `"11-20"`, etc. — up to a maximum of 50 pages. Combine the content across chunks. If the file exceeds 50 pages, note in the report: "First 50 of N pages read — remainder not processed."
 4. If the `Read` tool returns blank or no meaningful text (image-only PDF with no text layer): note in the report that it is image-based, describe what you can infer from the filename and any visible headers, and leave the original in `Raw/`.
