@@ -71,7 +71,29 @@ For each file, in alphabetical order:
    - Phone call (transcript) → goes into `Projects/{Customer}/calls/{YYYY-MM-DD}.md`
    - SOP / training doc → goes into `Resources/sops/{topic}.md`
    - Internal financial doc → goes into `Resources/financials/` or similar
+   - Business decision (vendor selection, pricing decision, policy change, job go/no-go, contract approval, major purchase) → append to `Intelligence/decisions/log.md` using the **decision log format** below. Create the file and any missing parent folders if they don't exist.
    - Anything else: use your judgment based on the routing table in the vault's `CLAUDE.md`.
+
+**Decision log format.** Each entry appended as a new section at the bottom of `Intelligence/decisions/log.md`:
+
+```markdown
+## {YYYY-MM-DD} — {decision title, one short phrase}
+**Source:** `Raw/processed/{filename}`
+**Decision:** {what was decided, one sentence}
+**Rationale:** {why, pulled directly from the document}
+**Impact:** {who or what this affects — customer, supplier, team, pricing, etc.}
+```
+
+If `Intelligence/decisions/log.md` does not exist, create it with this header before the first entry:
+
+```markdown
+---
+type: decisions
+tags: [decisions, log]
+---
+
+Decision log. One entry per business decision, newest at the bottom.
+```
 
 3. **Write a structured note** to the chosen target path. The note should:
    - Have YAML frontmatter with `type`, `source` (the original filename), `ingested-at` (current date), and 2+ relevant `tags`.

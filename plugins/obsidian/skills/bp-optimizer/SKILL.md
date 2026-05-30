@@ -456,6 +456,10 @@ Stop. Do not propose follow-up actions.
 
 ---
 
+## Related skills
+
+- `/bp-audit` — operational health check. Scores the vault across Context, Connections, Capabilities, and Cadence. Also surfaces the Automation Ladder (L0-L4) showing where each shop workflow currently sits and what the next step up looks like. Run `/bp-audit` first if the vault is new or underused — it tells you what to fix at a business level. `/bp-optimizer` tells you what to fix at a file quality level. They are complementary, not redundant.
+
 ## Why this skill exists
 
 Six frameworks plus practitioner field notes converge on one conclusion: vaults rot without active maintenance. Karpathy calls it **lint**. Anthropic calls it the **pruning test** + the **memory budget**. Chroma calls it **context rot**. Caveman calls it **token discipline**. Progressive disclosure calls it **layering**. The audit encodes every auditable signal from each framework as a discrete check, applies them all on every run, asks per-framework what to fix, and saves a categorized HTML dashboard.
