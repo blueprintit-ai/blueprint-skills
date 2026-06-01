@@ -455,6 +455,10 @@
         "bp-evolver": {
           "displayName": "OS Evolver",
           "summary": "Self-evolving knowledge graph loop — graph analysis, wikilink injection, and canonical note drafting to structurally heal the vault over time"
+        },
+        "bp-update": {
+          "displayName": "OS Update",
+          "summary": "Pull the latest Shop OS skills from Blueprint IT without re-running the full installer"
         }
       }
     },
