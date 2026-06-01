@@ -48,8 +48,37 @@ For each file, in alphabetical order:
    print(result.text_content)
    "
    ```
-3. If the output is empty or blank (common with image-only PDFs that have no text layer): note in the report that the file appears to be image-based, describe what you can infer from the filename and any visible headers, and leave the original in `Raw/`.
+3. If the output is empty or blank (common with image-only PDFs that have no text layer): attempt Vision OCR using the **Vision OCR protocol** below. If Vision OCR succeeds, use its output as the extracted content and proceed to step 2 (Classify the content) normally. If Vision OCR fails or ANTHROPIC_API_KEY is not set, note in the report that the file is image-based and leave the original in `Raw/` with the note: "Vision OCR failed — set ANTHROPIC_API_KEY and re-run /bp-digest, or convert to .md manually."
 4. If MarkItDown raises an exception or Python3 is unavailable: flag in the report with the error and leave the file in `Raw/` with the note: "conversion failed — install Python 3 and run /bp-digest again, or convert the file to .csv or .md manually."
+
+**Vision OCR protocol.** Use this when MarkItDown returns empty output from a PDF (image scan with no text layer). Requires `ANTHROPIC_API_KEY` to be set in the environment.
+
+1. Install dependencies:
+   ```
+   python3 -c "import pypdfium2" 2>/dev/null || python3 -m pip install pypdfium2 pillow -q
+   python3 -c "import anthropic" 2>/dev/null || python3 -m pip install anthropic -q
+   ```
+2. Run Vision OCR via Bash (replace `{filepath}` with the actual Raw/ path):
+   ```
+   python3 -c "
+   import io, base64
+   import pypdfium2 as pdfium
+   import anthropic
+   doc = pdfium.PdfDocument('{filepath}')
+   pages = []
+   for page in doc:
+       bitmap = page.render(scale=2.0)
+       img = bitmap.to_pil()
+       buf = io.BytesIO()
+       img.save(buf, format='PNG')
+       pages.append({'type': 'image', 'source': {'type': 'base64', 'media_type': 'image/png', 'data': base64.standard_b64encode(buf.getvalue()).decode()}})
+   pages.append({'type': 'text', 'text': 'Extract all text and tables from this document as clean markdown. Preserve tables, headings, and structure exactly. Return only the extracted content with no preamble.'})
+   result = anthropic.Anthropic().messages.create(model='claude-sonnet-4-6', max_tokens=8192, messages=[{'role': 'user', 'content': pages}])
+   print(result.content[0].text)
+   "
+   ```
+3. If the script exits 0 and returns non-empty text: use it as the extracted content and proceed to step 2 (Classify the content).
+4. If the script fails (missing key, import error, API error): flag in the report with the error detail and leave the file in `Raw/`.
 
 2. **Classify the content.** Based on what you read, decide what the file IS:
    - Customer contract or quote → goes into `Projects/{Customer Name}/`
