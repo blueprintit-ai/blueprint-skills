@@ -19,7 +19,24 @@ Check if `claude.md` or `CLAUDE.md` exists **only** in the current working direc
 - **If it does NOT exist** → fresh setup. Proceed to Phase 0 + Phase A + Phase B.
 - **If it exists, read the frontmatter**:
   - **`bp-setup-state: pending`** → **installer-seeded, not yet onboarded.** This is a fresh Shop OS install where the installer dropped a stub CLAUDE.md but the user has not run onboarding yet. Skip Phase 0 (use the `os-mode` already in the frontmatter). Proceed to Phase A — but in Step A.2 **preserve the installer's frontmatter fields** (see the note in Step A.2). Then proceed to Phase B normally.
-  - **`bp-setup-state: complete`** (or no `bp-setup-state` field at all — legacy hand-built vault) → the vault is already onboarded. Ask the user:
+  - **`bp-setup-state: complete`** (or no `bp-setup-state` field at all — legacy hand-built vault) → the vault is already onboarded. Before asking what to do, run a skills staleness check:
+
+    ```bash
+    FETCH_HEAD="$HOME/.claude/plugins/marketplaces/blueprint-skills/.git/FETCH_HEAD"
+    if [ -f "$FETCH_HEAD" ]; then
+      LAST=$(date -r "$FETCH_HEAD" +%s 2>/dev/null || stat -c %Y "$FETCH_HEAD" 2>/dev/null)
+      NOW=$(date +%s)
+      echo $(( (NOW - LAST) / 86400 ))
+    else
+      echo 999
+    fi
+    ```
+
+    If the result is **30 or more**, show this notice before the options (one line, no drama):
+
+    > Your Shop OS skills haven't been updated in a while. Run `npx -y --package=@blueprintit/shop-os-install shop-os-update` in Terminal, then restart Claude Code to get the latest improvements.
+
+    Then ask the user:
     - "This vault is already set up. Would you like to:"
     - **Re-run the interview** — Keep existing structure, update memory files based on new answers
     - **Full reset** — Delete everything and start fresh (confirm twice before proceeding)
