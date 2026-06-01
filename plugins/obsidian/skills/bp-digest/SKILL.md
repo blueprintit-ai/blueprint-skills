@@ -29,40 +29,27 @@ For each file, in alphabetical order:
 
 1. **Read the file.**
    - Plain text, markdown, images: use the `Read` tool directly.
-   - PDFs: follow the **PDF reading protocol** below.
+   - PDFs, Word docs (`.docx`), and spreadsheets (`.xlsx`): follow the **MarkItDown protocol** below.
    - Audio files (`.m4a`, `.mp3`, `.wav`): invoke the `audio-transcriber` skill via the `Skill` tool to get a transcript first. If `audio-transcriber` is not installed, skip the file and flag it in the report.
-   - Spreadsheets (`.xlsx`, `.csv`): follow the **xlsx reading protocol** below. For `.csv`, use the `Read` tool directly.
-   - Word docs (`.docx`): try the `Read` tool; if it returns binary garbage, flag in the report and skip.
+   - CSV (`.csv`): use the `Read` tool directly.
    - Anything else: skip and flag.
 
-**PDF reading protocol.** The `Read` tool requires a `pages` parameter for files over 10 pages. Always check first:
+**MarkItDown protocol.** Use MarkItDown as the primary converter for PDF, xlsx, and docx files. It outputs clean Markdown (tables, headings, lists) that is ready for LLM classification.
 
-1. Check if `pdfinfo` is available: run `pdfinfo --version` via Bash.
-   - If not found, install it:
-     - Mac: `brew install poppler`
-     - Windows: `winget install --id osdn.poppler --silent --accept-package-agreements --accept-source-agreements`
-     - If the install fails, default to reading pages `"1-10"` and note in the report that page count could not be determined.
-2. Run `pdfinfo "Raw/{filename}"` via Bash. Parse the `Pages:` line to get the page count.
-2. If page count is 10 or fewer: use `Read` with no `pages` parameter.
-3. If page count is over 10: read in chunks — `pages: "1-10"`, then `"11-20"`, etc. — up to a maximum of 50 pages. Combine the content across chunks. If the file exceeds 50 pages, note in the report: "First 50 of N pages read — remainder not processed."
-4. If the `Read` tool returns blank or no meaningful text (image-only PDF with no text layer): note in the report that it is image-based, describe what you can infer from the filename and any visible headers, and leave the original in `Raw/`.
-
-**xlsx reading protocol.** The `Read` tool cannot parse binary `.xlsx` format. Use Python to extract the data:
-
-1. Run via Bash:
+1. Ensure MarkItDown is installed. Run via Bash:
+   ```
+   python3 -c "import markitdown" 2>/dev/null || python3 -m pip install markitdown -q
+   ```
+2. Convert the file:
    ```
    python3 -c "
-   import openpyxl
-   wb = openpyxl.load_workbook('Raw/{filename}', read_only=True, data_only=True)
-   for name in wb.sheetnames:
-       print('=== ' + name + ' ===')
-       for row in wb[name].iter_rows(values_only=True):
-           if any(c is not None for c in row):
-               print(row)
+   from markitdown import MarkItDown
+   result = MarkItDown().convert('Raw/{filename}')
+   print(result.text_content)
    "
    ```
-2. If `openpyxl` is not installed (ImportError), run `python3 -m pip install openpyxl -q` and retry step 1 once.
-3. If Python3 is unavailable or the install fails: flag in the report and leave in `Raw/` with the note: "binary .xlsx — open in Excel and paste key data into a .md or .csv file, then re-run /bp-digest."
+3. If the output is empty or blank (common with image-only PDFs that have no text layer): note in the report that the file appears to be image-based, describe what you can infer from the filename and any visible headers, and leave the original in `Raw/`.
+4. If MarkItDown raises an exception or Python3 is unavailable: flag in the report with the error and leave the file in `Raw/` with the note: "conversion failed — install Python 3 and run /bp-digest again, or convert the file to .csv or .md manually."
 
 2. **Classify the content.** Based on what you read, decide what the file IS:
    - Customer contract or quote → goes into `Projects/{Customer Name}/`
