@@ -357,12 +357,14 @@ From the Step 1 classification map, filter the file list for each framework's sc
 | F1 | `root_claude` + `folder_claudes` |
 | F2 | `notes` + `context_files` + `decisions` + `meetings` + `indexes` + `readmes` |
 | F3 | `root_claude` + `folder_claudes` + `claude_rules` + `skills` |
-| F4 | ALL files |
-| F5 | ALL files |
+| F4 | ALL files — batch if > 150 (see below) |
+| F5 | ALL files — batch if > 150 (see below) |
 | F6 | `skills` |
-| G7 | ALL files |
+| G7 | ALL files — batch if > 150 (see below) |
 | F8 | Curated-layer files + session-layer files (from role registry `layer` field) |
 | F9 | ALL files (whole-vault structural reasoning) |
+
+**Batching rule for F4, F5, G7:** If the full file list for one of these frameworks exceeds 150 files, split it into chunks of 150 and dispatch one subagent per chunk. Label chunks `"F4 Chroma Context Rot — batch 1/{N} (files 1-150)"`, `"F4 Chroma Context Rot — batch 2/{N} (files 151-300)"`, etc. Merge findings from all chunks into the framework's findings array before scoring. This keeps any single subagent well under the standard context window regardless of vault size.
 
 ### 2.2 — Construct subagent prompts
 

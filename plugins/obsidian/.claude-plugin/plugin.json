@@ -1,7 +1,7 @@
 {
   "name": "obsidian",
-  "description": "Turn any folder into an AI-powered second brain with persistent memory, task management, meeting intelligence, daily routines, and output styles. Includes /bp-setup, /bp-digest (one-command Raw/ inbox processor), /bp-optimizer (22-pass audit), /bp-evolver (Karpathy + Nodus self-evolving knowledge graph: enrich, graph, draft, re-graph; all LLM work via Claude Code subscription, no API key), /bp-operator, /vault-mcp, /team-os, and /assistant. Solo or Business/Teams modes.",
-  "version": "3.12.0",
+  "description": "Turn any folder into an AI-powered second brain with persistent memory, task management, meeting intelligence, daily routines, and output styles. Includes /bp-setup, /bp-digest (one-command Raw/ inbox processor; natively reads PDFs, Excel, and Word docs), /bp-audit (vault health scoring), /bp-optimizer (22-pass audit), /bp-evolver (Karpathy + Nodus self-evolving knowledge graph; all LLM work via Claude Code subscription, no API key), /bp-operator, /os-mcp, /team-os, and /assistant. Solo or Business/Teams modes.",
+  "version": "3.13.0",
   "author": {
     "name": "BluePrint"
   }
