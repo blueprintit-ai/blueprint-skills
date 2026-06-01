@@ -76,23 +76,25 @@ Create one task per stage + one task per framework, in order. Use TaskCreate wit
 
 ```
 [ ] Discover & classify .md files (Step 1)
-[ ] Role discovery — semantic folder/file classification, no hardcoded names (Step 1.5)
-[ ] F1 Anthropic CLAUDE.md — read CLAUDE.md files, judge candidates
-[ ] F2 Karpathy Wiki — wikilinks, orphans, schema
-[ ] F3 Caveman — compression of instruction-layer files
-[ ] F4 Chroma Context Rot — length, distractors, position
-[ ] F5 Anthropic Memory — file size, naming, indexes
-[ ] F6 Progressive Disclosure — SKILL.md layering
-[ ] G7 General Hygiene — em dashes, frontmatter, H1 rules
-[ ] F8 Reflection — cluster + judge cross-file synthesis
-[ ] F9 Architecture — routing truth, Plot.md presence, discoverability walk
+[ ] Role discovery — semantic folder/file classification (Step 1.5)
+[ ] Read all 9 pass files + subagent runner instructions (Step 2.0)
+[ ] Dispatch F1 Anthropic CLAUDE.md subagent
+[ ] Dispatch F2 Karpathy Wiki subagent
+[ ] Dispatch F3 Caveman compression subagent
+[ ] Dispatch F4 Chroma Context Rot subagent
+[ ] Dispatch F5 Anthropic Memory subagent
+[ ] Dispatch F6 Progressive Disclosure subagent
+[ ] Dispatch G7 General Hygiene subagent
+[ ] Dispatch F8 Reflection subagent
+[ ] Dispatch F9 Architecture subagent
+[ ] Merge findings from all subagents (Step 2.4)
 [ ] Aggregate findings + architectural read (Steps 3 / 3.5)
 [ ] Walk every finding through apply / save-to-plan (Step 4)
 [ ] Apply approved fixes (Step 5)
 [ ] Render dashboard + open (Step 6)
 ```
 
-Mark `in_progress` when entering a stage; `completed` when leaving it. For long frameworks (F2, F8, F9) emit a sub-update mid-run via TaskUpdate or a single chat line so the user knows progress.
+Mark framework dispatch tasks `in_progress` when firing the Agent call; `completed` when findings are received and parsed. All 9 framework tasks move to `in_progress` simultaneously at dispatch, then each flips to `completed` as its subagent returns.
 
 Skipping the task list to "save time" defeats the purpose of this skill. The visible task list is non-optional.
 
@@ -326,71 +328,103 @@ The summary frames *what the user has* first. F9.0 findings about gaps appear la
 
 ---
 
-## Step 2 — Iterate frameworks F1 → F9 with judgment
+## Step 2 — Dispatch framework subagents in parallel
 
-**This is not a regex pass.** For each framework, read its pass-implementation file, then apply every check it defines to the files in that framework's scope. Triggers in the pass files surface candidates; the agent reads context and judges each candidate before producing a finding. Every finding includes `reasoning` specific to the case.
+Each framework runs as a separate Agent subagent with its own context window. The orchestrator handles discovery (Steps 0–1.5) and apply/render (Steps 3–6). Subagents handle only framework checks: they read files, judge candidates, and return findings JSON.
 
-Why: a regex match on `\bjust\b` flags "just run X" (where "just" is doing real work — contrasting with running multiple) the same as "It's just a quick check" (where it's filler). Only an agent reading the line in context can tell which is which. The same applies to "be careful" (sometimes a closing reminder, sometimes a vague platitude), `IMPORTANT:` (sometimes earned, sometimes inflation), `voice.md` + `brand.md` (sometimes overlapping, sometimes intentionally separated), and most other framework signals.
+### 2.0 — Read pass files and subagent runner instructions
 
-### 2.1 — For each framework F1, F2, F3, F4, F5, F6, G7, F8, F9 (in this order)
+Before dispatching, read all 9 pass files and `references/subagent-framework-runner.md` into working memory. You will embed these contents verbatim in each subagent prompt — subagents do not locate files themselves.
 
-F8 runs second-to-last (cross-file synthesis). F9 runs **last** because it consumes the structural picture F1–G7 produced and operates on the largest blast radius (whole-vault structural reasoning, Plot.md generation, reorg proposals). Running them last keeps fix application ordered smallest-to-largest in Step 5.
+| Framework | Pass file |
+|---|---|
+| F1 | `references/passes-anthropic-claude-md.md` |
+| F2 | `references/passes-karpathy-wiki.md` |
+| F3 | `references/passes-caveman.md` |
+| F4 | `references/passes-chroma-context-rot.md` |
+| F5 | `references/passes-anthropic-memory.md` |
+| F6 | `references/passes-progressive-disclosure.md` |
+| G7 | `references/passes-general-hygiene.md` |
+| F8 | `references/passes-reflection.md` |
+| F9 | `references/passes-architecture.md` |
 
-**Update the TaskCreate task** for the current framework to `in_progress` before starting it; `completed` when its findings are logged. Mid-framework sub-updates allowed for long runs (F2, F8, F9).
+### 2.1 — Build per-framework file scopes
 
-For each framework:
+From the Step 1 classification map, filter the file list for each framework's scope:
 
-1. **Read the pass-implementation file** for that framework (e.g., `references/passes-anthropic-claude-md.md` for F1). Cache it for the duration of the framework run.
-2. **Determine the file scope** from the table at the top of this SKILL.md (e.g., F1 = every CLAUDE.md; F6 = every SKILL.md; F4/F5/G7 = every `.md`).
-3. **For each check in the pass file**:
-   - Apply the **trigger heuristic** (regex / metric / structural pattern) to surface candidates fast. Some checks have no trigger — the file itself is the candidate.
-   - For each candidate, **read the surrounding 5–15 lines** with the `Read` tool, then apply the **agent-judgment criteria** the pass file lists. Read other files (linked targets, sibling clusters, the file's index) when judgment requires it.
-   - Decide: does this case actually violate the framework rule **in this file's specific context**? Or is it a false positive (the pass file lists common ones to skip)?
-   - If real → produce a finding. If not → drop it; the trigger was a candidate, not a verdict.
-   - **Every finding includes a `reasoning` field** (1–2 sentences specific to this case, not a generic restatement of the rule).
-4. **Run the framework's vault-wide checks** (using indexes from Step 1.3): orphan detection, dead wikilinks, distractor pairs, schema compliance, etc. — see each pass file's "vault-wide" sections.
-5. **Emit one progress line** when the framework completes:
+| Framework | Scope |
+|---|---|
+| F1 | `root_claude` + `folder_claudes` |
+| F2 | `notes` + `context_files` + `decisions` + `meetings` + `indexes` + `readmes` |
+| F3 | `root_claude` + `folder_claudes` + `claude_rules` + `skills` |
+| F4 | ALL files |
+| F5 | ALL files |
+| F6 | `skills` |
+| G7 | ALL files |
+| F8 | Curated-layer files + session-layer files (from role registry `layer` field) |
+| F9 | ALL files (whole-vault structural reasoning) |
 
-   > F1 Anthropic CLAUDE.md — read 14 CLAUDE.md files, judged 312 candidates → 22 findings (5 fail · 17 warn)
+### 2.2 — Construct subagent prompts
 
-   The `judged` count vs `findings` count is a sanity check: if they're roughly equal, the run was lazy (regex candidates became findings without judgment); if `judged` ≫ `findings`, judgment is filtering false positives — that's the intended behavior.
+For each framework, build a prompt with this structure:
 
-### 2.2 — Reasoning sanity gate (per framework)
+```
+Vault root: {VAULT_ROOT_ABS_PATH}
+Framework ID: {FRAMEWORK_ID}
+Framework name: {FRAMEWORK_NAME}
+Role registry: {ROLE_REGISTRY_JSON}
+Files in scope ({N} files): {FILE_LIST_JSON_ARRAY}
 
-After completing each framework's run, sample 5 random findings (or all findings if < 5). Read each one's `reasoning` field. If > 40% of sampled reasonings are paraphrases of the rule rather than case-specific judgment ("This file uses too many em dashes" — paraphrase; "These em dashes appear in callout headers where the writer was substituting for colons; replacing with colons preserves the cadence" — judgment), **stop and re-run that framework with deeper reads**.
+=== PASS FILE: passes-{slug}.md ===
+{PASS_FILE_CONTENT}
+=== END PASS FILE ===
 
-This is a hard gate. The skill's value is judgment, not regex. Shipping a framework's findings without enforcing this gate is a bug.
-
-### 2.3 — Finding schema (every framework, every path)
-
-```json
-{
-  "framework": "F1",
-  "check_id": "F1.2",
-  "check_name": "Specificity heuristic",
-  "path": "./Projects/foo/CLAUDE.md",
-  "line": 42,
-  "severity": "warn",
-  "excerpt": "Be careful with auth",
-  "reasoning": "This rule sits in the top half of a CLAUDE.md that's otherwise a routing index — there's no specific auth boundary, file path, or function named anywhere else. As a primary rule it falls into the 35%-compliance bucket; either anchor it to a specific path/function or remove it.",
-  "action": "Either delete or rewrite as 'All /api/admin/* routes must call requireAdmin() from src/auth/middleware.ts'.",
-  "fixable": false,
-  "fixed": false,
-  "citation": "anthropic-claude-md.md → Specificity beats vagueness"
-}
+=== SUBAGENT RUNNER INSTRUCTIONS ===
+{SUBAGENT_RUNNER_CONTENT}
+=== END INSTRUCTIONS ===
 ```
 
-The `reasoning` field is mandatory. Every finding has it.
+Where `{VAULT_ROOT_ABS_PATH}` is the absolute path obtained from `pwd` in Step 0, `{ROLE_REGISTRY_JSON}` is the full JSON from Step 1.5, and `{FILE_LIST_JSON_ARRAY}` is the scoped list from Step 2.1 as a JSON array of absolute paths.
 
-**Every finding ships a fix.** The pass file always emits `fixable: true`. Old `fixable: false` "manual review" findings are gone — checks that historically went flag-only (F1.x, F4.x, F5.x) now ship walk-only fix proposals like every other framework.
+### 2.3 — Dispatch all 9 in parallel
 
-The `fix_status` field is set by **Step 5** after the user walks each finding. Possible values:
-- `applied` → fix executed this run (green FIXED pill)
-- `saved_to_plan` → fix written into `Intelligence/decisions/{date}-reorg.md` for staged execution (blue SAVED pill)
-- `declined` → user explicitly chose not to fix this item in walk (grey DECLINED pill)
-- `failed` → fix attempted but failed safety check (red FAILED pill, with `failure_reason`)
+Use the Agent tool to launch all 9 subagents simultaneously in a single response. Do NOT wait for one to finish before starting the next — all 9 fire in the same turn.
 
-There is no "skipped" or "deferred" state. Either the fix was applied, saved as a planned step, declined explicitly per-item, or failed mechanically. Open warnings do not survive the run.
+Label each Agent call descriptively:
+- `"F1 Anthropic CLAUDE.md — audit {N} CLAUDE.md files"`
+- `"F2 Karpathy Wiki — audit {N} content notes"`
+- `"F3 Caveman compression — audit {N} instruction-layer files"`
+- `"F4 Chroma Context Rot — audit {N} files"`
+- `"F5 Anthropic Memory — audit {N} files"`
+- `"F6 Progressive Disclosure — audit {N} skills"`
+- `"G7 General Hygiene — audit {N} files"`
+- `"F8 Reflection — audit {N} curated + session files"`
+- `"F9 Architecture — whole-vault structural audit"`
+
+Mark all 9 framework dispatch tasks in the Step 0.5 task list as `in_progress` when dispatching.
+
+### 2.4 — Collect and merge findings
+
+When all 9 subagents complete, parse each agent's final text output as a JSON array. Validate each:
+
+- Must be a valid JSON array starting with `[` and ending with `]`
+- Each item must have `framework`, `check_id`, `path`, `severity`, `reasoning`, `action` fields
+- `reasoning` must be non-empty on every item
+
+If any agent's output is invalid JSON or fails validation:
+- Emit: `⚠️ {FRAMEWORK_ID} subagent returned invalid output — zero findings counted for this framework.`
+- Continue with `[]` for that framework. Do not halt the run.
+
+Mark each framework's task in the Step 0.5 task list as `completed` as its findings are parsed.
+
+Merge all 9 arrays into `all_findings`. Sort by: framework order (F1→G7→F8→F9), then severity (fail > warn > info), then path alphabetically.
+
+Emit one progress line:
+```
+Framework subagents complete. {TOTAL} total findings — F1:{n} F2:{n} F3:{n} F4:{n} F5:{n} F6:{n} G7:{n} F8:{n} F9:{n}
+```
+
+Proceed to Step 3.
 
 ---
 
