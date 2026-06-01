@@ -439,6 +439,22 @@
         "team-os": {
           "displayName": "Team OS",
           "summary": "Install the BluePrint Relay fork in an Obsidian vault as the foundation for a shared Team OS — RBAC + access controls, bundled production build"
+        },
+        "assistant": {
+          "displayName": "OS Assistant",
+          "summary": "Blueprint Obsidian assistant — sessions, daily routines, tasks, memory, resources, output styles, and meeting intelligence"
+        },
+        "bp-audit": {
+          "displayName": "OS Audit",
+          "summary": "Vault health check scored across four dimensions: Context, Connections, Capabilities, Cadence — surfaces top gaps with the Automation Ladder"
+        },
+        "bp-digest": {
+          "displayName": "OS Digest",
+          "summary": "Sweep the Raw/ inbox, classify each file, write structured notes in the right vault folder, and archive originals to Raw/processed/"
+        },
+        "bp-evolver": {
+          "displayName": "OS Evolver",
+          "summary": "Self-evolving knowledge graph loop — graph analysis, wikilink injection, and canonical note drafting to structurally heal the vault over time"
         }
       }
     },

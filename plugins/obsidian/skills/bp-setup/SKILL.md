@@ -1,11 +1,11 @@
 ---
 name: bp-setup
-description: Bootstrap the Blueprint OS Plugin vault structure and run personalized onboarding. Creates all directories, system files, Obsidian config, memory system, hooks, and output styles, then interviews the user to personalize everything. Two modes — Solopreneurs/Professionals (default), Business/Teams. Use when user says "set up", "bootstrap", "initialize", "onboarding", or runs /bp-setup.
+description: Bootstrap the BluePrint OS Plugin vault structure and run personalized onboarding. Creates all directories, system files, Obsidian config, memory system, hooks, and output styles, then interviews the user to personalize everything. Two modes — Solopreneurs/Professionals (default), Business/Teams. Use when user says "set up", "bootstrap", "initialize", "onboarding", or runs /bp-setup.
 ---
 
-# Blueprint Obsidian Plugin — Setup + Onboarding
+# BluePrint Obsidian Plugin — Setup + Onboarding
 
-USE WHEN the user runs `/setup` or asks to set up their vault, bootstrap the assistant, initialize the system, or configure the Blueprint Obsidian Plugin.
+USE WHEN the user runs `/setup` or asks to set up their vault, bootstrap the assistant, initialize the system, or configure the BluePrint Obsidian Plugin.
 
 This is a three-phase process:
 - **Phase 0**: Mode Selection — Ask which OS variant to create
@@ -16,19 +16,18 @@ This is a three-phase process:
 
 Check if `claude.md` or `CLAUDE.md` exists **only** in the current working directory (do NOT search subdirectories or parent directories — check only the exact CWD path).
 
-- **If it does NOT exist**: Proceed with full setup (Phase 0 + Phase A + Phase B).
-
-- **If it DOES exist**: Read its YAML frontmatter and branch on the `bp-setup-state` field:
-
-  - **`bp-setup-state: pending`** → The vault was scaffolded by the Shop OS installer but onboarding hasn't run yet. Do NOT show the "already set up" dialog. Proceed straight into Phase 0 → Phase A → Phase B, treating this as a fresh setup. In Phase A.2, preserve the installer's frontmatter fields (`license-customer`, `license-product`, `installed-at`) by merging them into the new CLAUDE.md you write — do not clobber them. End of Phase B will flip `bp-setup-state` to `complete`.
-
-  - **`bp-setup-state: complete`** → A previous `/bp-setup` run already personalized this vault. Show the dialog:
+- **If it does NOT exist** → fresh setup. Proceed to Phase 0 + Phase A + Phase B.
+- **If it exists, read the frontmatter**:
+  - **`bp-setup-state: pending`** → **installer-seeded, not yet onboarded.** This is a fresh Shop OS install where the installer dropped a stub CLAUDE.md but the user has not run onboarding yet. Skip Phase 0 (use the `os-mode` already in the frontmatter). Proceed to Phase A — but in Step A.2 **preserve the installer's frontmatter fields** (see the note in Step A.2). Then proceed to Phase B normally.
+  - **`bp-setup-state: complete`** (or no `bp-setup-state` field at all — legacy hand-built vault) → the vault is already onboarded. Ask the user:
     - "This vault is already set up. Would you like to:"
     - **Re-run the interview** — Keep existing structure, update memory files based on new answers
-    - **Full reset** — Delete everything and start fresh (one confirmation required)
+    - **Full reset** — Delete everything and start fresh (confirm twice before proceeding)
     - **Cancel** — Do nothing
 
-  - **No `bp-setup-state` field** (manual/legacy setup) → Fall back to the same dialog as `complete`. A vault with a CLAUDE.md but no state marker is one the user created by hand or with an older bp-setup; the safe default is to ask.
+At the end of Phase B Build Step 6, update the root `CLAUDE.md` frontmatter:
+- Set `bp-setup-state: complete`
+- Add `bp-setup-completed-at: YYYY-MM-DD` (today)
 
 ---
 
@@ -142,14 +141,6 @@ Read each reference file and write it to the corresponding local path. The refer
 | Solopreneurs/Professionals | `references/claude-md-template.md` | `./CLAUDE.md` |
 | Business | `references/claude-md-template-business.md` | `./CLAUDE.md` |
 
-**Preserving installer frontmatter:** If the existing `./CLAUDE.md` had `bp-setup-state: pending` in its frontmatter (i.e. the Shop OS installer wrote it), read its frontmatter BEFORE overwriting. Carry these installer fields into the new CLAUDE.md you write from the template:
-
-- `license-customer`
-- `license-product`
-- `installed-at`
-
-Set `os-mode` to the value selected in Phase 0 (this can differ from whatever the installer wrote). Leave `bp-setup-state: pending` for now — Build Step 7 at the end of Phase B will flip it to `complete` after personalization finishes.
-
 **Per-folder routing indexes** (every major folder gets its own `CLAUDE.md` — matches production vault convention):
 
 | Mode | Reference File | Creates at Local Path |
@@ -172,6 +163,8 @@ Set `os-mode` to the value selected in Phase 0 (this can differ from whatever th
 | Business | `references/claude-md-processes.md` | `./Intelligence/processes/CLAUDE.md` |
 
 For each row applicable to the selected mode: read the reference file, then write its content to the local path.
+
+> When overwriting `./CLAUDE.md`, if the existing file's frontmatter contains `bp-setup-state: pending`, **merge its fields** (`license-customer`, `license-product`, `installed-at`, and any other fields not in the template) into the new template's frontmatter before writing. The installer-seeded body content is discarded — the routing template body is what the vault needs from here on. Drop `bp-setup-state: pending` from the merged frontmatter; it gets re-set to `complete` at the end of Phase B Build Step 6.
 
 ### Step A.3: Initialize Starter Context Files
 
@@ -537,13 +530,8 @@ date: YYYY-MM-DD
 Tell the user:
 - Quick summary of what was created (which context files, how many projects, any departments, any team profiles)
 - "Open this folder in Obsidian to see your vault"
-- Key command: `/assistant` (sessions, daily reviews, tasks, meetings)
 - "You can add more context anytime — just tell me and I'll update the right files."
 - Suggest a next action based on what they told you
-
-### Build Step 7: Mark Setup Complete
-
-Update the root `./CLAUDE.md` frontmatter so `bp-setup-state: complete` (replacing the `pending` value the Shop OS installer wrote, or adding the field if it wasn't present). All other frontmatter fields you wrote in Step A.2 stay as-is. This is what flips the pre-flight branch on the next `/bp-setup` run from "fresh setup" to "already set up dialog."
 
 ## Guidelines
 

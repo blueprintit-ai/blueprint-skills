@@ -82,8 +82,6 @@ Citation: karpathy-llm-wiki.md → Lint catches dead links
 
 **Auto-fix:** **fixable** with user confirmation per finding.
 
-**Companion skill:** `/bp-evolver` Phase 3 (`note_drafter.py`) does the inverse fix — when a dead wikilink target *doesn't* exist anywhere in the vault but the concept is referenced multiple times, Claude drafts a canonical note grounded in the actual surrounding excerpts. Run `/bp-evolver` after F2.2 to fill the dangling references that have no Levenshtein-close repoint candidate.
-
 ---
 
 ## F2.3 — Orphan pages
@@ -116,8 +114,6 @@ Action: {specific recommendation: "link from {index file}", "move to archive", o
 ```
 
 **Auto-fix:** none.
-
-**Companion skill:** `/bp-evolver` Phase 2 (`vault_graph.py`) computes the orphan rate quantitatively across the whole vault and fires `HIGH_ORPHAN_RATE` if it exceeds 40%. Phase 1B (LLM enricher with `--only-orphans`) then adds inbound and outbound links to orphan files by detecting synonyms and contextual references. Run `/bp-evolver` for the bulk auto-fix; use F2.3 here for the case-by-case judgment on individual orphan files.
 
 ---
 
@@ -152,8 +148,6 @@ Citation: karpathy-llm-wiki.md → Missing cross-references
 ```
 
 **Auto-fix:** **fixable on user opt-in** — per-occurrence (don't bulk-replace; some occurrences are intentional plain text).
-
-**Companion skill:** `/bp-evolver` Phase 1A (`wikilink_enricher.py`) bulk-injects wikilinks for exact-title matches across the entire vault in one deterministic pass, with `.bak` backups. Phase 1B adds an LLM pass for synonyms and contextual references. Use F2.4 here for surgical per-occurrence review on a small number of high-stakes files; use `/bp-evolver` Phase 1A + 1B when you need to enrich a wikilink-sparse vault at scale (e.g., during onboarding).
 
 ---
 

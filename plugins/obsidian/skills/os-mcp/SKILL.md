@@ -1,11 +1,11 @@
 ---
-name: vault-mcp
-description: Deploy a Relay MCP server to the user's own Railway account, giving Claude read/write access to their Obsidian vault via the Relay.md sync protocol. Bundled source ships inside the skill — no separate repo clone needed. The user only pastes a Railway account token; the relay vault and folders inside it are auto-discovered after they OAuth in. Use when the user wants to "set up the vault MCP", "deploy relay MCP to railway", "self-host the obsidian MCP server", or "give Claude access to my Obsidian vault".
+name: os-mcp
+description: Deploy a Relay MCP server to the user's own Railway account, giving Claude read/write access to their Obsidian vault via the Relay.md sync protocol. Bundled source ships inside the skill — no separate repo clone needed. The user only pastes a Railway account token; the relay vault and folders inside it are auto-discovered after they OAuth in. Use when the user wants to "set up the os MCP", "deploy relay MCP to railway", "self-host the obsidian MCP server", or "give Claude access to my Obsidian vault".
 ---
 
-# Vault MCP — Railway Deploy
+# OS MCP — Railway Deploy
 
-This skill deploys the Relay MCP v2 server to the user's own Railway account. The MCP source is bundled at `${CLAUDE_PLUGIN_ROOT}/skills/vault-mcp/reference/relay-mcp-server/` — copy from there, do not fetch from anywhere else. The deployed server lets Claude clients (Claude Code or claude.ai) read/write the user's Obsidian vault by talking to the Relay.md sync protocol.
+This skill deploys the Relay MCP v2 server to the user's own Railway account. The MCP source is bundled at `${CLAUDE_PLUGIN_ROOT}/skills/os-mcp/reference/relay-mcp-server/` — copy from there, do not fetch from anywhere else. The deployed server lets Claude clients (Claude Code or claude.ai) read/write the user's Obsidian vault by talking to the Relay.md sync protocol.
 
 ## What the user provides
 
@@ -55,7 +55,7 @@ Re-run to confirm.
 
 Tell the user:
 
-> Open `https://railway.com/account/tokens`, click **Create Token**, name it `vault-mcp-deploy`, copy the value, and paste it here.
+> Open `https://railway.com/account/tokens`, click **Create Token**, name it `os-mcp-deploy`, copy the value, and paste it here.
 
 When pasted:
 
@@ -69,7 +69,7 @@ railway whoami
 ## Step 3 — Deploy the bundled source
 
 ```bash
-cd "${CLAUDE_PLUGIN_ROOT}/skills/vault-mcp/reference/relay-mcp-server"
+cd "${CLAUDE_PLUGIN_ROOT}/skills/os-mcp/reference/relay-mcp-server"
 
 # Create a new Railway project (interactive — let user pick name)
 railway init
@@ -161,7 +161,7 @@ railway variables --set "RELAY_ID=<the-vault-guid-from-vault_relays>"
 
 **`railway whoami` fails after pasting Railway token.** Token expired or wrong scope. Regenerate at https://railway.com/account/tokens.
 
-**Build fails with TypeScript errors.** Don't modify the bundled `package.json` / `tsconfig.json`. Re-copy fresh from `${CLAUDE_PLUGIN_ROOT}/skills/vault-mcp/reference/relay-mcp-server/`.
+**Build fails with TypeScript errors.** Don't modify the bundled `package.json` / `tsconfig.json`. Re-copy fresh from `${CLAUDE_PLUGIN_ROOT}/skills/os-mcp/reference/relay-mcp-server/`.
 
 **`/health` returns 5xx.** `railway logs` will name the missing env var (`assertRequiredConfig` lists what's missing on boot).
 

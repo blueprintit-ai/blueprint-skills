@@ -1,11 +1,11 @@
 ---
 name: team-os
-description: Install the Blueprint Relay fork in an Obsidian vault as the foundation for a shared Team OS — replaces the official Relay (`system3-relay`) plugin with the Blueprint fork (`blueprint-relay-fork`) which ships custom RBAC + access controls for team-wide vault sharing. Bundled production build ships inside the skill — user just points to their Obsidian vault path. Use when the user wants to "set up team os", "install Blueprint Relay", "swap relay for the fork", "replace the official relay plugin", or "use Blueprint's relay in my vault".
+description: Install the BluePrint Relay fork in an Obsidian vault as the foundation for a shared Team OS — replaces the official Relay (`system3-relay`) plugin with the BluePrint fork (`blueprint-relay-fork`) which ships custom RBAC + access controls for team-wide vault sharing. Bundled production build ships inside the skill — user just points to their Obsidian vault path. Use when the user wants to "set up team os", "install BluePrint Relay", "swap relay for the fork", "replace the official relay plugin", or "use BluePrint's relay in my vault".
 ---
 
-# Relay Swap — Install Blueprint Relay Fork
+# Relay Swap — Install BluePrint Relay Fork
 
-This skill replaces the upstream Relay plugin (`system3-relay`) with the Blueprint fork (`blueprint-relay-fork`) in a target Obsidian vault. The compiled fork ships at `${CLAUDE_PLUGIN_ROOT}/skills/team-os/reference/blueprint-relay-fork/` (three files: `main.js`, `manifest.json`, `styles.css`). Copy from there — do not fetch from anywhere else.
+This skill replaces the upstream Relay plugin (`system3-relay`) with the BluePrint fork (`blueprint-relay-fork`) in a target Obsidian vault. The compiled fork ships at `${CLAUDE_PLUGIN_ROOT}/skills/team-os/reference/blueprint-relay-fork/` (three files: `main.js`, `manifest.json`, `styles.css`). Copy from there — do not fetch from anywhere else.
 
 ## What the user provides
 
@@ -21,9 +21,9 @@ Example paths the user might give: `~/Documents/MyVault`, `/Users/jane/Obsidian/
 
 Tell the user what this will do, in plain language:
 
-> I'm about to replace the official Relay plugin with the Blueprint fork in your Obsidian vault. The fork has custom RBAC + access controls. This will:
+> I'm about to replace the official Relay plugin with the BluePrint fork in your Obsidian vault. The fork has custom RBAC + access controls. This will:
 > 1. Delete the old `system3-relay` plugin if it's there.
-> 2. Install the bundled Blueprint Relay build.
+> 2. Install the bundled BluePrint Relay build.
 > 3. Update Obsidian's community-plugins config to switch over.
 >
 > **Close Obsidian first** — modifying plugin files while it's running can corrupt the install.
@@ -36,7 +36,7 @@ Don't ask for an "absolute path". Most users don't think in those terms. Try thi
 
 If the cwd contains a `.obsidian/` folder, ask:
 
-> I see this folder (`{cwd}`) is already an Obsidian vault. Is this the one you want to install Blueprint Relay into? (yes / no — I'll ask where it is)
+> I see this folder (`{cwd}`) is already an Obsidian vault. Is this the one you want to install BluePrint Relay into? (yes / no — I'll ask where it is)
 
 If yes, set `VAULT="$(pwd)"` and skip to Step 1.
 
@@ -149,8 +149,8 @@ All three should print `OK`.
 
 ## Step 8 — Tell the user how to finish
 
-> Done. Open Obsidian and load this vault. The Blueprint Relay plugin should be active. If you don't see it:
-> - Settings → Community plugins → confirm "Blueprint Relay" is toggled on.
+> Done. Open Obsidian and load this vault. The BluePrint Relay plugin should be active. If you don't see it:
+> - Settings → Community plugins → confirm "BluePrint Relay" is toggled on.
 > - If Obsidian shows a "safe mode" banner, click "Trust author and enable" or disable safe mode in Settings → Community plugins.
 > - Sign in with your Relay.md credentials when prompted.
 
