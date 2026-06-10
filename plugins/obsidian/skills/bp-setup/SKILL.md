@@ -236,11 +236,13 @@ Phase B replaces fixed onboarding questions with a grill-me-style interview. The
 
 ### Setup (before the first question)
 
-Create the capture file at `brainstorms/YYYY-MM-DD-shop-os-setup.md` in the vault root:
+Create the `brainstorms/` directory and capture file using Bash (do not rely on Write to create parent directories — it will fail if the folder doesn't exist):
 
-```markdown
+```bash
+mkdir -p brainstorms
+cat > "brainstorms/YYYY-MM-DD-shop-os-setup.md" << 'EOF'
 # Shop OS Setup: Discovery Notes
-Date: YYYY-MM-DD · Goal: Build a personalized Shop OS brain for [shop name]
+Date: YYYY-MM-DD · Goal: Build a personalized Shop OS brain
 
 ## Summary
 (updated as we go)
@@ -248,7 +250,10 @@ Date: YYYY-MM-DD · Goal: Build a personalized Shop OS brain for [shop name]
 ## Interview log
 
 ## Open flags (to fill in later with /grill-me)
+EOF
 ```
+
+Replace `YYYY-MM-DD` with today's date before running. After creating the file, all checkpoints should append to it using the Edit tool.
 
 Then send this orientation message (no question yet):
 
