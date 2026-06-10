@@ -84,8 +84,8 @@ Every `references/<file>.md` mentioned below lives in the `references/` subdirec
 If the Read tool can't open a `references/...` path directly (some harnesses mount the skill at a path that differs between Read and Bash), run a quick discovery step **once** before Step A.2:
 
 ```bash
-# Find the references directory; cache the result for the rest of Phase A.
-find / -type d -path '*/setup/references' 2>/dev/null | head -1
+# Search only the plugin cache — fast and unambiguous.
+find "$HOME/.claude/plugins" -type d -name "references" -path "*/bp-setup/references" 2>/dev/null | head -1
 ```
 
 Use that absolute path as the prefix for every reference read in Phase A and Phase B. Don't retry path resolution per-file — do it once and reuse.
@@ -147,7 +147,7 @@ Read each reference file and write it to the corresponding local path. The refer
 
 | Reference File | Creates at Local Path |
 |---|---|
-| `references/settings-json-template.md` | `./.claude/settings.json` |
+| `references/settings-json-template.md` | `./.claude/settings.json` — **skip if file already exists** (installer pre-seeded it with plugin permissions; overwriting would break the install) |
 | `references/claudeignore-template.md` | `./.claudeignore` |
 | `references/gitignore-template.md` | `./.gitignore` |
 
