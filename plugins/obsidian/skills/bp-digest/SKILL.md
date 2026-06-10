@@ -48,33 +48,8 @@ For each file, in alphabetical order:
    print(result.text_content)
    "
    ```
-3. If the output is empty or blank (common with image-only PDFs that have no text layer): attempt Vision OCR using the **Vision OCR protocol** below. If Vision OCR succeeds, use its output as the extracted content and proceed to step 2 (Classify the content) normally. If Vision OCR fails, note in the report that the file is image-based and leave the original in `Raw/` with the note: "Vision OCR failed — install Python 3 and re-run /bp-digest, or convert to .md manually."
+3. If the output is empty or blank (common with image-only PDFs that have no text layer): note in the report that the file appears to be image-based, describe what you can infer from the filename and any visible headers, and leave the original in `Raw/`.
 4. If MarkItDown raises an exception or Python3 is unavailable: flag in the report with the error and leave the file in `Raw/` with the note: "conversion failed — install Python 3 and run /bp-digest again, or convert the file to .csv or .md manually."
-
-**Vision OCR protocol.** Use this when MarkItDown returns empty output from a PDF (image scan with no text layer). No API key required — uses Claude Code's built-in vision via the Read tool.
-
-1. Install pypdfium2 and pillow for page rendering:
-   ```
-   python3 -c "import pypdfium2" 2>/dev/null || python3 -m pip install pypdfium2 pillow -q
-   ```
-2. Render each page to a PNG file via Bash (replace `{filepath}` with the actual Raw/ path):
-   ```
-   python3 -c "
-   import os
-   import pypdfium2 as pdfium
-   doc = pdfium.PdfDocument('{filepath}')
-   os.makedirs('/tmp/bp-digest-ocr', exist_ok=True)
-   for i, page in enumerate(doc):
-       bitmap = page.render(scale=2.0)
-       img = bitmap.to_pil()
-       img.save(f'/tmp/bp-digest-ocr/page-{i:03d}.png')
-   print(len(doc))
-   "
-   ```
-3. Use the Read tool to read each PNG file from `/tmp/bp-digest-ocr/page-000.png` through the last page. For each image, extract all visible text and tables as markdown. Combine the results from all pages in order.
-4. Delete the temp files: `rm -rf /tmp/bp-digest-ocr/`
-5. Use the combined text as the extracted content and proceed to step 2 (Classify the content).
-6. If pypdfium2 fails or Python 3 is unavailable: flag in the report with the error and leave the file in `Raw/` with the note: "Vision OCR failed — install Python 3 and re-run /bp-digest, or convert to .md manually."
 
 2. **Classify the content.** Based on what you read, decide what the file IS:
    - Customer contract or quote → goes into `Projects/{Customer Name}/`
