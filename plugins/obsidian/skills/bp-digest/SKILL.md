@@ -29,18 +29,22 @@ For each file, in alphabetical order:
 
 1. **Read the file.**
    - Plain text, markdown, images: use the `Read` tool directly.
-   - PDFs, Word docs (`.docx`), and spreadsheets (`.xlsx`): follow the **MarkItDown protocol** below.
+   - PDFs, Word docs (`.docx`), and spreadsheets (`.xlsx`): follow the **Document extraction protocol** below.
    - Audio files (`.m4a`, `.mp3`, `.wav`): invoke the `audio-transcriber` skill via the `Skill` tool to get a transcript first. If `audio-transcriber` is not installed, skip the file and flag it in the report.
    - CSV (`.csv`): use the `Read` tool directly.
    - Anything else: skip and flag.
 
-**MarkItDown protocol.** Use MarkItDown as the primary converter for PDF, xlsx, and docx files. It outputs clean Markdown (tables, headings, lists) that is ready for LLM classification.
+**Document extraction protocol.** PDFs, xlsx, and docx files are extracted with a two-step fallback. Step A (MarkItDown) is fast and gives clean Markdown for digital documents. Step B (the native `Read` tool) is the safety net for scanned or photographed PDFs that have no text layer, which MarkItDown returns empty for.
+
+> [!important] A scanned/photographed PDF has no text layer, so MarkItDown returns an empty string. This is extremely common with cabinet-shop materials: signed contracts, measurement sheets, faxed forms, phone photos saved as PDF. You MUST run Step B in that case, or the note will end up with a name and no data. Never write a note from an empty extraction.
+
+**Step A — MarkItDown (try first for PDF/xlsx/docx).**
 
 1. Ensure MarkItDown is installed. Run via Bash:
    ```
-   python3 -c "import markitdown" 2>/dev/null || python3 -m pip install markitdown -q
+   python3 -c "import markitdown" 2>/dev/null || python3 -m pip install "markitdown[pdf]" -q --break-system-packages 2>/dev/null || python3 -m pip install "markitdown[pdf]" -q
    ```
-2. Convert the file:
+2. Convert the file (substitute the real filename; keep the quotes so spaces are safe):
    ```
    python3 -c "
    from markitdown import MarkItDown
@@ -48,8 +52,17 @@ For each file, in alphabetical order:
    print(result.text_content)
    "
    ```
-3. If the output is empty or blank (common with image-only PDFs that have no text layer): note in the report that the file appears to be image-based, describe what you can infer from the filename and any visible headers, and leave the original in `Raw/`.
-4. If MarkItDown raises an exception or Python3 is unavailable: flag in the report with the error and leave the file in `Raw/` with the note: "conversion failed — install Python 3 and run /bp-digest again, or convert the file to .csv or .md manually."
+3. **Judge the output.** If it contains the real substance of the document (prices, dates, names, terms, body text), use it and continue to classification. If it is **empty, whitespace-only, or only a title/header with none of the document's actual content**, treat the extraction as FAILED and go to Step B. The same applies if MarkItDown raised an exception or Python3/pip was unavailable.
+
+**Step B — native `Read` tool fallback (handles scans and photos).**
+
+For a **PDF**, call the `Read` tool directly on the file path (e.g. `Read Raw/{filename}`). The Read tool renders each page as an image and reads it visually, so it extracts text from scanned and photographed PDFs that have no text layer. Pull every fact you can see (names, prices, dates, terms, signatures) and use that as the content for classification.
+
+- For `.xlsx`/`.docx` where Step A failed and the file is not image-based, flag it in the report: "could not extract — open in its app and export to .csv or .md, then re-run /bp-digest." (The Read-tool fallback is for PDFs and images, not binary Office formats.)
+
+**If BOTH steps yield no usable content:** flag the file in the report as "needs human attention — no extractable content (corrupt, encrypted, or blank)" and **leave the original in `Raw/`**. Do NOT write a note and do NOT move it to `processed/`.
+
+> [!warning] Hard guard. A note is only valid if its body contains facts actually extracted from the source. If the only thing you know is the customer's name from the filename, the extraction failed: do not write the note, do not archive the file. An empty note with an archived source looks "done" but has silently lost the data.
 
 2. **Classify the content.** Based on what you read, decide what the file IS:
    - Customer contract or quote → goes into `Projects/{Customer Name}/`
@@ -89,7 +102,7 @@ Decision log. One entry per business decision, newest at the bottom.
    - Include `[[wikilinks]]` to related concepts the operator has already canonised in their vault (customers, suppliers, jobs, staff).
    - Reference the source file by name at the bottom: *"Source: `Raw/processed/{filename}`"*.
 
-4. **Move the original file** from `Raw/` to `Raw/processed/`. Use `mv` via Bash or the appropriate filesystem operation. Do not delete; archive.
+4. **Move the original file** from `Raw/` to `Raw/processed/`, but ONLY after a note with real extracted content was written for it. Use `mv` via Bash or the appropriate filesystem operation. Do not delete; archive. If extraction failed (see the Document extraction protocol's hard guard), leave the file in `Raw/` so the operator can re-run it after the fix.
 
 5. **Skip the file** (leaving it in Raw/) if any of these apply, and note in the report:
    - Cannot classify with confidence (multiple plausible homes, no clear winner)
