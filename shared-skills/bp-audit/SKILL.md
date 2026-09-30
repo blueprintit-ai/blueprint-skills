@@ -1,9 +1,9 @@
 ---
 name: bp-audit
-description: Shop OS vault health check. Scores the vault across four dimensions — Context (does it know the shop?), Connections (can it reach real data?), Capabilities (are skills being used?), Cadence (is it running without being asked?) — out of 100. Surfaces top 3 gaps with concrete next steps and shows the Automation Ladder so owners know where each workflow sits and what the next level up looks like. Run monthly or when onboarding a new customer. TRIGGERS: audit vault, score my vault, shop os audit, how is my vault set up, vault health, audit my shop os, bp audit, how am I doing, is my vault working.
+description: Blueprint OS vault health check. Scores the vault across four dimensions — Context (does it know the shop?), Connections (can it reach real data?), Capabilities (are skills being used?), Cadence (is it running without being asked?) — out of 100. Surfaces top 3 gaps with concrete next steps and shows the Automation Ladder so owners know where each workflow sits and what the next level up looks like. Run monthly or when onboarding a new customer. TRIGGERS: audit vault, score my vault, shop os audit, how is my vault set up, vault health, audit my shop os, bp audit, how am I doing, is my vault working.
 ---
 
-# Shop OS Audit
+# Blueprint OS Audit
 
 Score the vault across four dimensions. Read only. Report the score, strengths, top 3 gaps, and Automation Ladder. Offer to save the report. Done.
 
@@ -70,7 +70,7 @@ Are the right workflows active and being used? Installed but never run = 0 on us
 | bp-digest has been run (`Raw/processed/` exists and contains files) | 8 | `find Raw/processed -name "*.md" 2>/dev/null \| wc -l` ≥ 1 |
 | bp-digest used regularly (processed files dated within 30 days) | 7 | Check modification dates on files in `Raw/processed/` — any modified in the last 30 days? |
 | bp-setup completed (Context/ files are filled, not placeholder) | 5 | Read `Context/organization.md` — `{{...}}` or blank = 0 |
-| Custom skills or workflows defined (beyond the default Shop OS skills) | 5 | `find .claude/skills -name "SKILL.md" 2>/dev/null \| wc -l` — count above 6 (the default installs) |
+| Custom skills or workflows defined (beyond the default Blueprint OS skills) | 5 | `find .claude/skills -name "SKILL.md" 2>/dev/null \| wc -l` — count above 6 (the default installs) |
 
 ### Cadence (25 pts)
 
@@ -126,7 +126,7 @@ For each workflow below, detect the current level from the vault state and note 
 Print this exactly — specific to this shop's data, not generic:
 
 ```
-# Shop OS Audit — {date}
+# Blueprint OS Audit — {date}
 **Score: {total}/100** — {stage}
 
 Stages: 0-39 Foundation | 40-69 Active | 70-89 Productive | 90-100 Leveraged

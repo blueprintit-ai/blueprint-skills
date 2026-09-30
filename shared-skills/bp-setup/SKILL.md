@@ -18,7 +18,7 @@ Check if `claude.md` or `CLAUDE.md` exists **only** in the current working direc
 
 - **If it does NOT exist** → fresh setup. Proceed to Phase 0 + Phase A + Phase B.
 - **If it exists, read the frontmatter**:
-  - **`bp-setup-state: pending`** → **installer-seeded, not yet onboarded.** This is a fresh Shop OS install where the installer dropped a stub CLAUDE.md but the user has not run onboarding yet. Skip Phase 0 (use the `os-mode` already in the frontmatter). Proceed to Phase A — but in Step A.2 **preserve the installer's frontmatter fields** (see the note in Step A.2). Then proceed to Phase B normally.
+  - **`bp-setup-state: pending`** → **installer-seeded, not yet onboarded.** This is a fresh Blueprint OS install where the installer dropped a stub CLAUDE.md but the user has not run onboarding yet. Skip Phase 0 (use the `os-mode` already in the frontmatter). Proceed to Phase A — but in Step A.2 **preserve the installer's frontmatter fields** (see the note in Step A.2). Then proceed to Phase B normally.
   - **`bp-setup-state: complete`** (or no `bp-setup-state` field at all — legacy hand-built vault) → the vault is already onboarded. Before asking what to do, run a skills staleness check:
 
     ```bash
@@ -34,7 +34,7 @@ Check if `claude.md` or `CLAUDE.md` exists **only** in the current working direc
 
     If the result is **30 or more**, show this notice before the options (one line, no drama):
 
-    > Your Shop OS skills haven't been updated in a while. Run `npx -y --package=@blueprintit/shop-os-install shop-os-update` in Terminal, then restart Claude Code to get the latest improvements.
+    > Your Blueprint OS skills haven't been updated in a while. Run `npx -y --package=@blueprintit/shop-os-install shop-os-update` in Terminal, then restart Claude Code to get the latest improvements.
 
     Then ask the user:
     - "This vault is already set up. Would you like to:"
@@ -241,8 +241,8 @@ Create the `brainstorms/` directory and capture file using Bash (do not rely on 
 ```bash
 mkdir -p brainstorms
 cat > "brainstorms/YYYY-MM-DD-shop-os-setup.md" << 'EOF'
-# Shop OS Setup: Discovery Notes
-Date: YYYY-MM-DD · Goal: Build a personalized Shop OS brain
+# Blueprint OS Setup: Discovery Notes
+Date: YYYY-MM-DD · Goal: Build a personalized Blueprint OS brain
 
 ## Summary
 (updated as we go)
@@ -365,24 +365,24 @@ The 9 interview topics map to Context/ files as follows. Use this as your routin
 **Solopreneurs/Professionals mode:**
 
 - **`Context/me.md`** — Always created. Fill from T1 (name, location, how long, size) + T8 (priorities, drains). Read `references/context-me.md` as scaffold.
-- **`Context/services.md`** — Always created for Shop OS. Fill from T2 (job types, who buys) + T4 (pricing method, typical job size). Read `references/context-services.md` as scaffold.
+- **`Context/services.md`** — Always created for Blueprint OS. Fill from T2 (job types, who buys) + T4 (pricing method, typical job size). Read `references/context-services.md` as scaffold.
 - **`Context/pain-points.md`** — Only if T3 or T4 surfaced bottlenecks or estimating pain. Read `references/context-pain-points.md` as scaffold.
-- **`Context/icp.md`** — Always created for Shop OS. Fill from T2 (customer types) + T5 (lead sources, what drives repeat business). Read `references/context-icp.md` as scaffold.
-- **`Context/brand.md`** — Always created for Shop OS. From T6 take positioning (why pick you, what they're known for). From T7 take voice (style, personality, words to avoid). Read `references/context-brand.md` as scaffold.
+- **`Context/icp.md`** — Always created for Blueprint OS. Fill from T2 (customer types) + T5 (lead sources, what drives repeat business). Read `references/context-icp.md` as scaffold.
+- **`Context/brand.md`** — Always created for Blueprint OS. From T6 take positioning (why pick you, what they're known for). From T7 take voice (style, personality, words to avoid). Read `references/context-brand.md` as scaffold.
 - **`Context/strategy.md`** — Only if T8 had content (priorities, active projects). Read `references/context-strategy.md` as scaffold.
-- **`Context/infrastructure.md`** — Always created for Shop OS. From T3 take work flow (estimate to delivery, bottlenecks). From T9 take tool stack + workflows-to-automate. Read `references/context-infrastructure.md` as scaffold.
+- **`Context/infrastructure.md`** — Always created for Blueprint OS. From T3 take work flow (estimate to delivery, bottlenecks). From T9 take tool stack + workflows-to-automate. Read `references/context-infrastructure.md` as scaffold.
 - **`Context/team.md`** — Only if T1 mentioned employees or collaborators. Read `references/context-team.md` as scaffold.
 
 **Business mode:**
 
 - **`Context/organization.md`** — Always created. Fill from T1 (shop name, location, history, headcount, physical size). Read `references/context-organization.md` as scaffold.
-- **`Context/services.md`** — Always created for Shop OS. Fill from T2 (job types, who buys) + T4 (pricing method, typical job size). Read `references/context-services.md` as scaffold.
+- **`Context/services.md`** — Always created for Blueprint OS. Fill from T2 (job types, who buys) + T4 (pricing method, typical job size). Read `references/context-services.md` as scaffold.
 - **`Context/pain-points.md`** — Only if T3 or T4 surfaced bottlenecks or estimating pain. Read `references/context-pain-points.md` as scaffold.
-- **`Context/icp.md`** — Always created for Shop OS. Fill from T2 (customer types) + T5 (lead sources, what drives repeat business). Read `references/context-icp.md` as scaffold.
-- **`Context/brand.md`** — Always created for Shop OS. From T6 take positioning. From T7 take voice. Read `references/context-brand.md` as scaffold.
+- **`Context/icp.md`** — Always created for Blueprint OS. Fill from T2 (customer types) + T5 (lead sources, what drives repeat business). Read `references/context-icp.md` as scaffold.
+- **`Context/brand.md`** — Always created for Blueprint OS. From T6 take positioning. From T7 take voice. Read `references/context-brand.md` as scaffold.
 - **`Context/team.md`** — Always created. Fill from T1 (headcount, key roles). Read `references/context-team.md` as scaffold.
 - **`Context/strategy.md`** — Always created. Fill from T8 (priorities, active projects, any targets mentioned). Read `references/context-strategy-business.md` as scaffold.
-- **`Context/infrastructure.md`** — Always created for Shop OS. From T3 take work flow. From T9 take tool stack + workflows-to-automate. Read `references/context-infrastructure.md` as scaffold.
+- **`Context/infrastructure.md`** — Always created for Blueprint OS. From T3 take work flow. From T9 take tool stack + workflows-to-automate. Read `references/context-infrastructure.md` as scaffold.
 - **`Context/operator.md`** — Always created. Fill from T1 (owner name, role) + T8 (priorities, what's draining them). Read `references/context-operator.md` as scaffold.
 
 **For any topic captured as a flag** (owner said "next" or couldn't answer): write the relevant Context/ file anyway, add a placeholder section at the bottom:

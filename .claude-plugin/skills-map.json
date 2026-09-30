@@ -458,7 +458,7 @@
         },
         "bp-update": {
           "displayName": "OS Update",
-          "summary": "Pull the latest Shop OS skills from Blueprint IT without re-running the full installer"
+          "summary": "Pull the latest Blueprint OS skills from Blueprint IT without re-running the full installer"
         },
         "grill-me": {
           "displayName": "Grill Me",

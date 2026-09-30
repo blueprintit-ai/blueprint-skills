@@ -1,9 +1,9 @@
 ---
 name: bp-update
-description: "Pull the latest Shop OS skills from Blueprint IT. Runs the update command, then tells you to restart Claude Code. TRIGGERS: /bp-update, update skills, update shop os, update my skills, get latest skills, skills are outdated."
+description: "Pull the latest Blueprint OS skills from Blueprint IT. Runs the update command, then tells you to restart Claude Code. TRIGGERS: /bp-update, update skills, update blueprint os, update shop os, update my skills, get latest skills, skills are outdated."
 ---
 
-# Shop OS Skills Updater
+# Blueprint OS Skills Updater
 
 Pull the latest skills from Blueprint IT without re-running the full installer. Does not touch your vault, license, or settings.
 
